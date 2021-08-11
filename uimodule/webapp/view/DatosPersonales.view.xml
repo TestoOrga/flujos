@@ -1,0 +1,57 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.ui.layout.form" xmlns="sap.m" controllerName="bafar.flujos.flujos.controller.DatosPersonales">
+	<Panel expandable="true" headerText="Datos personales" width="auto" class="sapUiResponsiveMargin" expanded="true">
+		<content>
+			<f:Form editable="true" id="__form0">
+				<f:formContainers>
+					<f:FormContainer title="" id="__container0">
+						<f:formElements>
+							<f:FormElement label="No. Personal" id="noPersonal_Label">
+								<f:fields>
+									<Input width="100%" id="noPeronsal_Input"/>
+									<Input width="100%" id="noPeronsal_Input1"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Sociedad" id="sociedad_Label">
+								<f:fields>
+									<Input width="100%" id="sociedad_Input"/>
+									<Input width="100%" id="sociedad_Input1"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="División" id="division_Label">
+								<f:fields>
+									<Input width="100%" id="division_Input"/>
+									<Input width="100%" id="division_Input1"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Función" id="funcion_Label">
+								<f:fields>
+									<Input width="100%" id="funcion_Input"/>
+									<Input width="100%" id="funcion_Input1"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Área Nómina" id="areaNomina_Label">
+								<f:fields>
+									<Input width="100%" id="areaNomina_Input"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Periodo Retención" id="periodoRet_Label">
+								<f:fields>
+									<Input width="100%" id="periodoRet_Input"/>
+									<Input width="100%" id="periodoRet_Input1"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement label="Fecha Inicio Ret." id="fechaIniRet_Label">
+								<f:fields>
+									<Input width="100%" id="fechaIniRet_Input"/>
+								</f:fields>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+				<f:layout>
+					<f:ResponsiveGridLayout id="__layout8"/>
+				</f:layout>
+			</f:Form>
+		</content>
+	</Panel>
+</mvc:View>

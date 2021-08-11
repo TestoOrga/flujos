@@ -20,5 +20,5 @@ server:
     - name: ui5-middleware-livereload
       afterMiddleware: compression
       configuration:
-        port: 35729
+        port: 35728
         path: uimodule/webapp
