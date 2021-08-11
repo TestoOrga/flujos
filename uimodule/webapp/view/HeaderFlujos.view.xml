@@ -1,0 +1,76 @@
+<core:View xmlns:f="sap.f" controllerName="bafar.flujos.flujos.controller.HeaderFlujos"
+	xmlns:dv="com.dudev.ProjectManagement.control"
+	xmlns:core="sap.ui.core"
+	xmlns:m="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns="sap.uxap">
+	<!-- showNavButton="true" navButtonPress="onBack"-->
+	<m:Page id="headerFlujosMasterPage" showHeader="true" title="{i18n>appTitulo}">
+		<ObjectPageLayout id="headerFlujosPageLayout" showFooter="true">
+			<headerTitle>
+				<ObjectPageHeader id="headerFlujosPageHeader" objectTitle="{i18n>HeaderTitulo}" objectSubtitle="{i18n>HeaderSubtitulo}" objectImageURI="sap-icon://combine" objectImageShape="Square" isObjectTitleAlwaysVisible="true" isObjectSubtitleAlwaysVisible="true" isActionAreaAlwaysVisible="true">
+					<actions>
+						<m:Button id="headerFlujosButReset" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonReset}}" press="onVal" icon="sap-icon://reset" type="Transparent"/>
+						<m:Button id="headerFlujosButNuevo" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonNuevo}}" press="onAddTask" icon="sap-icon://add" type="Emphasized"/>
+					</actions>
+				</ObjectPageHeader>
+			</headerTitle>
+			<headerContent>
+				<l:VerticalLayout id="headerFlujosVL1" visible="{= ${device>/system/phone} ? false:true}" width="auto">
+					<f:Avatar id="headerFlujosAvatar" src="sap-icon://combine" displaySize="XL" displayShape="Circle" class="sapUiSmallMarginTop sapUiMediumMarginEnd"/>
+				</l:VerticalLayout>
+				<l:VerticalLayout id="headerFlujosVL2" width="auto">
+					<m:Label id="headerFlujosLabelIdFlujo" text="{i18n>HeaderIdFlujo}" labelFor="headerFLujosComboboxIdFlujo" required="true" />
+					<m:ComboBoxTextField id="headerFLujosComboboxIdFlujo" />
+					<m:Label id="headerFlujosLabelDepto" text="{i18n>HeaderDepto}" labelFor="headerFLujosComboboxDepto" required="true" />
+					<m:ComboBoxTextField id="headerFLujosComboboxDepto" />
+				</l:VerticalLayout>
+				<l:VerticalLayout id="headerFlujosVL3" width="auto">
+					<m:Label id="headerFlujosLabelActiv" text="{i18n>HeaderActiv}" labelFor="headerFLujosComboboxActiv" required="true" />
+					<m:ComboBoxTextField id="headerFLujosComboboxActiv" />
+					<m:Label id="headerFlujosLabelProceso" text="{i18n>HeaderProceso}" labelFor="headerFLujosComboboxProceso" required="true" />
+					<m:ComboBoxTextField id="headerFLujosComboboxProceso" />
+				</l:VerticalLayout>
+			</headerContent>
+			<sections>
+				<ObjectPageSection id="headerFlujosPageSec1" title="{flujo>/seccion1}" >
+					<subSections>
+						<ObjectPageSubSection id="headerFlujosPageSub1Sec1">
+							<blocks>
+								<m:Panel id="headerFlujosInsertPanel1">
+									<m:Text text="testo {flujo>/seccion2}"></m:Text>									
+								</m:Panel>
+								<!-- <dv:DVStatus text="{Status}" color="{StatusColor}"/> -->
+							</blocks>
+						</ObjectPageSubSection>
+					</subSections>
+				</ObjectPageSection>
+				<ObjectPageSection id="headerFlujosPageSec2" title="{flujo>/seccion2}" >
+					<ObjectPageSubSection id="headerFlujosPageSub1Sec2">
+						<blocks>
+							<m:Panel id="headerFlujosInsertPanel2">
+							</m:Panel>
+						</blocks>
+					</ObjectPageSubSection>
+				</ObjectPageSection>
+				<ObjectPageSection id="headerFlujosPageSec3" title="{flujo>/seccion3}" >
+					<ObjectPageSubSection id="headerFlujosPageSub1Sec3">
+						<blocks>
+							<m:Panel id="headerFlujosInsertPanel3">
+							</m:Panel>
+						</blocks>
+					</ObjectPageSubSection>
+				</ObjectPageSection>				
+			</sections>
+			<footer>
+				<m:OverflowToolbar id="footer">
+					<m:content>
+						<m:ToolbarSpacer id="spacer"/>
+						<m:Button id="headerFlujosButGrabar" type="Accept" text="{i18n>HeaderFlujosFooterButGrabar}" press="onGrabar"/>
+						<m:Button id="headerFlujosButCancelar" type="Reject" text="{i18n>HeaderFlujosFooterButCancelar}" press="onCancelar"/>
+					</m:content>
+				</m:OverflowToolbar>
+			</footer>
+		</ObjectPageLayout>
+	</m:Page>
+</core:View>

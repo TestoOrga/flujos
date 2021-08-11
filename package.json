@@ -21,11 +21,15 @@
     "karma-coverage": "^2.0.3",
     "karma-ui5": "^2.3.2",
     "npm-run-all": "^4.1.5",
-    "eslint": "^7.18.0"
+    "eslint": "^7.18.0",
+    "@sap/ux-ui5-tooling": "^1.2.4",
+    "ui5-task-transpile": "^0.1.7"
   },
   "ui5": {
     "dependencies": [
-      "ui5-middleware-livereload"
+      "ui5-middleware-livereload",
+      "@sap/ux-ui5-tooling",
+      "ui5-task-transpile"
     ]
   }
 }

@@ -75,6 +75,11 @@
           "name": "RouteMainView",
           "pattern": "RouteMainView",
           "target": ["TargetMainView"]
+        },
+        {
+          "name": "HeaderFlujosView",
+          "pattern": "",
+          "target": ["TargetHeaderFlujos"]
         }
       ],
       "targets": {
@@ -82,7 +87,14 @@
           "viewType": "XML",
           "viewLevel": 1,
           "viewId": "idAppControl",
-          "viewName": "MainView"
+          "viewName": "MainView",
+          "transition": "slide"
+        },
+        "TargetHeaderFlujos": {
+          "viewType": "XML",
+          "viewLevel": 1,          
+          "viewName": "HeaderFlujos",
+          "transition": "slide"
         }
       }
     }
