@@ -1,8 +1,10 @@
-<core:View xmlns:f="sap.f" controllerName="bafar.flujos.flujos.controller.HeaderFlujos"
+<mvc:View xmlns:f="sap.f" 
+controllerName="bafar.flujos.flujos.controller.HeaderFlujos"
 	xmlns:dv="com.dudev.ProjectManagement.control"
 	xmlns:core="sap.ui.core"
 	xmlns:m="sap.m"
 	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.uxap">
 	<!-- showNavButton="true" navButtonPress="onBack"-->
 	<m:Page id="headerFlujosMasterPage" showHeader="true" title="{i18n>appTitulo}">
@@ -37,8 +39,7 @@
 					<subSections>
 						<ObjectPageSubSection id="headerFlujosPageSub1Sec1">
 							<blocks>
-								<m:Panel id="headerFlujosInsertPanel1">
-									<m:Text text="testo {flujo>/seccion2}"></m:Text>									
+								<m:Panel id="headerFlujosInsertPanel1">									
 								</m:Panel>
 								<!-- <dv:DVStatus text="{Status}" color="{StatusColor}"/> -->
 							</blocks>
@@ -49,6 +50,7 @@
 					<ObjectPageSubSection id="headerFlujosPageSub1Sec2">
 						<blocks>
 							<m:Panel id="headerFlujosInsertPanel2">
+								<mvc:XMLView viewName="bafar.flujos.flujos.view.PensionesV.JuridicaDeudas" />
 							</m:Panel>
 						</blocks>
 					</ObjectPageSubSection>
@@ -73,4 +75,4 @@
 			</footer>
 		</ObjectPageLayout>
 	</m:Page>
-</core:View>
+</mvc:View>

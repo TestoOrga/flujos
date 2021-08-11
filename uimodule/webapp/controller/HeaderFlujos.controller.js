@@ -8,7 +8,15 @@ sap.ui.define(
 
     return Controller.extend("bafar.flujos.flujos.controller.MainView", {
       onInit: function () {
-        var oFlujo = new JSONModel({ seccion1: "Seccion1", seccion2: "Seccion2", seccion3: "Seccion3" });
+        var oFlujo = new JSONModel({
+          seccion1: this.getResourceBundle().getText(
+            "Pensiones.DatosPersonales.panel"
+          ),
+          seccion2: this.getResourceBundle().getText(
+            "Pensiones.JuridicoDeudas.panel"
+          ),
+          seccion3: "Seccion3",
+        });
         this.getView().setModel(oFlujo, "flujo");
       },
       onGrabar: function () {
@@ -16,7 +24,7 @@ sap.ui.define(
       },
       onCancelar: function () {
         this.getView().byId("headerFlujosPageSec3").setVisible(false);
-      }
+      },
     });
   }
 );

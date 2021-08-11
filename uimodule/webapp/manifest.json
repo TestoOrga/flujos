@@ -74,12 +74,16 @@
         {
           "name": "RouteMainView",
           "pattern": "RouteMainView",
-          "target": ["TargetMainView"]
+          "target": [
+            "TargetMainView"
+          ]
         },
         {
           "name": "HeaderFlujosView",
           "pattern": "",
-          "target": ["TargetHeaderFlujos"]
+          "target": [
+            "TargetHeaderFlujos", "TargetPensionesDatosPersonales"
+          ]
         }
       ],
       "targets": {
@@ -92,9 +96,19 @@
         },
         "TargetHeaderFlujos": {
           "viewType": "XML",
-          "viewLevel": 1,          
+          "viewLevel": 1,
           "viewName": "HeaderFlujos",
           "transition": "slide"
+        },        
+        "TargetPensionesDatosPersonales": {
+          "parent": "TargetHeaderFlujos",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "viewName": "PensionesV.DatosPersonales",
+          "transition": "slide",
+          "clearControlAggregation": true,
+          "controlId": "headerFlujosInsertPanel1",
+					"controlAggregation": "content"		
         }
       }
     }

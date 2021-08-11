@@ -1,5 +1,7 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:f="sap.ui.layout.form" xmlns="sap.m" controllerName="bafar.flujos.flujos.controller.DatosPersonales">
-	<Panel expandable="true" headerText="Datos personales" width="auto" class="sapUiResponsiveMargin" expanded="true">
+<mvc:View xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.m" controllerName="bafar.flujos.flujos.controller.PensionesC.DatosPersonales">
+	<Panel expandable="true" headerText="{i18n>Pensiones.DatosPersonales.panel}" width="auto" class="sapUiResponsiveMargin" expanded="true">
 		<content>
 			<f:Form editable="true" id="__form0">
 				<f:formContainers>
