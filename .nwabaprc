@@ -1,0 +1,12 @@
+{
+    "base": "./uimodule/webapp",
+    "conn_usestrictssl" : false,
+    "conn_server": "https://svgwdap0.grupobafar.com:8443/",
+    "conn_client" : "100",
+    "conn_user": "AGUZMAN",
+    "conn_password": "Sap_2021",
+    "abap_package": "ZHR",
+    "abap_transport": "GWDK900420",
+    "abap_bsp": "Z_FLUJOS",
+    "abap_bsp_text": "Flujos BAFAR - Intelit"
+}

@@ -21,6 +21,21 @@ sap.ui.define(
       },
       onGrabar: function () {
         this.getView().byId("headerFlujosPageSec3").setVisible(true);
+        var mainModel = this.getModel();
+        var oEntityData = {
+          P1: "CAT",
+          P2: "BUKRS",
+          to_pesal: []
+        };
+        mainModel.create("/BaseSet", oEntityData, {
+          async: true,
+          success: function(req, res) {
+            console.log({res});
+          },
+          error: function (error) {
+            console.log({error});
+          }
+        })
       },
       onCancelar: function () {
         this.getView().byId("headerFlujosPageSec3").setVisible(false);

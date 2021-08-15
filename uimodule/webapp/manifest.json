@@ -8,7 +8,17 @@
       "version": "1.0.0"
     },
     "title": "{{appTitle}}",
-    "description": "{{appDescription}}"
+    "description": "{{appDescription}}",
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZOD_FLUJOS_SRV/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
+        }
+      }
+    }
   },
   "sap.ui": {
     "technology": "UI5",
@@ -52,6 +62,10 @@
         "settings": {
           "bundleName": "bafar.flujos.flujos.i18n.i18n"
         }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true
       }
     },
     "resources": {
@@ -82,7 +96,8 @@
           "name": "HeaderFlujosView",
           "pattern": "",
           "target": [
-            "TargetHeaderFlujos", "TargetPensionesDatosPersonales"
+            "TargetHeaderFlujos",
+            "TargetPensionesDatosPersonales"
           ]
         }
       ],
@@ -99,7 +114,7 @@
           "viewLevel": 1,
           "viewName": "HeaderFlujos",
           "transition": "slide"
-        },        
+        },
         "TargetPensionesDatosPersonales": {
           "parent": "TargetHeaderFlujos",
           "viewType": "XML",
@@ -108,7 +123,7 @@
           "transition": "slide",
           "clearControlAggregation": true,
           "controlId": "headerFlujosInsertPanel1",
-					"controlAggregation": "content"		
+          "controlAggregation": "content"
         }
       }
     }
