@@ -57,6 +57,7 @@
 					<Input value="{}" fieldWidth="100%"></Input>
 				</f:content>
 			</f:SimpleForm>
+			<Button id="But" text="Action" press="onButAction"/>
 		</content>
 	</Panel>
 

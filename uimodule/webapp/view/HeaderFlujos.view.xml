@@ -50,7 +50,8 @@ controllerName="bafar.flujos.flujos.controller.HeaderFlujos"
 					<ObjectPageSubSection id="headerFlujosPageSub1Sec2">
 						<blocks>
 							<m:Panel id="headerFlujosInsertPanel2">
-								<mvc:XMLView viewName="bafar.flujos.flujos.view.PensionesV.JuridicaDeudas" />
+							<!-- <mvc:XMLView id="insertView" /> -->
+								<!-- <mvc:XMLView viewName="bafar.flujos.flujos.view.PensionesV.JuridicaDeudas" /> -->
 							</m:Panel>
 						</blocks>
 					</ObjectPageSubSection>
@@ -70,6 +71,10 @@ controllerName="bafar.flujos.flujos.controller.HeaderFlujos"
 						<m:ToolbarSpacer id="spacer"/>
 						<m:Button id="headerFlujosButGrabar" type="Accept" text="{i18n>HeaderFlujosFooterButGrabar}" press="onGrabar"/>
 						<m:Button id="headerFlujosButCancelar" type="Reject" text="{i18n>HeaderFlujosFooterButCancelar}" press="onCancelar"/>
+						<m:Button id="headerFlujosButCancelar1" type="Reject" text="addPanel1" press="addPanel($event, '1')"/>
+						<m:Button id="headerFlujosButCancelar2" type="Reject" text="addPanel2" press="addPanel($event, '2')"/>
+						<m:Button id="headerFlujosButCancelar3" type="Reject" text="delPanel1" press="delPanel($event, '1')"/>
+						<m:Button id="headerFlujosButCancelar4" type="Reject" text="delPanel2" press="delPanel($event, '2')"/>
 					</m:content>
 				</m:OverflowToolbar>
 			</footer>
