@@ -10,41 +10,41 @@
 							<f:FormElement label="No. Personal" id="noPersonal_Label">
 								<f:fields>
 									<Input width="100%" id="noPeronsal_Input"/>
-									<Input width="100%" id="noPeronsal_Input1"/>
+									<Label width="100%" id="noPeronsal_Input1" text="-" />
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Sociedad" id="sociedad_Label">
 								<f:fields>
 									<Input width="100%" id="sociedad_Input"/>
-									<Input width="100%" id="sociedad_Input1"/>
+									<Label width="100%" id="sociedad_Input1" text="-" />
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="División" id="division_Label">
 								<f:fields>
 									<Input width="100%" id="division_Input"/>
-									<Input width="100%" id="division_Input1"/>
+									<Label width="100%" id="division_Input1" text="-" />
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Función" id="funcion_Label">
 								<f:fields>
 									<Input width="100%" id="funcion_Input"/>
-									<Input width="100%" id="funcion_Input1"/>
+									<Label width="100%" id="funcion_Input1" text="-" />
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Área Nómina" id="areaNomina_Label">
 								<f:fields>
-									<Input width="100%" id="areaNomina_Input"/>
+									<Label width="100%" id="areaNomina_Input" text="-" />
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Periodo Retención" id="periodoRet_Label">
 								<f:fields>
 									<Input width="100%" id="periodoRet_Input"/>
-									<Input width="100%" id="periodoRet_Input1"/>
+									<Label width="100%" id="periodoRet_Input1" text="-" />
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Fecha Inicio Ret." id="fechaIniRet_Label">
 								<f:fields>
-									<Input width="100%" id="fechaIniRet_Input"/>
+									<Label width="100%" id="fechaIniRet_Input" text="-" />
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>
@@ -54,6 +54,7 @@
 					<f:ResponsiveGridLayout id="__layout8"/>
 				</f:layout>
 			</f:Form>
+			<Button id="But" text="Action" press="onButAction"/>
 		</content>
 	</Panel>
 </mvc:View>

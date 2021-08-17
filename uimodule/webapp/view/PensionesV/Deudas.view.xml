@@ -12,28 +12,10 @@
 				<Page id="page" title="{i18n>title}">
 					<content> -->
 
-	<Panel expandable="true" headerText="{i18n>Pensiones.JuridicoDeudas.panel}" width="auto" class="sapUiResponsiveMargin" expanded="true">
+	<Panel expandable="true" headerText="{i18n>Pensiones.Deudas.panel}" width="auto" class="sapUiResponsiveMargin" expanded="true">
 		<content>
 			<f:SimpleForm id="SimpleForm1" editable="true" layout="ResponsiveGridLayout" title="Flujo" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
 				<f:content>
-					<core:Title text="Orden Jurídica"/>
-					<Label text="Número de órden"/>
-					<Input value="Numero Orden"></Input>
-					<DatePicker xmlns="sap.m" id="picker0"/>
-					<Label text="Receptor"/>
-					<Input id="name" value="{}"/>
-					<Label text="Cve. Banco"/>
-					<Select maxWidth="30%">
-						<core:Item key="{}" text="{}"/>
-					</Select>
-					<Input value="{}" fieldWidth="100%"></Input>
-					<Label text="Cuenta Bancaria"/>
-					<Input value="Cuenta bancaria"/>
-					<Label text="Via Pago"/>
-					<Select maxWidth="30%">
-						<core:Item key="{}" text="{}"/>
-					</Select>
-					<Input value="{}" fieldWidth="100%"></Input>
 					<core:Title text="Deudas"/>
 					<Label text="Tipo Descuento"/>
 					<Select maxWidth="30%">
@@ -44,19 +26,10 @@
 					<Select>
 						<core:Item key="{}" text="{}"/>
 					</Select>
-					<Input value="{Street}" fieldWidth="100%"></Input>
-					<Label text="Tipo Descuento"/>
-					<Select maxWidth="30%">
-						<core:Item key="{}" text="{}"/>
-					</Select>
-					<Input value="{}" fieldWidth="100%"></Input>
-					<Label text="Unidad Intervalo"/>
-					<Select>
-						<core:Item key="{}" text="{}"/>
-					</Select>
-					<Input value="{}" fieldWidth="100%"></Input>
+					<Input value="{Street}" fieldWidth="100%"></Input>					
 				</f:content>
 			</f:SimpleForm>
+			<Button id="But" text="Action" press="onButAction($event, 'Deudas')"/>
 		</content>
 	</Panel>
 
