@@ -72,6 +72,7 @@ sap.ui.define(
         var oEntityData = {
           P1: "CAT",
           P2: "BUKRS",
+          // P2: "PERNR",
           to_pesal: []
         };
         mainModel.create("/BaseSet", oEntityData, {
