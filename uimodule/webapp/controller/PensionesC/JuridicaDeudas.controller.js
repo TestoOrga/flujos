@@ -11,8 +11,8 @@ sap.ui.define([
 		return Controller.extend("namespace.name.project3.controller.View1", {
 			onInit: function () {
 			},
-			onButAction: function () {
-				MessageToast.show("Juridica y Deudas");
+			onButAction: function (oEvent, param) {
+				MessageToast.show(param);
 			}
 		});
 	});

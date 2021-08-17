@@ -12,14 +12,14 @@ controllerName="bafar.flujos.flujos.controller.HeaderFlujos"
 			<headerTitle>
 				<ObjectPageHeader id="headerFlujosPageHeader" objectTitle="{i18n>HeaderTitulo}" objectSubtitle="{i18n>HeaderSubtitulo}" objectImageURI="sap-icon://combine" objectImageShape="Square" isObjectTitleAlwaysVisible="true" isObjectSubtitleAlwaysVisible="true" isActionAreaAlwaysVisible="true">
 					<actions>
-						<m:Button id="headerFlujosButReset" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonReset}}" press="onVal" icon="sap-icon://reset" type="Transparent"/>
-						<m:Button id="headerFlujosButNuevo" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonNuevo}}" press="onAddTask" icon="sap-icon://add" type="Emphasized"/>
+						<m:Button id="headerFlujosButReset" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonReset}}" press="onReset" icon="sap-icon://reset" type="Transparent"/>
+						<m:Button id="headerFlujosButNuevo" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonNuevo}}" press="onAddFlow" icon="sap-icon://add" type="Emphasized"/>
 					</actions>
 				</ObjectPageHeader>
 			</headerTitle>
 			<headerContent>
 				<l:VerticalLayout id="headerFlujosVL1" visible="{= ${device>/system/phone} ? false:true}" width="auto">
-					<f:Avatar id="headerFlujosAvatar" src="sap-icon://combine" displaySize="XL" displayShape="Circle" class="sapUiSmallMarginTop sapUiMediumMarginEnd"/>
+					<f:Avatar id="headerFlujosAvatar" src="sap-icon://combine" displaySize="XL" displayShape="Square" class="sapUiSmallMarginTop sapUiMediumMarginEnd"/>
 				</l:VerticalLayout>
 				<l:VerticalLayout id="headerFlujosVL2" width="auto">
 					<m:Label id="headerFlujosLabelIdFlujo" text="{i18n>HeaderIdFlujo}" labelFor="headerFLujosComboboxIdFlujo" required="true" />
