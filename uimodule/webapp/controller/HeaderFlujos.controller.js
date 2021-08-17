@@ -2,9 +2,10 @@ sap.ui.define(
   [
     "bafar/flujos/flujos/controller/BaseController",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/mvc/XMLView"
+    "sap/ui/core/mvc/XMLView",
+    "sap/m/MessageToast"
   ],
-  function (Controller, JSONModel, XMLView) {
+  function (Controller, JSONModel, XMLView, MessageToast) {
     "use strict";
 
     return Controller.extend("bafar.flujos.flujos.controller.MainView", {
@@ -77,6 +78,7 @@ sap.ui.define(
           async: true,
           success: function (req, res) {
             console.log({ res });
+            MessageToast.show( res );
           },
           error: function (error) {
             console.log({ error });
