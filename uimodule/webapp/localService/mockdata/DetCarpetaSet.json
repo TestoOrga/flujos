@@ -1,0 +1,86 @@
+[
+    {
+        "Iddoc": "DOC02",
+        "Pernr": "00000001",
+        "Carpeta": "Contratación",
+        "NombreCorto": "Contrat.",
+        "Ayuda": "asdfgjhasdlfbasdjklfhasdjklfhasdjklhfjkasdhf",
+        "Porc": "100"
+    },
+    {
+        "Iddoc": "DOC03",
+        "Pernr": "00000001",
+        "Carpeta": "IMSS",
+        "Porc": "100"
+    },
+    {
+        "Iddoc": "DOC04",
+        "Pernr": "00000001",
+        "Carpeta": "Gastos Médicos Mayores",
+        "Porc": "30"
+    },
+    {
+        "Iddoc": "DOC05",
+        "Pernr": "00000001",
+        "Carpeta": "Tramites BAFAR",
+        "Porc": "55"
+    },
+    {
+        "Iddoc": "DOC06",
+        "Pernr": "00000001",
+        "Carpeta": "1234567890123456789012",
+        "Porc": "55"
+    },
+    {
+        "Iddoc": "DOC07",
+        "Pernr": "00000002",
+        "Carpeta": "Auditoria",
+        "Porc": "80"
+    },
+    {
+        "Iddoc": "DOC02",
+        "Pernr": "00000002",
+        "Carpeta": "Contratación",
+        "Porc": "100"
+    },
+    {
+        "Iddoc": "DOC03",
+        "Pernr": "00000002",
+        "Carpeta": "IMSS",
+        "Porc": "100"
+    },
+    {
+        "Iddoc": "DOC04",
+        "Pernr": "00000002",
+        "Carpeta": "Gastos Médicos Mayores",
+        "Porc": "40"
+    },
+    {
+        "Idd5c": "DOC08",
+        "Pernr": "00000002",
+        "Carpeta": "Baja",
+        "Porc": "50"
+    },
+    {
+        "Iddoc": "DOC09",
+        "Pernr": "00000002",
+        "Carpeta": "Liquidación",
+        "Porc": "0"
+    },
+    {
+        "Iddoc": "DOC10",
+        "Pernr": "00000925",
+        "Carpeta": "Acta",
+        "NombreCorto": "Acta",
+        "Porc": "50",
+        "Ayuda": "PDF o Foto"
+    },
+    {
+        "Iddoc": "DOC11",
+        "Pernr": "00000925",
+        "Carpeta": "Contrato",
+        "NombreCorto": "Cont.",
+        "Porc": "75",
+        "Ayuda": "PDF o Foto o Word"
+    }
+]

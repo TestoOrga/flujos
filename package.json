@@ -1,8 +1,10 @@
 {
   "name": "flujos",
   "version": "0.0.1",
-  "scripts": {
-    "start": "ui5 serve --config=uimodule/ui5.yaml  --open index.html",
+  "scripts": {    
+    "start": "ui5 serve --config=uimodule/ui5.yaml  --open test/mockServer.html",
+    "testf": "ui5 serve --config=uimodule/ui5.yaml --open 'test/flpSandbox.html'",
+    "testmf": "ui5 serve --config=uimodule/ui5.yaml --open 'test/flpSandboxMockServer.html'",
     "build:ui": "run-s  build:uimodule",
     "test": "run-s lint karma",
     "karma-ci": "karma start karma-ci.conf.js",
