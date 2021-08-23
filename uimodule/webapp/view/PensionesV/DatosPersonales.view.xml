@@ -7,7 +7,7 @@
 				<f:formContainers>
 					<f:FormContainer title="" id="__container0">
 						<f:formElements>
-							<f:FormElement label="No. Personal" id="noPersonal_Label">
+							<f:FormElement label="No Personal" id="noPersonal_Label">
 								<f:fields>
 									<Input width="100%" id="noPeronsal_Input"/>
 									<Label width="100%" id="noPeronsal_Input1" text="-" />
