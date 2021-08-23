@@ -1,0 +1,85 @@
+[
+    {
+        "Idapp": "",
+        "Bukrs": "",
+        "Pernr": "00000001",
+        "Iddoc": "121",
+        "Id": "123",
+        "Sec": "",
+        "Ext": "jpg",
+        "Ruta": "HCM/EXPEDIENTES/",
+        "Carpeta": "Contratación",
+        "Archivo": "Archivo1",
+        "Cpo1": "",
+        "Cpo2": "",
+        "Cpo3": "",
+        "Cpo4": "",
+        "Cpo5": "",
+        "Uname": "",
+        "Aedtm": ""
+    },
+    {
+        "Pernr": "00000001",
+        "Iddoc": "122",
+        "Carpeta": "Contratación",
+        "Archivo": "Archivo2"
+    },
+    {
+        "Pernr": "00000001",
+        "Iddoc": "123",
+        "Carpeta": "Gastos Médicos Mayores",
+        "Archivo": "Archivo3"
+    },
+    {
+        "Pernr": "00000001",
+        "Iddoc": "125",
+        "Carpeta": "Contratación",
+        "Archivo": "Archivo5"
+    },
+    {
+        "Pernr": "00000001",
+        "Iddoc": "124",
+        "Carpeta": "Gastos Médicos Mayores",
+        "Archivo": "Archivo4"
+    },
+    {
+        "Idapp": "",
+        "Bukrs": "",
+        "Sec": "",        
+        "Id": "123",
+        "Cpo1": "",
+        "Cpo2": "",
+        "Cpo3": "",
+        "Cpo4": "",
+        "Cpo5": "",
+        "Uname": "",
+        "Aedtm": "",
+        "Uzeit": "",
+        "ETpo": "",
+        "ETmsj": "",
+        "EMsj": "",
+        "Pernr": "00000925",
+        "Iddoc": "124",
+        "Carpeta": "Contrato",
+        "Archivo": "CONTRATO_925",
+        "Ruta": "HCM/EXPEDIENTES"
+    },
+    {
+        "Pernr": "00000925",
+        "Iddoc": "125",
+        "Carpeta": "Acta",
+        "Archivo": "ACTA_925_002",
+        "Ext": "pdf",
+        "Ruta": "HCM/EXPEDIENTES",
+        "Id": "123"
+    },
+    {
+        "Pernr": "00000925",
+        "Iddoc": "126",
+        "Carpeta": "Acta",
+        "Archivo": "ACTA_925_001",
+        "Ext": "pdf",
+        "Ruta": "HCM/EXPEDIENTES",
+        "Id": "123"
+    }
+]

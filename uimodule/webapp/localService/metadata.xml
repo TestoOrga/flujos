@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0"
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZOD_FLUJOS_SRV" xml:lang="es" sap:schema-version="1"
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="Base" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="P1"/>
+                </Key>
+                <Property Name="P9" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P8" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P7" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P6" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P5" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P4" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P3" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P2" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P15" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P14" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P13" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P12" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P11" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P10" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PeTmsj" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Tipo mensaje" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="PeMsj" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Mensaje corto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="P1" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Denominación" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="to_pesal" Relationship="ZOD_FLUJOS_SRV.to_pesal" FromRole="FromRole_to_pesal" ToRole="ToRole_to_pesal"/>
+            </EntityType>
+            <EntityType Name="PeSal" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="C1"/>
+                </Key>
+                <Property Name="C1" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C2" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C3" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C4" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C5" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C6" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C7" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C8" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C9" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C10" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C11" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C12" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C13" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C14" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C15" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C16" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C17" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C18" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C19" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C20" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C21" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C22" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C23" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C24" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C25" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C26" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C27" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C28" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C29" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C30" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C31" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C32" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C33" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C34" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C35" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C36" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C37" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C38" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C39" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C40" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C41" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C42" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C43" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C44" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C45" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C46" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C47" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C48" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C49" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="C50" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Texto" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <Association Name="to_pesal" sap:content-version="1">
+                <End Type="ZOD_FLUJOS_SRV.Base" Multiplicity="*" Role="FromRole_to_pesal"/>
+                <End Type="ZOD_FLUJOS_SRV.PeSal" Multiplicity="*" Role="ToRole_to_pesal"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_to_pesal">
+                        <PropertyRef Name="P1"/>
+                    </Principal>
+                    <Dependent Role="ToRole_to_pesal">
+                        <PropertyRef Name="C1"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="ZOD_FLUJOS_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="BaseSet" EntityType="ZOD_FLUJOS_SRV.Base" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="PeSalSet" EntityType="ZOD_FLUJOS_SRV.PeSal" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <AssociationSet Name="to_pesalSet" Association="ZOD_FLUJOS_SRV.to_pesal" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="BaseSet" Role="FromRole_to_pesal"/>
+                    <End EntitySet="PeSalSet" Role="ToRole_to_pesal"/>
+                </AssociationSet>
+            </EntityContainer>
+            <atom:link rel="self" href="http://svgwdap0.grupobafar.com:8000/sap/opu/odata/sap/ZOD_FLUJOS_SRV/$metadata"
+                xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://svgwdap0.grupobafar.com:8000/sap/opu/odata/sap/ZOD_FLUJOS_SRV/$metadata"
+                xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
