@@ -21,6 +21,33 @@
                     "path": "${workspaceFolder}/webapp/controller"
                 }
             ]
+        },        
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}",
+            "pathMappings": [
+                {
+                    "url": "http://localhost:8080",
+                    "path": "${workspaceFolder}/controller"
+                }
+            ]
+        },
+        {
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "request": "attach",
+            "type": "chrome",
+            "urlFilter": "http://localhost:8080/*",
+            "webRoot": "${workspaceFolder}",
+            "pathMappings": [
+                {
+                    "url": "http://localhost:8080",
+                    "path": "${workspaceFolder}/controller"
+                }
+            ]
         },
         {
             "name": "Start App",
