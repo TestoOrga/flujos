@@ -1,0 +1,50 @@
+<mvc:View controllerName="bafar.flujos.flujos.controller.BaseCa,m"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
+	<!--<Shell id="shell">-->
+	<App id="app">
+		<pages>
+			<Page showHeader="false">
+				<content>
+					<l:BlockLayout background="Default">
+						<l:BlockLayoutRow>
+							<l:BlockLayoutCell>
+								<Image src="{imageModel>/path}/model/banner.png"/>
+							</l:BlockLayoutCell>
+						</l:BlockLayoutRow>
+					</l:BlockLayout>
+					<l:BlockLayout background="Dashboard">
+						<l:BlockLayoutRow>
+							<l:BlockLayoutCell width="4">
+								<core:Icon src="{i18n>ventas}" size="2rem" class="sapUiSmallMargin"/>
+								<Link class="zLinkGrandote" text="{i18n>ConsultaPedidoVenta_TextoEnlace}" press="onNavegarPedidoVenta" wrapping="true" width="80%"/>
+								<FormattedText htmlText="{i18n>ConsultaPedidoVenta_TextoLargo}"/>
+							</l:BlockLayoutCell>
+							<l:BlockLayoutCell width="4">
+								<core:Icon src="{i18n>entregas}" size="2rem" class="sapUiSmallMargin"/>
+								<Link class="zLinkGrandote" text="{i18n>EntregaPediente_TextoEnlace}" press="onNavegarEntregaPendiente" wrapping="true" width="80%"/>
+								<FormattedText htmlText="{i18n>EntregaPediente_TextoLargo}"/>
+							</l:BlockLayoutCell>
+						</l:BlockLayoutRow>
+						<l:BlockLayoutRow>
+							<l:BlockLayoutCell width="4">
+								<core:Icon src="{i18n>facturas}" size="2rem" class="sapUiSmallMargin"/>
+								<Link class="zLinkGrandote" text="{i18n>Factura_TextoEnlace}" press="onNavegarFactura" wrapping="true" width="80%"/>
+								<FormattedText htmlText="{i18n>Factura_TextoLargo}"/>
+							</l:BlockLayoutCell>
+							<l:BlockLayoutCell width="4"></l:BlockLayoutCell>
+						</l:BlockLayoutRow>
+					</l:BlockLayout>
+				</content>
+				<footer>
+					<OverflowToolbar>
+						<ToolbarSpacer/>
+					</OverflowToolbar>
+				</footer>
+			</Page>
+		</pages>
+	</App>
+	<!--</Shell>-->
+</mvc:View>

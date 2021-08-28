@@ -1,15 +1,52 @@
 <mvc:View controllerName="bafar.flujos.flujos.controller.MainView" displayBlock="true"
   xmlns="sap.m"
-  xmlns:mvc="sap.ui.core.mvc">
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:l="sap.ui.layout"
+  xmlns:core="sap.ui.core"
+  xmlns:intelit="bafar.flujos.flujos.control">
   <Shell id="shell">
     <App id="idAppControl">
-        <pages>
-      <!-- 
-          <Page title="{i18n>title}">
-            <content></content>
-          </Page>
-    -->
-    </pages> 
+      <pages>
+        <Page id="_IDGenPage1" showHeader="false">
+          <content>
+            <l:BlockLayout id="_IDGenBlockLayout1" background="Default" keepFontSize="false">
+              <l:BlockLayoutRow id="_IDGenBlockLayoutRow1">
+                <l:BlockLayoutCell id="_IDGenBlockLayoutCell1">
+                  <Image id="_IDGenImage1" src="../model/banner.png"/>
+                </l:BlockLayoutCell>
+              </l:BlockLayoutRow>
+            </l:BlockLayout>
+            <l:BlockLayout id="_IDGenBlockLayout2" background="Dashboard">
+              <l:BlockLayoutRow id="_IDGenBlockLayoutRow2">
+                <intelit:BlockLayoutCellEvent id="_IDGenBlockLayoutCell2" class="dashboardEnabled" width="1" press="onPress">
+                  <HBox id="_IDGenHBox1" justifyContent="Center">
+                    <core:Icon id="_IDGenIcon1" src="{i18n>ventas}" size="2rem" class="sapUiSmallMargin"/>
+                  </HBox>
+                  <Title id="_IDGenTitle1" text="{i18n>ConsultaPedidoVenta_TextoEnlace}" titleStyle="H3"/>
+                  <FormattedText id="_IDGenFormattedText1" htmlText="{i18n>ConsultaPedidoVenta_TextoLargo}"/>
+                </intelit:BlockLayoutCellEvent>
+                <l:BlockLayoutCell id="_IDGenBlockLayoutCell3" class="dashboardDisabled">
+
+                  <core:Icon id="_IDGenIcon2" src="{i18n>entregas}" size="2rem" class="sapUiSmallMargin"/>
+                  <Link id="_IDGenLink2" class="zLinkGrandote" text="{i18n>EntregaPediente_TextoEnlace}" press="onNavegarEntregaPendiente" wrapping="true" width="80%"/>
+                  <FormattedText id="_IDGenFormattedText2" htmlText="{i18n>EntregaPediente_TextoLargo}"/>
+                </l:BlockLayoutCell>
+                <l:BlockLayoutCell id="_IDGenBlockLayoutCell4" class="dashboardEnabled">
+
+                  <core:Icon id="_IDGenIcon3" src="{i18n>facturas}" size="2rem" class="sapUiSmallMargin"/>
+                  <Link id="_IDGenLink3" class="zLinkGrandote" text="{i18n>Factura_TextoEnlace}" press="onNavegarFactura" wrapping="true" width="80%"/>
+                  <FormattedText id="_IDGenFormattedText3" htmlText="{i18n>Factura_TextoLargo}"/>
+                </l:BlockLayoutCell>
+              </l:BlockLayoutRow>
+            </l:BlockLayout>
+          </content>
+          <footer>
+            <OverflowToolbar id="_IDGenOverflowToolbar1">
+              <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+            </OverflowToolbar>
+          </footer>
+        </Page>
+      </pages>
     </App>
   </Shell>
 </mvc:View>

@@ -1,1 +1,12 @@
 /* Enter your custom styles here */
+.dashboardEnabled>.sapUiBlockCellContent:hover {
+    background-color: rgb(136, 172, 187);
+    cursor: pointer;
+}
+.dashboardDisabled>.sapUiBlockCellContent:hover {    
+    cursor: not-allowed;
+}
+.dashboardDisabled>.sapUiBlockCellContent{
+    color: rgb(80, 80, 80);
+    background-color: rgb(187, 187, 187);
+}
