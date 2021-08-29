@@ -10,7 +10,6 @@ sap.ui.define(
 
         return Controller.extend("bafar.flujos.flujos.controller.BaseController", {
             formatter: formatter,
-
             /**
              * Convenience method for getting the view model by name in every controller of the application.
              * @public
@@ -37,7 +36,7 @@ sap.ui.define(
              * @public
              * @returns {sap.ui.model.resource.ResourceModel} the resourceModel of the component
              */
-            getResourceBundle: function () {
+            get18: function () {
                 return this.getOwnerComponent().getModel("i18n").getResourceBundle();
             },
 

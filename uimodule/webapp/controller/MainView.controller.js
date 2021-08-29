@@ -1,15 +1,11 @@
 sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
-	"sap/m/MessageToast"], function (BaseController,
-	MessageToast) {
-    "use strict";
+  "sap/m/MessageToast",
+  "sap/m/MessageBox"
+], function (BaseController, MessageToast, MessageBox) {
+  "use strict";
 
-    return BaseController.extend("bafar.flujos.flujos.controller.MainView", {
-        onInit: function () {
-
-        },
-        onPress: function(){
-            this.navTo("HeaderFlujosView");
-            MessageToast.show("customControl");
-        }
-    });
+  return BaseController.extend("bafar.flujos.flujos.controller.MainView", {
+    onInit: function () {    
+    }
+  });
 });

@@ -10,7 +10,13 @@ sap.ui.define([
 
 		return Controller.extend("bafar.flujos.flujos.controller.PensionesC.DatosPersonales", {
 			onInit: function () {
-
+				console.log();
+			},
+			/**
+			 * @override
+			 */
+			onBeforeRendering: function() {				
+				console.log();
 			},
 			onButAction: function () {
 				MessageToast.show("Datos Personales");

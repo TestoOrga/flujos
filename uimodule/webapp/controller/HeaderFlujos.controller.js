@@ -8,25 +8,73 @@ sap.ui.define(
   function (Controller, JSONModel, XMLView, MessageToast) {
     "use strict";
 
-    return Controller.extend("bafar.flujos.flujos.controller.MainView", {
+    return Controller.extend("bafar.flujos.flujos.controller.HeaderFlujos", {
       onInit: function () {
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.getRoute("RouteHeaderFlujosView").attachPatternMatched((oEvent)=>{
+          console.log("loaded");
+        }, this);
+        // this.mainModel = this.getModel();
+        this.getView().addEventDelegate({
+          onBeforeHide: function (oEvent) {
+            console.log("BeforeHide");
+          },
+
+          onAfterHide: function (oEvent) {
+            console.log("AfterHide");
+          },
+          onDisplay: function (oEvent) {
+            console.log("display");
+          }
+        }, this);
         var oFlujo = new JSONModel({
-          seccion1: this.getResourceBundle().getText(
+          seccion1: this.get18().getText(
             "Pensiones.DatosPersonales.panel"
           ),
-          seccion2: this.getResourceBundle().getText(
+          seccion2: this.get18().getText(
             "Pensiones.Juridico.panel"
           ),
-          seccion3: this.getResourceBundle().getText(
+          seccion3: this.get18().getText(
             "Pensiones.Deudas.panel"
           ),
         });
         this.getView().setModel(oFlujo, "flujo");
+        // var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        // oRouter.getRoute("userDetailRoute").attachPatternMatched(this.onPageLoaded, this);
+
+        // Eventos
+        // var oEventBus = sap.ui.getCore().getEventBus();
+        // oEventBus.subscribe("evento1", "canal1", this.manageDetailInsertBut, this);
+      },
+      /**
+       * @override
+       */
+      onAfterRendering: function (oEvent) {
+
+        console.log("AfterRendering");
+
+      },
+      /**
+       * @override
+       */
+      onBeforeRendering: function (oEvent) {
+
+        console.log("BeforeRendering");
+
+      },
+      /**
+       * @override
+       */
+      onExit: function () {
+        console.log("Exit");
+        this.getView().destroy();
+      },
+      onPageLoaded: function (oEvent) {
+        this.oUserCode = oEvent.getParameter("arguments").code;
       },
       onAddFlow: function (oEvent) {
         console.log("Event Handler: onAddFlow");
-        this.views = [
-          {
+        this.views = [{
             controlId: "headerFlujosInsertPanel1",
             controllerName: "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
             viewId: "PensionesDatosPersonales",
@@ -52,12 +100,14 @@ sap.ui.define(
       onReset: function (oEvent) {
         console.log("Event Handler: onReset");
         var that = this;
-          this.views.forEach((view) =>
-            this.getView().byId(view.viewId).destroy());
+        this.views.forEach((view) =>
+          this.getView().byId(view.viewId).destroy());
       },
       specificFlow: function (controlId, controllerName, viewId, viewName) {
         var oRef = this.getView().byId(controlId);
-        var oController = sap.ui.core.mvc.Controller.create({ name: controllerName });
+        var oController = sap.ui.core.mvc.Controller.create({
+          name: controllerName
+        });
         XMLView.create({
           id: this.createId(viewId),
           viewName: viewName
@@ -78,17 +128,24 @@ sap.ui.define(
         mainModel.create("/BaseSet", oEntityData, {
           async: true,
           success: function (req, res) {
-            console.log({ res });
-            MessageToast.show( res );
+            console.log({
+              res
+            });
+            MessageToast.show(res);
           },
           error: function (error) {
-            console.log({ error });
+            console.log({
+              error
+            });
           }
-        })
+        });
       },
-      onCancelar: function () {        
-      }
+      onCancelar: function () {},
 
+      onBack: function (oEvent) {
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.navTo("RouteAccionView", null);
+      }
 
 
       // addPanel: function (oEvent, param) {
