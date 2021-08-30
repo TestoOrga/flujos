@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/m/MessageToast"
@@ -15,9 +16,12 @@ sap.ui.define([
 			/**
 			 * @override
 			 */
-			onBeforeRendering: function() {				
-				console.log();
+			onBeforeRendering: function() {
+				console.log("beforeRendering");
 			},
+			/**
+			 * @override
+			 */
 			onButAction: function () {
 				MessageToast.show("Datos Personales");
 			}

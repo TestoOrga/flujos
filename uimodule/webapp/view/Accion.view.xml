@@ -5,39 +5,46 @@
 	xmlns:core="sap.ui.core"
 	xmlns:intelit="bafar.flujos.flujos.control"
 	xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-	<Page id="_IDGenPage1">
+	<Page id="_IDGenPage1" showHeader="false">
 		<content>
 			<l:BlockLayout id="_IDGenBlockLayout1">
 				<l:BlockLayoutRow id="_IDGenBlockLayoutRow1">
 					<l:BlockLayoutCell id="_IDGenBlockLayoutCell1" class="banner">
-						<Image id="_IDGenImage1" src="../model/banner.png"/>
+						<Image id="_IDGenImage1" src="{= ${device>/system/phone} ? '../model/bannerMovil.png':'../model/banner3.png' }" />						
+						<!-- <Image id="_IDGenImage1" src="../model/banner.png"/> -->
 					</l:BlockLayoutCell>
 				</l:BlockLayoutRow>
 			</l:BlockLayout>
-			<l:BlockLayout id="_IDGenBlockLayout2" background="Dashboard">
-				<l:BlockLayoutRow id="_IDGenBlockLayoutRow2">
+			<l:BlockLayout id="_IDGenBlockLayout2" background="Dashboard">				
+				<l:BlockLayoutRow id="_IDGenBlockLayoutRow2">				
 					<intelit:BlockLayoutCellEvent id="blockCreacion" class="dashboardDisabled" width="1" press="onPress" cd:enabled="true">
-						<HBox id="_IDGenHBox1" justifyContent="Center">
-							<core:Icon id="_IDGenIcon1" src="{i18n>ventas}" size="2rem" class="sapUiSmallMargin"/>
+						<HBox id="_IDGenHBox1" justifyContent="Center" alignItems="Center">
+							<core:Icon id="_IDGenIcon1" src="{i18n>creacionIcono}" size="2rem" class="sapUiSmallMargin"/>
+							<Title id="_IDGenTitle1" text="{i18n>creacion}" titleStyle="H3"/>
 						</HBox>
-						<Title id="_IDGenTitle1" text="{i18n>ConsultaPedidoVenta_TextoEnlace}" titleStyle="H3"/>
-						<FormattedText id="_IDGenFormattedText1" htmlText="{i18n>ConsultaPedidoVenta_TextoLargo}"/>
+						<!-- <FormattedText id="_IDGenFormattedText1" htmlText="{i18n>ConsultaPedidoVenta_TextoLargo}"/> -->
 					</intelit:BlockLayoutCellEvent>
 					<intelit:BlockLayoutCellEvent id="blockSeguimiento" class="dashboardDisabled" cd:enabled="true">
+						<HBox id="_IDGenHBox2" justifyContent="Center" alignItems="Center">
 
-						<core:Icon id="_IDGenIcon2" src="{i18n>entregas}" size="2rem" class="sapUiSmallMargin"/>
-						<Link id="_IDGenLink2" class="zLinkGrandote" text="{i18n>EntregaPediente_TextoEnlace}" press="onNavegarEntregaPendiente" wrapping="true" width="80%"/>
-						<FormattedText id="_IDGenFormattedText2" htmlText="{i18n>EntregaPediente_TextoLargo}"/>
-					</intelit:BlockLayoutCellEvent>
+							<core:Icon id="_IDGenIcon2" src="{i18n>seguimientoIcono}" size="2rem" class="sapUiSmallMargin"/>
+							<Title id="_IDGenTitle2" text="{i18n>seguimiento}" titleStyle="H3"/>
+						</HBox>
+
+						<!-- <FormattedText id="_IDGenFormattedText2" htmlText="{i18n>EntregaPediente_TextoLargo}"/> -->
+					</intelit:BlockLayoutCellEvent>				
 					<intelit:BlockLayoutCellEvent id="blockAprobacion" class="dashboardDisabled" cd:enabled="true">
+						<HBox id="_IDGenHBox3" justifyContent="Center" alignItems="Center">
 
-						<core:Icon id="_IDGenIcon3" src="{i18n>facturas}" size="2rem" class="sapUiSmallMargin"/>
-						<Link id="_IDGenLink3" class="zLinkGrandote" text="{i18n>Factura_TextoEnlace}" press="onNavegarFactura" wrapping="true" width="80%"/>
-						<FormattedText id="_IDGenFormattedText3" htmlText="{i18n>Factura_TextoLargo}"/>
+							<core:Icon id="_IDGenIcon3" src="{i18n>aprobacionIcono}" size="2rem" class="sapUiSmallMargin"/>
+							<Title id="_IDGenTitle3" text="{i18n>aprobacion}" titleStyle="H3"/>
+						</HBox>
+
+						<!-- <FormattedText id="_IDGenFormattedText3" htmlText="{i18n>Factura_TextoLargo}"/> -->
 					</intelit:BlockLayoutCellEvent>
 				</l:BlockLayoutRow>
 			</l:BlockLayout>
-			<Label text="{BaseSet/P1}">
+			<Label id="_IDGenLabel1" text="{BaseSet/P1}">
 			</Label>
 		</content>
 		<footer>
