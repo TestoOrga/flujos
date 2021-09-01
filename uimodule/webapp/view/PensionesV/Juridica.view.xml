@@ -23,17 +23,17 @@
 					<Label text="Receptor"/>
 					<Input id="name" value="{}"/>
 					<Label text="Cve. Banco"/>
-					<Select maxWidth="30%">
-						<core:Item key="{}" text="{}"/>
+					<Select id="cveBancoSelect" maxWidth="100%" width ="auto" items="{/claveBanco}" change="onSelectClaveBanco" forceSelection="false">
+						<core:Item key="{C2}" text="{C1}"/>
 					</Select>
-					<Input value="{}" fieldWidth="100%"></Input>
+					<Input id="_claveBancoInput" fieldWidth="100%" editable="false"/>
 					<Label text="Cuenta Bancaria"/>
 					<Input value="Cuenta bancaria"/>
 					<Label text="Via Pago"/>
-					<Select maxWidth="30%">
-						<core:Item key="{}" text="{}"/>
+					<Select id="_viaPagoSelect" maxWidth="100%" width ="auto" items="{/viaPago}" change="onSelectViaPago" forceSelection="false">
+						<core:Item key="{C2}" text="{C1}"/>
 					</Select>
-					<Input value="{}" fieldWidth="100%"></Input>					
+					<Input id="_viaPagoInput" fieldWidth="100%" editable="false"/>				
 				</f:content>
 			</f:SimpleForm>
 			<Button id="But" text="Action" press="onButAction($event, 'Juridico')"/>

@@ -48,6 +48,7 @@ sap.ui.define(
         this.views.forEach((view) => {
           this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName);
         });
+         
       },
       onReset: function (oEvent) {
         console.log("Event Handler: onReset");
