@@ -1,8 +1,9 @@
 <mvc:View xmlns:f="sap.f" controllerName="bafar.flujos.flujos.controller.HeaderFlujos"
-	xmlns:dv="com.dudev.ProjectManagement.control"	
+	xmlns:dv="com.dudev.ProjectManagement.control"
 	xmlns:m="sap.m"
 	xmlns:l="sap.ui.layout"
 	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
 	xmlns="sap.uxap">
 	<!-- showNavButton="true" navButtonPress="onBack"-->
 	<m:Page id="headerFlujosMasterPage" showHeader="false" navButtonPress=".onBack">
@@ -20,36 +21,42 @@
 					<f:Avatar id="headerFlujosAvatar" src="sap-icon://combine" displaySize="XL" displayShape="Square" class="sapUiSmallMarginTop sapUiMediumMarginEnd"/>
 				</l:VerticalLayout>
 				<l:VerticalLayout id="headerFlujosVL2" width="auto">
-					<m:Label id="headerFlujosLabelIdFlujo" text="{i18n>HeaderIdFlujo}" labelFor="headerFLujosComboboxIdFlujo" required="true" />
-					<m:ComboBoxTextField id="headerFLujosComboboxIdFlujo" />
 					<m:Label id="headerFlujosLabelDepto" text="{i18n>HeaderDepto}" labelFor="headerFLujosComboboxDepto" required="true" />
-					<m:ComboBoxTextField id="headerFLujosComboboxDepto" />
+					<m:ComboBox id="headerFlujosDepartamento" items="{path: 'departamento>/', sorter: {path: 'departamento>C2' } }" showSecondaryValues="true" selectionChange="onPressDepartamento" class="valHeaderInput">
+						<core:Item key="{departamento>C1}" text="{departamento>C2}"/>
+					</m:ComboBox>
+					<m:Label id="headerFlujosLabelActividad" text="{i18n>HeaderActiv}" labelFor="headerFLujosComboboxActiv" required="true" />
+					<m:ComboBox id="headerFlujosActiv" items="{path: 'actividad>/', sorter: {path: 'actividad>C2' } }" showSecondaryValues="true" selectionChange="onPressActividad" enabled="false" class="valHeaderInput">
+						<core:Item key="{actividad>C1}" text="{actividad>C2}"/>
+					</m:ComboBox>
 				</l:VerticalLayout>
 				<l:VerticalLayout id="headerFlujosVL3" width="auto">
-					<m:Label id="headerFlujosLabelActiv" text="{i18n>HeaderActiv}" labelFor="headerFLujosComboboxActiv" required="true" />
-					<m:ComboBoxTextField id="headerFLujosComboboxActiv" />
 					<m:Label id="headerFlujosLabelProceso" text="{i18n>HeaderProceso}" labelFor="headerFLujosComboboxProceso" required="true" />
-					<m:ComboBoxTextField id="headerFLujosComboboxProceso" />
+					<m:ComboBox id="headerFlujosProceso" items="{path: 'proceso>/', sorter: {path: 'proceso>C2' } }" showSecondaryValues="true" selectionChange="onPressProceso" enabled="false" class="valHeaderInput">
+						<core:Item key="{proceso>C1}" text="{proceso>C2}"/>
+					</m:ComboBox>
+				</l:VerticalLayout>
+				<l:VerticalLayout id="headerFlujosVL4" width="auto">
+					<m:Label id="headerFlujosLabelIdFlujo" text="{i18n>HeaderIdFlujo}" labelFor="headerFLujosComboboxIdFlujo" required="true" />
+					<m:Label id="headerFLujosIdFlujo" text="{i18n>headerFlujosIdPlaceholder}" design="Bold" />
 				</l:VerticalLayout>
 			</headerContent>
 			<sections>
-				<ObjectPageSection id="headerFlujosPageSec1" title="{flujo>/seccion1}">
-					<subSections>
-						<ObjectPageSubSection id="headerFlujosPageSub1Sec1">
-							<blocks>
-								<m:Panel id="headerFlujosInsertPanel1">
-								</m:Panel>
-								<!-- <dv:DVStatus text="{Status}" color="{StatusColor}"/> -->
-							</blocks>
-						</ObjectPageSubSection>
+				<ObjectPageSection id="headerFlujosPageSec1" title="{flujo>/seccion1}" showTitle="false">
+					<!-- <subSections> -->
+					<ObjectPageSubSection id="headerFlujosPageSub1Sec1">
+						<blocks>
+							<m:Panel id="headerFlujosInsertPanel1" class="mypanel sapMPanel sapMPanelContent">
+							</m:Panel>
+							<!-- <dv:DVStatus text="{Status}" color="{StatusColor}"/> -->
+						</blocks>
+						<!-- </ObjectPageSubSection>
 					</subSections>
 				</ObjectPageSection>
 				<ObjectPageSection id="headerFlujosPageSec2" title="{flujo>/seccion2}">
 					<ObjectPageSubSection id="headerFlujosPageSub1Sec2">
 						<blocks>
 							<m:Panel id="headerFlujosInsertPanel2">
-								<!-- <mvc:XMLView id="insertView" /> -->
-								<!-- <mvc:XMLView viewName="bafar.flujos.flujos.view.PensionesV.JuridicaDeudas" /> -->
 							</m:Panel>
 						</blocks>
 					</ObjectPageSubSection>
@@ -59,8 +66,10 @@
 						<blocks>
 							<m:Panel id="headerFlujosInsertPanel3">
 							</m:Panel>
-						</blocks>
+						</blocks> -->
 					</ObjectPageSubSection>
+					<!-- <mvc:XMLView id="insertView" /> -->
+					<!-- <mvc:XMLView viewName="bafar.flujos.flujos.view.PensionesV.JuridicaDeudas" /> -->
 				</ObjectPageSection>
 			</sections>
 			<footer>

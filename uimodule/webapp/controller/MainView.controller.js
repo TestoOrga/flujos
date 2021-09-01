@@ -5,7 +5,6 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
   "use strict";
 
   return BaseController.extend("bafar.flujos.flujos.controller.MainView", {
-    onInit: function () {    
-    }
+    onInit: function () {}
   });
 });

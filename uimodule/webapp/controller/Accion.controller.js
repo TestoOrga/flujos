@@ -17,18 +17,18 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
       this.oUserCode = oEvent.getParameter("arguments").code;
       this.mainModel = this.getView().getModel();
       this.mainModel.setUseBatch(false);
-      var blockRequest = {
-        P2: "",
-        P2: "BLOQUE",
-        p3: "USER"
-      };
-      this.getModelData(blockRequest).then((resData) => {
-        resData.data.to_pesal.forEach(element => {
-          this.enableBlock(this.blockMap[element.C1], element.C2, true);
-        });
-      }).catch((error) => {
-        MessageBox.error(error);
-      });
+      // var blockRequest = {
+      //   P2: "",
+      //   P2: "BLOQUE",
+      //   p3: "USER"
+      // };
+      // this.getModelData(blockRequest).then((resData) => {
+      //   resData.data.to_pesal.forEach(element => {
+      //     this.enableBlock(this.blockMap[element.C1], element.C2, true);
+      //   });
+      // }).catch((error) => {
+      //   MessageBox.error(error);
+      // });
     },
     getModelData: function (oPayLoad) {
       return new Promise((resolve, reject) => {
@@ -48,17 +48,28 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         if (oControl && enable) {
           oControl.removeStyleClass("dashboardDisabled");
           oControl.addStyleClass("dashboardEnabled");
-          oControl.data("enabled", true);
+          oControl.data("enabled", "true");
         } else if (!init) {
-          oControl.data("enabled", false);
+          oControl.data("enabled", "false");
           oControl.removeStyleClass("dashboardEnabled");
           oControl.addStyleClass("dashboardDisabled");
         }
       }
     },
-    onPress: function (oEvent) {
-      if (oEvent.getSource().data("enabled")) {
-        this.navTo("RouteHeaderFlujosView");
+    onPress: function (oEvent, param) {
+      if ( oEvent.getSource().data("enabled") === "true") {
+        switch (param) {
+          case "C":
+            this.navTo("RouteHeaderFlujosView");
+            break;
+          case "S":
+            break;
+          case "A":
+            MessageBox.error(this.get18().getText("sinAutorizacion"));
+            break;
+          default:
+            break;
+        }
       } else {
         MessageBox.error(this.get18().getText("sinAutorizacion"));
       }
