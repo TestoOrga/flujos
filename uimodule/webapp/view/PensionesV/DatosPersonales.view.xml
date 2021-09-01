@@ -1,5 +1,6 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc"
 	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
 	xmlns="sap.m" controllerName="bafar.flujos.flujos.controller.PensionesC.DatosPersonales">
 	<Panel expandable="true" headerText="{i18n>Pensiones.DatosPersonales.panel}" width="auto" class="sapUiResponsiveMargin" expanded="true">
 		<content>
@@ -9,42 +10,42 @@
 						<f:formElements>
 							<f:FormElement label="No Personal" id="noPersonal_Label">
 								<f:fields>
-									<Input width="100%" id="noPeronsal_Input"/>
-									<Label width="100%" id="noPeronsal_Input1" text="-" />
+									<Input width="100%" id="noPeronsal_Input" submit="onEnterInputNoPersonal"/>
+									<Input width="100%" id="noPeronsal_Input1"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Sociedad" id="sociedad_Label">
 								<f:fields>
 									<Input width="100%" id="sociedad_Input"/>
-									<Label width="100%" id="sociedad_Input1" text="-" />
+									<Input width="100%" id="sociedad_Input1"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="División" id="division_Label">
 								<f:fields>
 									<Input width="100%" id="division_Input"/>
-									<Label width="100%" id="division_Input1" text="-" />
+									<Input width="100%" id="division_Input1"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Función" id="funcion_Label">
 								<f:fields>
 									<Input width="100%" id="funcion_Input"/>
-									<Label width="100%" id="funcion_Input1" text="-" />
+									<Input width="100%" id="funcion_Input1"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Área Nómina" id="areaNomina_Label">
 								<f:fields>
-									<Label width="100%" id="areaNomina_Input" text="-" />
+									<Input width="100%" id="areaNomina_Input"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Periodo Retención" id="periodoRet_Label">
 								<f:fields>
 									<Input width="100%" id="periodoRet_Input"/>
-									<Label width="100%" id="periodoRet_Input1" text="-" />
+									<Input width="100%" id="periodoRet_Input1"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Fecha Inicio Ret." id="fechaIniRet_Label">
 								<f:fields>
-									<Label width="100%" id="fechaIniRet_Input" text="-" />
+									<Input width="100%" id="fechaIniRet_Input"/>
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>
