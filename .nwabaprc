@@ -8,5 +8,6 @@
     "abap_package": "ZHR",
     "abap_transport": "GWDK900420",
     "abap_bsp": "Z_FLUJOS",
-    "abap_bsp_text": "Flujos BAFAR - Intelit"
+    "abap_bsp_text": "Flujos BAFAR - Intelit",
+    "calcappindex": "true"    
 }
