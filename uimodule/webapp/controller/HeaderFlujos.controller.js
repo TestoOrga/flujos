@@ -111,13 +111,30 @@ sap.ui.define(
         this.oUserCode = oEvent.getParameter("arguments").code;
       },
       onAddFlow: function (oEvent) {
-        if (this.headerData.proceso !== "") {
+        this.onReset();
+        if (this.headerData.proceso === "001") {
           this.addSpecFlow();
         } else {
           this.addSpecFlow1();
         }
       },
       addSpecFlow1: function () {
+        if (!this.valHeaderInput()) {
+          MessageBox.error(this.get18().getText("createFlowError"));
+          return
+        }
+        var oPayload = {
+          P1: "CAT",
+          P2: "ID",
+          to_pesal: []
+        };
+        this.getCatData(oPayload).then((res) => {
+          if (res.length > 0) {
+            var id = res[0].C1;
+            this.headerData.id = id;
+            this.byId("headerFLujosIdFlujo").setText(id);
+          }
+        });
         console.log("Event Handler: onAddFlow");
         this.views = [{
           controlId: "headerFlujosInsertPanel1",
@@ -203,8 +220,10 @@ sap.ui.define(
       onReset: function (oEvent) {
         console.log("Event Handler: onReset");
         var that = this;
-        this.views.forEach((view) =>
-          this.getView().byId(view.viewId).destroy());
+        if (this.views) {
+          this.views.forEach((view) => this.getView().byId(view.viewId).destroy());
+          delete this.views;
+        }
       },
       specificFlow: function (controlId, controllerName, viewId, viewName) {
         var oRef = this.getView().byId(controlId);
@@ -254,7 +273,9 @@ sap.ui.define(
       createFlow: function () {
         MessageToast.show("Flujo enviado para creacion");
       },
-      onCancelar: function () {},
+      onCancelar: function () {
+        this.onReset();
+      },
 
       onBack: function (oEvent) {
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -289,7 +310,7 @@ sap.ui.define(
           this.headerData.actividad = actividadKey
           var oDataEntry = {
             P1: "CAT",
-            P2: "CAT2",
+            P2: "CAT3",
             P3: this.headerData.departamento,
             P4: oEvent.getSource().getSelectedKey(),
             to_pesal: []
@@ -309,6 +330,8 @@ sap.ui.define(
         if (procesoKey !== "") {
           oEvent.getSource().setValueState("None");
           this.headerData.proceso = procesoKey;
+          this.headerData.titulo = oEvent.getSource().getSelectedItem().getBindingContext("proceso").getObject().C2;
+          this.byId("headerFlujosPageHeader").setObjectTitle(this.headerData.titulo);
         } else {
           oEvent.getSource().setValueState("Error");
         }

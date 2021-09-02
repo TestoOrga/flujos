@@ -14,9 +14,8 @@
 
 	<Panel expandable="true" headerText="{i18n>Pensiones.Deudas.panel}" width="auto" class="sapUiResponsiveMargin" expanded="true">
 		<content>
-			<f:SimpleForm id="SimpleForm1" editable="true" layout="ResponsiveGridLayout" title="Flujo" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
-				<f:content>
-					<core:Title text="Deudas"/>
+			<f:SimpleForm id="SimpleForm1" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
+				<f:content>					
 					<Label text="Tipo Descuento"/>
 					<Select id="_tipoDescuento" maxWidth="100%" width ="auto" items="{/tipoDescuento}" change="onSelectDescuento" forceSelection="false">
 						<core:Item key="{C2}" text="{C1}"/>

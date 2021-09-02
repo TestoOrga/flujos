@@ -9,7 +9,7 @@
 	<m:Page id="headerFlujosMasterPage" showHeader="false" navButtonPress=".onBack">
 		<ObjectPageLayout id="headerFlujosPageLayout" showFooter="true">
 			<headerTitle>
-				<ObjectPageHeader id="headerFlujosPageHeader" objectTitle="{i18n>HeaderTitulo}" objectSubtitle="{i18n>HeaderSubtitulo}" objectImageURI="sap-icon://combine" objectImageShape="Square" isObjectTitleAlwaysVisible="true" isObjectSubtitleAlwaysVisible="true" isActionAreaAlwaysVisible="true">
+				<ObjectPageHeader id="headerFlujosPageHeader" objectTitle="{i18n>HeaderTitulo}" objectSubtitle="{i18n>HeaderSubtitulo}" objectImageURI="sap-icon://combine" objectImageShape="Square" isObjectTitleAlwaysVisible="true" isObjectSubtitleAlwaysVisible="true" isActionAreaAlwaysVisible="true" >
 					<actions>
 						<m:Button id="headerFlujosButReset" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonReset}}" press="onReset" icon="sap-icon://reset" type="Transparent"/>
 						<m:Button id="headerFlujosButNuevo" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonNuevo}}" press="onAddFlow" icon="sap-icon://add" type="Emphasized"/>
@@ -20,7 +20,7 @@
 				<l:VerticalLayout id="headerFlujosVL1" visible="{= ${device>/system/phone} ? false:true}" width="auto">
 					<f:Avatar id="headerFlujosAvatar" src="sap-icon://combine" displaySize="XL" displayShape="Square" class="sapUiSmallMarginTop sapUiMediumMarginEnd"/>
 				</l:VerticalLayout>
-				<l:VerticalLayout id="headerFlujosVL2" width="auto">
+				<l:VerticalLayout id="headerFlujosVL2" width="{= ${device>/system/phone} ? '100%' : auto}" >
 					<m:Label id="headerFlujosLabelDepto" text="{i18n>HeaderDepto}" labelFor="headerFLujosComboboxDepto" required="true" />
 					<!-- items="{path: 'departamento>/', sorter: {path: 'departamento>/C2' } }" -->
 					<m:ComboBox id="headerFlujosDepartamento" items="{departamento>/}" showSecondaryValues="true" selectionChange="onPressDepartamento" class="valHeaderInput">
@@ -31,13 +31,13 @@
 						<core:Item key="{actividad>C1}" text="{actividad>C2}"/>
 					</m:ComboBox>
 				</l:VerticalLayout>
-				<l:VerticalLayout id="headerFlujosVL3" width="auto">
+				<l:VerticalLayout id="headerFlujosVL3" width="{= ${device>/system/phone} ? '100%'   : auto}">
 					<m:Label id="headerFlujosLabelProceso" text="{i18n>HeaderProceso}" labelFor="headerFLujosComboboxProceso" required="true" />
 					<m:ComboBox id="headerFlujosProceso" items="{proceso>/}" showSecondaryValues="true" selectionChange="onPressProceso" enabled="false" class="valHeaderInput">
 						<core:Item key="{proceso>C1}" text="{proceso>C2}"/>
 					</m:ComboBox>
 				</l:VerticalLayout>
-				<l:VerticalLayout id="headerFlujosVL4" width="auto">
+				<l:VerticalLayout id="headerFlujosVL4" width="{= ${device>/system/phone} ? '100%' : auto}">
 					<m:Label id="headerFlujosLabelIdFlujo" text="{i18n>HeaderIdFlujo}" labelFor="headerFLujosComboboxIdFlujo" required="true" />
 					<m:Label id="headerFLujosIdFlujo" text="{i18n>headerFlujosIdPlaceholder}" design="Bold" />
 				</l:VerticalLayout>
