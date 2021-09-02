@@ -1,0 +1,49 @@
+<mvc:View controllerName="bafar.flujos.flujos.controller.Comunes.ArchivosExtra"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:u="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
+    <Panel expandable="true" width="auto" class="sapUiResponsiveMargin" backgroundDesign="Solid" headerText="{i18n>Comunes.archivosExtra}">
+        <content>
+            <Table id="lineItemsList" width="auto" items="{path:'archivos>Seccion_Details/', templateShareable:false}" noDataText="{i18n>detailLineItemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect">
+                <headerToolbar>
+                    <Toolbar >
+                        <Title id="lineItemsTitle" text="{detailView>/lineItemListTitle}" titleStyle="H5" level="H5"/>
+                        <ToolbarSpacer/>
+                        <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownSelection" enabled="false" id="tabInPanelButtDown"/>
+                        <Button icon="sap-icon://add-photo" press="onAddPhoto"/>
+                        <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete" uploadOnChange="true" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" enabled="true" change="handleUploadChange"/>
+                        <Button icon="sap-icon://delete" press="onTabDelete" id="tabInPanelButtDel" enabled="false"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column>
+                        <Text text="{i18n>detailLineItemTableIDColumn}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text=" "/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier title="{archivos>Archivo}" text="{archivos>Iddoc}"/>
+                            <ObjectNumber number="{
+									path: 'Corto',
+									formatter: '.formatter.currencyValue'
+								}"/>
+                            <HBox justifyContent="End" alignContent="Center">
+                                <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownFile"/>
+                                <Button icon="sap-icon://delete" press="onItemDelete"/>
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Panel>
+</mvc:View>

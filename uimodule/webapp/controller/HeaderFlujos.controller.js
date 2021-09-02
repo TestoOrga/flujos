@@ -4,13 +4,23 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/mvc/XMLView",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox",
+    "sap/m/Dialog",
+    "sap/m/DialogType",
+    "sap/m/Button",
+    "sap/m/ButtonType",
+    "sap/m/Text",
   ],
   function (BaseController,
     JSONModel,
     XMLView,
     MessageToast,
-    MessageBox) {
+    MessageBox,
+    Dialog,
+    DialogType,
+    Button,
+    ButtonType,
+    Text) {
     "use strict";
 
     return BaseController.extend("bafar.flujos.flujos.controller.HeaderFlujos", {
@@ -101,10 +111,10 @@ sap.ui.define(
         this.oUserCode = oEvent.getParameter("arguments").code;
       },
       onAddFlow: function (oEvent) {
-        // if (!this.valHeaderInput()) {
-        //   MessageBox.error(this.get18().getText("createFlowError"));
-        //   return
-        // }
+        if (!this.valHeaderInput()) {
+          MessageBox.error(this.get18().getText("createFlowError"));
+          return
+        }
         var oPayload = {
           P1: "CAT",
           P2: "ID",
@@ -135,6 +145,12 @@ sap.ui.define(
             controllerName: "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
             viewId: "PensionesDatosDeudas",
             viewName: "bafar.flujos.flujos.view.PensionesV.Deudas"
+          },
+          {
+            controlId: "headerFlujosInsertPanel1",
+            controllerName: "bafar.flujos.flujos.controller.Comunes.ArchivosExtra",
+            viewId: "ArchivosExtra",
+            viewName: "bafar.flujos.flujos.view.Comunes.ArchivosExtra"
           }
         ];
         var time = 0;
@@ -149,7 +165,7 @@ sap.ui.define(
       },
 
       valHeaderInput: function () {
-        var noOk;
+        var noOk = true;
         $(".valHeaderInput").each((i, e) => {
           var domRef = document.getElementById(e.id);
           var oControl = $(domRef).control()[0];
@@ -180,7 +196,39 @@ sap.ui.define(
         }.bind(this));
       },
       onGrabar: function () {
+        this.onApproveDialogPress();
+      },
+      onApproveDialogPress: function () {
+        if (!this.oApproveDialog) {
+          this.oApproveDialog = new Dialog({
+            type: DialogType.Message,
+            icon: this.get18().getText("submitIcon"),
+            title: this.get18().getText("submitConfirmation"),
+            state: "Warning",
+            content: new Text({
+              text: this.get18().getText("submitConfirmationQuestion")
+            }),
+            beginButton: new Button({
+              type: ButtonType.Emphasized,
+              text: this.get18().getText("submitSend"),
+              press: function () {
+                this.createFlow();
+                this.oApproveDialog.close();
+              }.bind(this)
+            }),
+            endButton: new Button({
+              text: this.get18().getText("submitCancel"),
+              press: function () {
+                this.oApproveDialog.close();
+              }.bind(this)
+            })
+          });
+        }
+        this.oApproveDialog.open();
+      },
 
+      createFlow: function () {
+        MessageToast.show("Flujo enviado para creacion");
       },
       onCancelar: function () {},
 
@@ -191,55 +239,55 @@ sap.ui.define(
 
       onPressDepartamento: function (oEvent) {
         var departamentoKey = oEvent.getSource().getSelectedKey();
-        // if (departamentoKey !== "") {
-        oEvent.getSource().setValueState("None");
-        this.headerData.departamento = departamentoKey;
-        var oDataEntry = {
-          P1: "CAT",
-          P2: "CAT2",
-          P3: oEvent.getSource().getSelectedKey(),
-          to_pesal: []
-        };
-        this.getCatData(oDataEntry).then((res) => {
-          var actividadModel = new JSONModel(res);
-          this.setModel(actividadModel, "actividad");
-        });
-        this.byId("headerFlujosActiv").setEnabled(true);
-        // } else {
-        //   oEvent.getSource().setValueState("Error");
-        // }
+        if (departamentoKey !== "") {
+          oEvent.getSource().setValueState("None");
+          this.headerData.departamento = departamentoKey;
+          var oDataEntry = {
+            P1: "CAT",
+            P2: "CAT2",
+            P3: oEvent.getSource().getSelectedKey(),
+            to_pesal: []
+          };
+          this.getCatData(oDataEntry).then((res) => {
+            var actividadModel = new JSONModel(res);
+            this.setModel(actividadModel, "actividad");
+          });
+          this.byId("headerFlujosActiv").setEnabled(true);
+        } else {
+          oEvent.getSource().setValueState("Error");
+        }
       },
 
       onPressActividad: function (oEvent) {
         var actividadKey = oEvent.getSource().getSelectedKey();
-        // if (departamentoKey !== "") {
-        oEvent.getSource().setValueState("None");
-        this.headerData.actividad = actividadKey
-        var oDataEntry = {
-          P1: "CAT",
-          P2: "CAT2",
-          P3: this.headerData.departamento,
-          P4: oEvent.getSource().getSelectedKey(),
-          to_pesal: []
-        };
-        this.getCatData(oDataEntry).then((res) => {
-          var actividadModel = new JSONModel(res);
-          this.setModel(actividadModel, "proceso");
-        });
-        this.byId("headerFlujosProceso").setEnabled(true);
-        // } else {
-        //   oEvent.getSource().setValueState("Error");
-        // }
+        if (actividadKey !== "") {
+          oEvent.getSource().setValueState("None");
+          this.headerData.actividad = actividadKey
+          var oDataEntry = {
+            P1: "CAT",
+            P2: "CAT2",
+            P3: this.headerData.departamento,
+            P4: oEvent.getSource().getSelectedKey(),
+            to_pesal: []
+          };
+          this.getCatData(oDataEntry).then((res) => {
+            var actividadModel = new JSONModel(res);
+            this.setModel(actividadModel, "proceso");
+          });
+          this.byId("headerFlujosProceso").setEnabled(true);
+        } else {
+          oEvent.getSource().setValueState("Error");
+        }
       },
 
       onPressProceso: function (oEvent) {
         var procesoKey = oEvent.getSource().getSelectedKey();
-        // if (departamentoKey !== "") {
-        oEvent.getSource().setValueState("None");
-        this.headerData.proceso = procesoKey;
-        // } else {
-        //   oEvent.getSource().setValueState("Error");
-        // }
+        if (procesoKey !== "") {
+          oEvent.getSource().setValueState("None");
+          this.headerData.proceso = procesoKey;
+        } else {
+          oEvent.getSource().setValueState("Error");
+        }
       }
     });
   }
