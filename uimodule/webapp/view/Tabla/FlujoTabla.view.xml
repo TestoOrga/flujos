@@ -1,0 +1,81 @@
+<mvc:View controllerName="bafar.flujos.flujos.controller.Tabla.FlujoTabla"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:u="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
+ 
+            <Table id="lineItemsList" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>detailLineItemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect">
+                <columns>
+                    <Column>
+                        <Text text="Item"/>
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="No. Personal"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="Nombre"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="A.N."/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="Fecah Ingreso"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="CC nom."/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="Texto CC"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="Motivo"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="P.Ini"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="A.Ini"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="Fecha Inicio"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="Fecha Fin"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Text text="Importe"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{tablaFlujo>C1}"/>
+                            <Input id="inputNombre"/>
+                            <Text text="{tablaFlujo>C2}"/>
+                            <Text text="{tablaFlujo>C3}"/>
+                            <Text text="{tablaFlujo>C4}"/>
+                            <Input id="inputCCnom"/>
+                            <Text text="{tablaFlujo>C5}"/>
+                            <Input id="inputPagoFaltante"/>
+                            <Input id="inputPini"/>
+                            <Input id="inputAini"/>
+                            <Text text="{tablaFlujo>C6}"/>
+                            <Input id="inputPfin"/>
+                            <Input id="inputAfin"/>
+                            <Text text="{tablaFlujo>C7}"/>
+                            <Input id="inputImporte"/>
+                        </cells>
+                        <dependents>
+                            <ResponsivePopover id="popover" showHeader="true" placement="HorizontalPreferredRight" offsetX="-50%">
+                                <layout:VerticalLayout class="sapUiContentPadding" width="100%">
+                                    <layout:content>
+                                        <Text id="infoPopUpText"></Text>
+                                    </layout:content>
+                                </layout:VerticalLayout>
+                            </ResponsivePopover>
+                        </dependents>
+                    </ColumnListItem>
+                </items>
+            </Table>
+</mvc:View>

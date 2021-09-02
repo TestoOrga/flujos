@@ -111,6 +111,30 @@ sap.ui.define(
         this.oUserCode = oEvent.getParameter("arguments").code;
       },
       onAddFlow: function (oEvent) {
+        if (this.headerData.process === "") {
+          this.addSpecFlow();
+        } else {
+          this.addSpecFlow1();
+        }
+      },
+      addSpecFlow1: function () {
+        console.log("Event Handler: onAddFlow");
+        this.views = [{
+          controlId: "headerFlujosInsertPanel1",
+          controllerName: "bafar.flujos.flujos.controller.Tabla.FlujoTabla",
+          viewId: "flujostabla",
+          viewName: "bafar.flujos.flujos.view.Tabla.FlujoTabla"
+        }];
+        var time = 0;
+        this.views.forEach((view) => {
+          setTimeout(() => {
+            this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName);
+            console.log(view.viewId);
+          }, time);
+          time = time + 1000;
+        });
+      },
+      addSpecFlow: function () {
         if (!this.valHeaderInput()) {
           MessageBox.error(this.get18().getText("createFlowError"));
           return
