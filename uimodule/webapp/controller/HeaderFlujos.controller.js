@@ -111,7 +111,7 @@ sap.ui.define(
         this.oUserCode = oEvent.getParameter("arguments").code;
       },
       onAddFlow: function (oEvent) {
-        if (this.headerData.process === "") {
+        if (this.headerData.proceso !== "") {
           this.addSpecFlow();
         } else {
           this.addSpecFlow1();
