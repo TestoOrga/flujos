@@ -182,7 +182,10 @@ sap.ui.define(
       },
 
       onPressDepartamento: function (oEvent) {
-        this.headerData.departamento = oEvent.getSource().getSelectedKey();
+        var departamentoKey = oEvent.getSource().getSelectedKey();
+        // if (departamentoKey !== "") {
+        oEvent.getSource().setValueState("None");
+        this.headerData.departamento = departamentoKey;
         var oDataEntry = {
           P1: "CAT",
           P2: "CAT2",
@@ -194,10 +197,16 @@ sap.ui.define(
           this.setModel(actividadModel, "actividad");
         });
         this.byId("headerFlujosActiv").setEnabled(true);
+        // } else {
+        //   oEvent.getSource().setValueState("Error");
+        // }
       },
 
       onPressActividad: function (oEvent) {
-        this.headerData.actividad = oEvent.getSource().getSelectedKey();
+        var actividadKey = oEvent.getSource().getSelectedKey();
+        // if (departamentoKey !== "") {
+        oEvent.getSource().setValueState("None");
+        this.headerData.actividad = actividadKey
         var oDataEntry = {
           P1: "CAT",
           P2: "CAT2",
@@ -210,10 +219,19 @@ sap.ui.define(
           this.setModel(actividadModel, "proceso");
         });
         this.byId("headerFlujosProceso").setEnabled(true);
+        // } else {
+        //   oEvent.getSource().setValueState("Error");
+        // }
       },
 
       onPressProceso: function (oEvent) {
-        this.headerData.proceso = oEvent.getSource().getSelectedKey();
+        var procesoKey = oEvent.getSource().getSelectedKey();
+        // if (departamentoKey !== "") {
+        oEvent.getSource().setValueState("None");
+        this.headerData.proceso = procesoKey;
+        // } else {
+        //   oEvent.getSource().setValueState("Error");
+        // }
       }
     });
   }
