@@ -3,43 +3,133 @@ sap.ui.define(
     "bafar/flujos/flujos/controller/BaseController",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/mvc/XMLView",
-    "sap/m/MessageToast"
+    "sap/m/MessageToast",
+    "sap/m/MessageBox"
   ],
-  function (Controller, JSONModel, XMLView, MessageToast) {
+  function (BaseController,
+    JSONModel,
+    XMLView,
+    MessageToast,
+    MessageBox) {
     "use strict";
 
-    return Controller.extend("bafar.flujos.flujos.controller.MainView", {
+    return BaseController.extend("bafar.flujos.flujos.controller.HeaderFlujos", {
       onInit: function () {
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.getRoute("RouteHeaderFlujosView").attachPatternMatched((oEvent) => {
+          console.log("loaded");
+          this.mainModel = this.getModel();
+          this.getCatData(this.getDepartamento()).then((res) => {
+            var depModel = new JSONModel(res);
+            this.setModel(depModel, "departamento");
+            console.log("departamentoLoaded");
+          });
+        }, this);
+        this.headerData = {};
+        this.getView().addEventDelegate({
+          onBeforeHide: function (oEvent) {
+            console.log("BeforeHide");
+          },
+          onAfterHide: function (oEvent) {
+            console.log("AfterHide");
+          },
+          onDisplay: function (oEvent) {
+            console.log("display");
+          }
+        }, this);
         var oFlujo = new JSONModel({
-          seccion1: this.getResourceBundle().getText(
+          seccion1: this.get18().getText(
             "Pensiones.DatosPersonales.panel"
           ),
-          seccion2: this.getResourceBundle().getText(
+          seccion2: this.get18().getText(
             "Pensiones.Juridico.panel"
           ),
-          seccion3: this.getResourceBundle().getText(
+          seccion3: this.get18().getText(
             "Pensiones.Deudas.panel"
           ),
         });
         this.getView().setModel(oFlujo, "flujo");
       },
+
+      getDepartamento: function () {
+        var oEntityData = {
+          P1: "CAT",
+          P2: "CAT1",
+          to_pesal: []
+        };
+        return oEntityData;
+      },
+      getCatData: function (oPayload) {
+        var that = this;
+        return new Promise((resolve, reject) => {
+          this.mainModel.create("/BaseSet", oPayload, {
+            async: true,
+            success: function (req, res) {
+              resolve(res);
+            },
+            error: function (error) {
+              reject(error);
+            }
+          });
+        })
+      },
+      /**
+       * @override
+       */
+      onAfterRendering: function (oEvent) {
+
+        console.log("AfterRendering");
+
+      },
+      /**
+       * @override
+       */
+      onBeforeRendering: function (oEvent) {
+
+        console.log("BeforeRendering");
+
+      },
+      /**          this.mainModel = this.getModel();
+
+       * @override
+       */
+      onExit: function () {
+        console.log("Exit");
+        this.getView().destroy();
+      },
+      onPageLoaded: function (oEvent) {
+        this.oUserCode = oEvent.getParameter("arguments").code;
+      },
       onAddFlow: function (oEvent) {
+        if (!this.valHeaderInput()) {
+          MessageBox.error(this.get18().getText("createFlowError"));
+          return
+        }
+        var oPayload = {
+          P1: "CAT",
+          P2: "ID",
+          to_pesal: []
+        };
+        this.getCatData(oPayload).then((res) => {
+          var id = res;
+          this.headerData.id = id;
+          this.byId("headerFLujosIdFlujo").setText(id);
+        });
         console.log("Event Handler: onAddFlow");
-        this.views = [
-          {
+        this.views = [{
             controlId: "headerFlujosInsertPanel1",
             controllerName: "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
             viewId: "PensionesDatosPersonales",
             viewName: "bafar.flujos.flujos.view.PensionesV.DatosPersonales"
           },
           {
-            controlId: "headerFlujosInsertPanel2",
+            controlId: "headerFlujosInsertPanel1",
             controllerName: "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
             viewId: "PensionesDatosJuridica",
             viewName: "bafar.flujos.flujos.view.PensionesV.Juridica"
           },
           {
-            controlId: "headerFlujosInsertPanel3",
+            controlId: "headerFlujosInsertPanel1",
             controllerName: "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
             viewId: "PensionesDatosDeudas",
             viewName: "bafar.flujos.flujos.view.PensionesV.Deudas"
@@ -50,93 +140,100 @@ sap.ui.define(
         });
          
       },
+
+      valHeaderInput: function () {
+        var noOk;
+        $(".valHeaderInput").each((i, e) => {
+          var domRef = document.getElementById(e.id);
+          var oControl = $(domRef).control()[0];
+          if (oControl.getValue() === "") {
+            oControl.setValueState("Error");
+            noOk = false;
+          };
+        });
+        return noOk;
+      },
       onReset: function (oEvent) {
         console.log("Event Handler: onReset");
         var that = this;
-          this.views.forEach((view) =>
-            this.getView().byId(view.viewId).destroy());
+        this.views.forEach((view) =>
+          this.getView().byId(view.viewId).destroy());
       },
       specificFlow: function (controlId, controllerName, viewId, viewName) {
         var oRef = this.getView().byId(controlId);
-        var oController = sap.ui.core.mvc.Controller.create({ name: controllerName });
+        var oController = sap.ui.core.mvc.Controller.create({
+          name: controllerName
+        });
         XMLView.create({
           id: this.createId(viewId),
           viewName: viewName
         }).then(function (oView) {
           // the instance is available in the callback function
-          oView.placeAt(oRef);
+          oView.placeAt(oRef).addStyleClass("FlexContent");
         }.bind(this));
       },
       onGrabar: function () {
-        this.getView().byId("headerFlujosPageSec3").setVisible(true);
-        var mainModel = this.getModel();
-        var oEntityData = {
+
+      },
+      onCancelar: function () {},
+
+      onBack: function (oEvent) {
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.navTo("RouteAccionView", null);
+      },
+
+      onPressDepartamento: function (oEvent) {
+        var departamentoKey = oEvent.getSource().getSelectedKey();
+        // if (departamentoKey !== "") {
+        oEvent.getSource().setValueState("None");
+        this.headerData.departamento = departamentoKey;
+        var oDataEntry = {
           P1: "CAT",
-          P2: "BUKRS",
-          // P2: "PERNR",
+          P2: "CAT2",
+          P3: oEvent.getSource().getSelectedKey(),
           to_pesal: []
         };
-        mainModel.create("/BaseSet", oEntityData, {
-          async: true,
-          success: function (req, res) {
-            console.log({ res });
-            MessageToast.show( res );
-          },
-          error: function (error) {
-            console.log({ error });
-          }
-        })
+        this.getCatData(oDataEntry).then((res) => {
+          var actividadModel = new JSONModel(res);
+          this.setModel(actividadModel, "actividad");
+        });
+        this.byId("headerFlujosActiv").setEnabled(true);
+        // } else {
+        //   oEvent.getSource().setValueState("Error");
+        // }
       },
-      onCancelar: function () {        
+
+      onPressActividad: function (oEvent) {
+        var actividadKey = oEvent.getSource().getSelectedKey();
+        // if (departamentoKey !== "") {
+        oEvent.getSource().setValueState("None");
+        this.headerData.actividad = actividadKey
+        var oDataEntry = {
+          P1: "CAT",
+          P2: "CAT2",
+          P3: this.headerData.departamento,
+          P4: oEvent.getSource().getSelectedKey(),
+          to_pesal: []
+        };
+        this.getCatData(oDataEntry).then((res) => {
+          var actividadModel = new JSONModel(res);
+          this.setModel(actividadModel, "proceso");
+        });
+        this.byId("headerFlujosProceso").setEnabled(true);
+        // } else {
+        //   oEvent.getSource().setValueState("Error");
+        // }
+      },
+
+      onPressProceso: function (oEvent) {
+        var procesoKey = oEvent.getSource().getSelectedKey();
+        // if (departamentoKey !== "") {
+        oEvent.getSource().setValueState("None");
+        this.headerData.proceso = procesoKey;
+        // } else {
+        //   oEvent.getSource().setValueState("Error");
+        // }
       }
-
-
-
-      // addPanel: function (oEvent, param) {
-      //   switch (param) {
-      //     case "1":
-      //       var oRef = this.getView().byId("headerFlujosInsertPanel2");
-      //       var oController = sap.ui.core.mvc.Controller.create({ name: "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas" });
-      //       XMLView.create({
-      //         id: this.createId("myView"),
-      //         viewName: "bafar.flujos.flujos.view.PensionesV.JuridicaDeudas"
-      //       }).then(function (oView) {
-      //         // the instance is available in the callback function
-      //         oView.placeAt(oRef);
-      //       }.bind(this));
-      //       break;
-      //     default:
-      //       var oRef = this.getView().byId("headerFlujosInsertPanel2");
-      //       var oController = sap.ui.core.mvc.Controller.create({ name: "bafar.flujos.flujos.controller.PensionesC.DatosPersonales" });
-      //       XMLView.create({
-      //         id: this.createId("myView1"),
-      //         viewName: "bafar.flujos.flujos.view.PensionesV.DatosPersonales"
-      //       }).then(function (oView) {
-      //         // the instance is available in the callback function
-      //         oView.placeAt(oRef);
-      //       }.bind(this));
-      //     // this.myView1 = new sap.ui.xmlview({
-      //     //   id: "myView1",
-      //     //   viewName: "bafar.flujos.flujos.view.PensionesV.DatosPersonales"
-      //     // });
-      //     // var oRef = this.getView().byId("headerFlujosInsertPanel2");
-      //     // this.myView1.placeAt(oRef);
-      //     // break;
-      //   }
-
-      // },
-      // delPanel: function (oEvent, param) {
-      //   switch (param) {
-      //     case "1":
-      //       this.getView().byId("myView").destroy();
-      //       // this.myView.destroy();
-      //       break;
-
-      //     default:
-      //       this.getView().byId("myView1").destroy();
-      //       break;
-      //   }
-      // }
     });
   }
 );

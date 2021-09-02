@@ -1,1 +1,31 @@
 /* Enter your custom styles here */
+.dashboardEnabled>.sapUiBlockCellContent:hover {
+    background-color: rgb(136, 172, 187);
+    cursor: pointer;
+}
+.dashboardDisabled>.sapUiBlockCellContent:hover {    
+    cursor: not-allowed;
+}
+.dashboardDisabled>.sapUiBlockCellContent{
+    color: rgb(80, 80, 80) !important;
+    background-color: rgb(187, 187, 187) !important;
+}
+.banner>.sapUiBlockCellContent{
+    padding-left: 0px !important;    
+}
+.FlexContent {
+    background-color:white;
+    box-shadow: 2px 2px 8px #d1d1d1; 
+    border-radius: .20rem;    
+}
+.FlexContentList {    
+    border-radius: 0.2rem;    
+}
+.mypanel.sapMPanel {       
+    padding: 0.5rem 0rem 0.5rem !important ;
+    min-height: 0rem;          
+}
+.sapMPanelContent {
+    padding: 0rem 1rem 0rem !important;
+    border-bottom: 0!important;
+}

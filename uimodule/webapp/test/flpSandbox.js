@@ -39,8 +39,8 @@ sap.ui.define([
 							"tiles": [{
 								"tileType": "sap.ushell.ui.tile.StaticTile",
 								"properties": {
-									"title": "Expedientes BAFAR",
-									"targetURL": "#ExpedientesBAFAR-display"
+									"title": "Flujos BAFAR",
+									"targetURL": "#FlujosBAFAR-display"
 								}
 							}]
 						}]
@@ -51,18 +51,18 @@ sap.ui.define([
 				"adapter": {
 					"config": {
 						"inbounds": {
-							"ExpedientesBAFAR-display": {
-								"semanticObject": "ExpedientesBAFAR",
+							"FlujosBAFAR-display": {
+								"semanticObject": "FlujosBAFAR",
 								"action": "display",
 								"description": "A Fiori application.",
-								"title": "Expedientes BAFAR",
+								"title": "Flujos BAFAR",
 								"signature": {
 									"parameters": {}
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
 									"additionalInformation": "SAPUI5.Component=bf.exp.bafarexp",
-									"url": sap.ui.require.toUrl("bf/exp/bafarexp")
+									"url": sap.ui.require.toUrl("bafar/flujos/flujos")
 								}
 							}
 						}

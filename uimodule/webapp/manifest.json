@@ -93,8 +93,15 @@
           ]
         },
         {
-          "name": "HeaderFlujosView",
+          "name": "RouteAccionView",
           "pattern": "",
+          "target": [
+            "TargetAccion"
+          ]
+        },
+        {
+          "name": "RouteHeaderFlujosView",
+          "pattern": "creacion",
           "target": [
             "TargetHeaderFlujos"
           ]
@@ -112,6 +119,14 @@
           "viewType": "XML",
           "viewLevel": 1,
           "viewName": "HeaderFlujos",
+          "clearControlAggregation": false,
+          "transition": "slide"
+        },
+        "TargetAccion": {
+          "viewType": "XML",
+          "viewLevel": 1,
+          "viewName": "Accion",
+          "clearControlAggregation": false,
           "transition": "slide"
         }
       }

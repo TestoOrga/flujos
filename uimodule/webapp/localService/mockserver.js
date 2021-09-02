@@ -39,9 +39,9 @@ sap.ui.define(
                 _sAppPath + oMainDataSource.settings.localUri
               ),
               // ensure there is a trailing slash
-              sMockServerUrl = /.*\/$/.test(oMainDataSource.uri)
-                ? oMainDataSource.uri
-                : oMainDataSource.uri + "/";
+              sMockServerUrl = /.*\/$/.test(oMainDataSource.uri) ?
+              oMainDataSource.uri :
+              oMainDataSource.uri + "/";
             // ensure the URL to be relative to the application
             // sMockServerUrl = sMockServerUrl && new URI(sMockServerUrl).absoluteTo(sap.ui.require.toUrl(_sAppPath)).toString();
 
@@ -57,8 +57,7 @@ sap.ui.define(
             // configure mock server with the given options or a default delay of 0.5s
             MockServer.config({
               autoRespond: true,
-              autoRespondAfter:
-                oOptions.delay || oUriParameters.get("serverDelay") || 500,
+              autoRespondAfter: oOptions.delay || oUriParameters.get("serverDelay") || 500,
             });
 
             // simulate all requests using mock data
@@ -73,8 +72,9 @@ sap.ui.define(
             var fnResponse = function (iErrCode, sMessage, aRequest) {
               aRequest.response = function (oXhr) {
                 oXhr.respond(
-                  iErrCode,
-                  { "Content-Type": "text/plain;charset=utf-8" },
+                  iErrCode, {
+                    "Content-Type": "text/plain;charset=utf-8"
+                  },
                   sMessage
                 );
               };
@@ -91,7 +91,7 @@ sap.ui.define(
 
             // simulate request errors
             var sErrorParam =
-                oOptions.errorType || oUriParameters.get("errorType"),
+              oOptions.errorType || oUriParameters.get("errorType"),
               iErrorCode = sErrorParam === "badRequest" ? 400 : 500;
             if (sErrorParam) {
               aRequests.forEach(function (aEntry) {
@@ -110,9 +110,23 @@ sap.ui.define(
               sap.ui.core.util.MockServer.HTTPMETHOD.POST,
               function (oCall) {
                 switch (oCall.mParameters.oEntity.P2) {
-                  case "BUKRS":
-                    oCall.mParameters.oEntity.to_pesal = [
+                  case "BLOQUE":
+                    oCall.mParameters.oEntity.to_pesal = [{
+                        C1: "creacion",
+                        C2: true,
+                      },
                       {
+                        C1: "seguimiento",
+                        C2: true
+                      },
+                      {
+                        C1: "aprobacion",
+                        C2: false
+                      }
+                    ];
+                    break;
+                  case "BUKRS":
+                    oCall.mParameters.oEntity.to_pesal = [{
                         C1: "a",
                         C2: "1",
                         C3: "2",
@@ -139,22 +153,6 @@ sap.ui.define(
                         C18: "",
                         C19: "",
                         C20: "",
-                        C21: "",
-                        C22: "",
-                        C23: "",
-                        C24: "",
-                        C25: "",
-                        C26: "",
-                        C27: "",
-                        C28: "",
-                        C29: "",
-                        C30: "",
-                        C31: "",
-                        C32: "",
-                        C33: "",
-                        C34: "",
-                        C35: "",
-                        C36: "",
                         C37: "",
                         C38: "",
                         C39: "",
@@ -168,15 +166,14 @@ sap.ui.define(
                         C47: "",
                         C48: "",
                         C49: "",
-                        C50: "",
+                        C50: ""
                       },
                     ];
 
                     break;
 
                   default:
-                    oCall.mParameters.oEntity.to_pesal = [
-                      {
+                    oCall.mParameters.oEntity.to_pesal = [{
                         C1: "XXX",
                         C2: "1",
                         C3: "2",

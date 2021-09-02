@@ -13,6 +13,10 @@
             "webRoot": "${workspaceRoot}",
             "pathMappings": [
                 {
+                    "url": "http://localhost:8080/controller",
+                    "path": "${workspaceFolder}/uimodule/webapp/controller"
+                },
+                {
                     "url": "http://localhost:8080",
                     "path": "${workspaceFolder}/uimodule/webapp"
                 },
@@ -21,7 +25,7 @@
                     "path": "${workspaceFolder}/webapp/controller"
                 }
             ]
-        },        
+        },
         {
             "name": "Launch Chrome",
             "request": "launch",
