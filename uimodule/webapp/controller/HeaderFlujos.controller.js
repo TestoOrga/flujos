@@ -101,10 +101,10 @@ sap.ui.define(
         this.oUserCode = oEvent.getParameter("arguments").code;
       },
       onAddFlow: function (oEvent) {
-        if (!this.valHeaderInput()) {
-          MessageBox.error(this.get18().getText("createFlowError"));
-          return
-        }
+        // if (!this.valHeaderInput()) {
+        //   MessageBox.error(this.get18().getText("createFlowError"));
+        //   return
+        // }
         var oPayload = {
           P1: "CAT",
           P2: "ID",
