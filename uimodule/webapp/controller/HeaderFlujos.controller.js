@@ -65,7 +65,7 @@ sap.ui.define(
           this.mainModel.create("/BaseSet", oPayload, {
             async: true,
             success: function (req, res) {
-              resolve(res);
+              resolve(res.data.to_pesal.results);
             },
             error: function (error) {
               reject(error);
@@ -111,9 +111,11 @@ sap.ui.define(
           to_pesal: []
         };
         this.getCatData(oPayload).then((res) => {
-          var id = res;
-          this.headerData.id = id;
-          this.byId("headerFLujosIdFlujo").setText(id);
+          if (res.length > 0) {
+            var id = res[0].C1;
+            this.headerData.id = id;
+            this.byId("headerFLujosIdFlujo").setText(id);
+          }
         });
         console.log("Event Handler: onAddFlow");
         this.views = [{
@@ -135,10 +137,15 @@ sap.ui.define(
             viewName: "bafar.flujos.flujos.view.PensionesV.Deudas"
           }
         ];
+        var time = 0;
         this.views.forEach((view) => {
-          this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName);
+          setTimeout(() => {
+            this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName);
+            console.log(view.viewId);
+          }, time);
+          time = time + 1000;
         });
-         
+
       },
 
       valHeaderInput: function () {
@@ -169,7 +176,7 @@ sap.ui.define(
           viewName: viewName
         }).then(function (oView) {
           // the instance is available in the callback function
-          oView.placeAt(oRef).addStyleClass("FlexContent");
+          oView.placeAt(oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
         }.bind(this));
       },
       onGrabar: function () {

@@ -13,19 +13,34 @@
 .banner>.sapUiBlockCellContent{
     padding-left: 0px !important;    
 }
+/* Panel: main class  */
 .FlexContent {
     background-color:white;
     box-shadow: 2px 2px 8px #d1d1d1; 
-    border-radius: .20rem;    
+    border-radius: .20rem;   
+    min-height: 0rem !important; 
+    border-bottom: 0!important;    
 }
-.FlexContentList {    
+/* Panel: corners */
+.headerPanel .FlexContentList {    
     border-radius: 0.2rem;    
 }
-.mypanel.sapMPanel {       
-    padding: 0.5rem 0rem 0.5rem !important ;
-    min-height: 0rem;          
+/* Panel: remove line under title */
+.headerPanel .sapMPanelWrappingDiv{
+    border-bottom: transparent !important;
 }
-.sapMPanelContent {
-    padding: 0rem 1rem 0rem !important;
-    border-bottom: 0!important;
+/* Panel: control width of panel */
+.headerPanelBlock.sapMPanel {       
+    padding: 0.5rem 0rem 0.5rem !important ;
+    min-height: 0rem;              
+}
+/* Panel: especific margin */
+.headerPanel .myPanelMargin{
+    margin-top: 0 !important;
+    margin-bottom: 0 !important; 
+}
+
+/* All Panels: no margin */
+.sapMPanelContent{
+    border-color: transparent !important;
 }

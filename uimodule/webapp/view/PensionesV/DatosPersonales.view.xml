@@ -2,7 +2,7 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:core="sap.ui.core"
 	xmlns="sap.m" controllerName="bafar.flujos.flujos.controller.PensionesC.DatosPersonales">
-	<Panel expandable="true" headerText="{i18n>Pensiones.DatosPersonales.panel}" width="auto" expanded="false">
+	<Panel expandable="true" headerText="{i18n>Pensiones.DatosPersonales.panel}" width="auto" expanded="true" class="sapUiResponsiveMargin myPanelMargin">
 		<content>
 			<f:Form editable="true" id="__form0">
 				<f:formContainers>

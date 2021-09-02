@@ -22,17 +22,18 @@
 				</l:VerticalLayout>
 				<l:VerticalLayout id="headerFlujosVL2" width="auto">
 					<m:Label id="headerFlujosLabelDepto" text="{i18n>HeaderDepto}" labelFor="headerFLujosComboboxDepto" required="true" />
-					<m:ComboBox id="headerFlujosDepartamento" items="{path: 'departamento>/', sorter: {path: 'departamento>C2' } }" showSecondaryValues="true" selectionChange="onPressDepartamento" class="valHeaderInput">
+					<!-- items="{path: 'departamento>/', sorter: {path: 'departamento>/C2' } }" -->
+					<m:ComboBox id="headerFlujosDepartamento" items="{departamento>/}" showSecondaryValues="true" selectionChange="onPressDepartamento" class="valHeaderInput">
 						<core:Item key="{departamento>C1}" text="{departamento>C2}"/>
 					</m:ComboBox>
 					<m:Label id="headerFlujosLabelActividad" text="{i18n>HeaderActiv}" labelFor="headerFLujosComboboxActiv" required="true" />
-					<m:ComboBox id="headerFlujosActiv" items="{path: 'actividad>/', sorter: {path: 'actividad>C2' } }" showSecondaryValues="true" selectionChange="onPressActividad" enabled="false" class="valHeaderInput">
+					<m:ComboBox id="headerFlujosActiv" items="{actividad>/}" showSecondaryValues="true" selectionChange="onPressActividad" enabled="false" class="valHeaderInput">
 						<core:Item key="{actividad>C1}" text="{actividad>C2}"/>
 					</m:ComboBox>
 				</l:VerticalLayout>
 				<l:VerticalLayout id="headerFlujosVL3" width="auto">
 					<m:Label id="headerFlujosLabelProceso" text="{i18n>HeaderProceso}" labelFor="headerFLujosComboboxProceso" required="true" />
-					<m:ComboBox id="headerFlujosProceso" items="{path: 'proceso>/', sorter: {path: 'proceso>C2' } }" showSecondaryValues="true" selectionChange="onPressProceso" enabled="false" class="valHeaderInput">
+					<m:ComboBox id="headerFlujosProceso" items="{proceso>/}" showSecondaryValues="true" selectionChange="onPressProceso" enabled="false" class="valHeaderInput">
 						<core:Item key="{proceso>C1}" text="{proceso>C2}"/>
 					</m:ComboBox>
 				</l:VerticalLayout>
@@ -46,7 +47,12 @@
 					<!-- <subSections> -->
 					<ObjectPageSubSection id="headerFlujosPageSub1Sec1">
 						<blocks>
-							<m:Panel id="headerFlujosInsertPanel1" class="mypanel sapMPanel sapMPanelContent">
+							<!-- <m:List headerText="Products" items="{
+			path: 'departamento>/'
+		}">
+								<m:StandardListItem title="{departamento>C1}" counter="{departamento>C2}"/>
+							</m:List> -->
+							<m:Panel id="headerFlujosInsertPanel1" class="headerPanelBlock">
 							</m:Panel>
 							<!-- <dv:DVStatus text="{Status}" color="{StatusColor}"/> -->
 						</blocks>
