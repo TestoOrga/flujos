@@ -1,48 +1,82 @@
 /* Enter your custom styles here */
-.dashboardEnabled>.sapUiBlockCellContent:hover {
-    background-color: rgb(136, 172, 187);
-    cursor: pointer;
+
+/* variables */
+:root {
+  --Negative: #bb0000;
+  --Positive: #2b7d2b;
+  --Positive1: #2b7d2bcc;
+  --Blank: #ffffff;
 }
-.dashboardDisabled>.sapUiBlockCellContent:hover {    
-    cursor: not-allowed;
+
+.dashboardEnabled > .sapUiBlockCellContent:hover {
+  background-color: rgb(136, 172, 187);
+  cursor: pointer;
 }
-.dashboardDisabled>.sapUiBlockCellContent{
-    color: rgb(80, 80, 80) !important;
-    background-color: rgb(187, 187, 187) !important;
+.dashboardDisabled > .sapUiBlockCellContent:hover {
+  cursor: not-allowed;
 }
-.banner>.sapUiBlockCellContent{
-    padding-left: 0px !important;    
+.dashboardDisabled > .sapUiBlockCellContent {
+  color: rgb(80, 80, 80) !important;
+  background-color: rgb(187, 187, 187) !important;
+}
+.banner > .sapUiBlockCellContent {
+  padding-left: 0px !important;
 }
 /* Panel: main class  */
 .FlexContent {
-    background-color:white;
-    box-shadow: 2px 2px 8px #d1d1d1; 
-    border-radius: .20rem;   
-    min-height: 0rem !important; 
-    border-bottom: 0!important;    
+  background-color: white;
+  box-shadow: 2px 2px 8px #d1d1d1;
+  border-radius: 0.2rem;
+  min-height: 0rem !important;
+  border-bottom: 0 !important;
 }
 /* Panel: corners */
-.headerPanel .FlexContentList {    
-    border-radius: 0.2rem;    
+.headerPanel .FlexContentList {
+  border-radius: 0.2rem;
 }
 /* Panel: remove line under title */
-.headerPanel .sapMPanelWrappingDiv{
-    border-bottom: transparent !important;
+.headerPanel .sapMPanelWrappingDiv {
+  border-bottom: transparent !important;
 }
 /* Panel: control width of panel */
-.headerPanelBlock.sapMPanel {       
-    padding: 0rem !important ;
-    min-height: 0rem;              
+.headerPanelBlock.sapMPanel {
+  padding: 0rem !important ;
+  min-height: 0rem;
 }
 /* Panel: especific margin */
-.headerPanel .myPanelMargin{
-    margin-top: 0 !important;
-    margin-bottom: 0 !important; 
+.headerPanel .myPanelMargin {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 /* All Panels: no margin */
-.sapMPanelContent{
-    border-color: transparent !important;
-    padding-left: 0.2rem!important;
-    padding-right: 0.2rem!important;
+.sapMPanelContent {
+  border-color: transparent !important;
+  padding-left: 0.2rem !important;
+  padding-right: 0.2rem !important;
 }
+.sapMListTblSelCol .sapMCb.sapMLIBSelectM {
+  margin-left: 5px;
+}
+@media (min-width: 600px) {
+  .lineItemSucc .sapMListTblSelCol .sapMCb.sapMLIBSelectM {
+    border-left-width: 5px;
+    margin-left: 0px;
+    border-left-style: solid;
+    border-left-color: var(--Positive);
+    border-radius: 2px;
+  }
+  .lineItemError .sapMListTblSelCol .sapMCb.sapMLIBSelectM {
+    border-left-width: 5px;
+    margin-left: 0px;
+    border-left-style: solid;
+    border-left-color: var(--Negative);
+    border-radius: 2px;
+  }
+}
+/* .sapMListTblSelCol .sapMCb.sapMLIBSelectM{       
+    border-left-width: 5px;
+    margin-left: 0px;
+    border-left-style: solid;
+    border-left-color:white;
+} */
