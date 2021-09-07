@@ -119,10 +119,10 @@ sap.ui.define(
         }
       },
       addSpecFlow1: function () {
-        if (!this.valHeaderInput()) {
-          MessageBox.error(this.get18().getText("createFlowError"));
-          return
-        }
+        // if (!this.valHeaderInput()) {
+        //   MessageBox.error(this.get18().getText("createFlowError"));
+        //   return
+        // }
         var oPayload = {
           P1: "CAT",
           P2: "ID",

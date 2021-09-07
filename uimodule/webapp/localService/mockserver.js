@@ -111,7 +111,9 @@ sap.ui.define(
               function (oCall) {
                 switch (oCall.mParameters.oEntity.P2) {
                   case "BLOQUE":
-                    oCall.mParameters.oEntity.to_pesal = [{
+                    oCall.mParameters.oEntity.to_pesal = {};
+                    oCall.mParameters.oEntity.to_pesal.results 
+                     = [{
                         C1: "creacion",
                         C2: true,
                       },
@@ -126,7 +128,8 @@ sap.ui.define(
                     ];
                     break;
                   case "BUKRS":
-                    oCall.mParameters.oEntity.to_pesal = [{
+                    oCall.mParameters.oEntity.to_pesal = {};
+                    oCall.mParameters.oEntity.to_pesal.results  = [{
                         C1: "a",
                         C2: "1",
                         C3: "2",
@@ -173,7 +176,8 @@ sap.ui.define(
                     break;
 
                   default:
-                    oCall.mParameters.oEntity.to_pesal = [{
+                    oCall.mParameters.oEntity.to_pesal = {};
+                    oCall.mParameters.oEntity.to_pesal.results  = [{
                         C1: "XXX",
                         C2: "1",
                         C3: "2",

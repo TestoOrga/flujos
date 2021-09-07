@@ -1,4 +1,4 @@
-<mvc:View controllerName="bafar.flujos.flujos.controller.Tabla.FlujoTabla"
+<mvc:View xmlns:table="sap.ui.table" controllerName="bafar.flujos.flujos.controller.Tabla.FlujoTabla"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:c="sap.ui.core"
@@ -9,98 +9,115 @@
         <content>
             <Title id="listTitle" text="{i18n>totalPosiciones}" class="sapUiSmallMarginBegin" titleStyle="H4"/>
             <ToolbarSpacer id="space1"/>
-            <layout:HorizontalLayout
-                allowWrapping="false"
-            >
+            <layout:HorizontalLayout allowWrapping="false">
                 <layout:content>
-            <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
-                    
-            <!-- <HBox alignItems="Center"> -->
-                <unified:FileUploader id="Add1" iconOnly="true" buttonOnly="true" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSX}" uploadComplete="onHandleUploadComplete" uploadOnChange="true" enabled="true" fileType="xlsx" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" />
-                <!-- <Button id="Add2" text="{= ${device>/system/phone}?'':${i18n>XLSX}}" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSX}"/> -->
-                <Button id="Down1" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate"  type="Transparent"/>
-                <!-- <Input id="rowIn" width="54px" placeholder="Filas" change="onFilasChange"></Input> -->
-                <!-- <ToolbarSpacer width="10px"/>                         -->
-            <!-- </HBox> -->
+                    <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
+
+                    <!-- <HBox alignItems="Center"> -->
+                    <unified:FileUploader id="Add1" iconOnly="true" buttonOnly="true" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSX}" uploadComplete="onHandleUploadComplete" uploadOnChange="true" enabled="true" fileType="xlsx" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" />
+                    <!-- <Button id="Add2" text="{= ${device>/system/phone}?'':${i18n>XLSX}}" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSX}"/> -->
+                    <Button id="Down1" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>
+                    <!-- <Input id="rowIn" width="54px" placeholder="Filas" change="onFilasChange"></Input> -->
+                    <!-- <ToolbarSpacer width="10px"/>                         -->
+                    <!-- </HBox> -->
                 </layout:content>
             </layout:HorizontalLayout>
         </content>
     </Toolbar>
+    <!-- <headerToolbar> </headerToolbar> -->
     <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
-        <Table id="lineItemsList" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>detailLineItemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect" fixedLayout="false">
-            <!-- <headerToolbar>
-        </headerToolbar> -->
-            <columns>
-                <Column>
-                    <Text text="Item" width="100px"/>
-                </Column>
-                <Column hAlign="End">
-                    <Text text="No. Personal" width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="Nombre" width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="A.N." width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="Fecah Ingreso" width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="CC nom." width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="Texto CC" width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="Motivo" width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="P.Ini" width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="A.Ini" width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="Fecha Inicio" width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="Fecha Fin" width="100px"/>
-                </Column>
-                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                    <Text text="Importe" width="100px"/>
-                </Column>
-            </columns>
-            <items>
-                <ColumnListItem id="popup">
-                    <cells>
+
+        <table:Table id="lineItemsList" width="auto" rows="{path:'tablaFlujo>/', templateShareable:false}" selectionMode="MultiToggle" selectionChange="detailTabSelect">
+            <table:rowSettingsTemplate>
+                <table:RowSettings highlight="Success">
+
+                </table:RowSettings>
+            </table:rowSettingsTemplate>
+            <table:columns>
+                <table:Column >
+                    <table:label>
+                        <Label text="Item"></Label>
+                    </table:label>
+                    <table:template>
                         <Text text="{tablaFlujo>C1}"/>
+                    </table:template>
+                </table:Column>
+                <table:Column >
+                    <table:label>
+                        <Label text="No. Personal"></Label>
+                    </table:label>
+                    <table:template>
                         <Input id="inputNombre"/>
-                        <Text text="{tablaFlujo>C2}"/>
-                        <Text text="{tablaFlujo>C3}"/>
-                        <Text text="{tablaFlujo>C4}"/>
-                        <Input id="inputCCnom"/>
-                        <Text text="{tablaFlujo>C5}"/>
-                        <Input id="inputPagoFaltante"/>
-                        <Input id="inputPini"/>
-                        <Input id="inputAini"/>
-                        <Text text="{tablaFlujo>C6}"/>
-                        <Input id="inputPfin"/>
-                        <Input id="inputAfin"/>
-                        <Text text="{tablaFlujo>C7}"/>
-                        <Input id="inputImporte"/>
-                    </cells>
-                    <dependents>
-                        <ResponsivePopover id="popover" showHeader="true" placement="HorizontalPreferredRight" offsetX="-50%">
-                            <layout:VerticalLayout class="sapUiContentPadding" width="100%">
-                                <layout:content>
-                                    <Text id="infoPopUpText"></Text>
-                                </layout:content>
-                            </layout:VerticalLayout>
-                        </ResponsivePopover>
-                    </dependents>
-                </ColumnListItem>
-            </items>
-        </Table>
+                    </table:template>
+                </table:Column>
+                <!-- <Column>
+                <Text text="Item" width="100px"/>
+            </Column>
+            <Column hAlign="End">
+                <Text text="No. Personal" width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="Nombre" width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="A.N." width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="Fecah Ingreso" width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="CC nom." width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="Texto CC" width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="Motivo" width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="P.Ini" width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="A.Ini" width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="Fecha Inicio" width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="Fecha Fin" width="100px"/>
+            </Column>
+            <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                <Text text="Importe" width="100px"/>
+            </Column> -->
+            </table:columns>
+            <!-- <items>
+            <ColumnListItem id="popup">
+                <cells>
+                    <Text text="{tablaFlujo>C2}"/>
+                    <Text text="{tablaFlujo>C3}"/>
+                    <Text text="{tablaFlujo>C4}"/>
+                    <Input id="inputCCnom"/>
+                    <Text text="{tablaFlujo>C5}"/>
+                    <Input id="inputPagoFaltante"/>
+                    <Input id="inputPini"/>
+                    <Input id="inputAini"/>
+                    <Text text="{tablaFlujo>C6}"/>
+                    <Input id="inputPfin"/>
+                    <Input id="inputAfin"/>
+                    <Text text="{tablaFlujo>C7}"/>
+                    <Input id="inputImporte"/>
+                </cells>
+            </ColumnListItem>
+        </items> -->
+            <table:dependents>
+                <ResponsivePopover id="popover" showHeader="true" placement="HorizontalPreferredRight" offsetX="-50%">
+                    <layout:VerticalLayout class="sapUiContentPadding" width="100%">
+                        <layout:content>
+                            <Text id="infoPopUpText"></Text>
+                        </layout:content>
+                    </layout:VerticalLayout>
+                </ResponsivePopover>
+            </table:dependents>
+        </table:Table>
     </ScrollContainer>
 </mvc:View>

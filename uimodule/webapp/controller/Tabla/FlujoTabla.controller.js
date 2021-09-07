@@ -27,7 +27,7 @@ sap.ui.define(
               this.attachPopoverOnMouseover(oEvent.srcControl, this.byId("popover"));
             }
           }
-          this.byId("popup").addEventDelegate(this._popoverDelegate, this);
+          // this.byId("popup").addEventDelegate(this._popoverDelegate, this);
         },
         formatDate: function (oDate) {
           if (oDate) {
