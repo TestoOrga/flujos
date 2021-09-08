@@ -1,13 +1,14 @@
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/ui/model/json/JSONModel",
+  ["bafar/flujos/flujos/controller/BaseController",
+    "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast"
   ],
-  function (Controller,
+  function (BaseController,
     JSONModel,
     MessageToast) {
     "use strict";
 
-    return Controller.extend(
+    return BaseController.extend(
       "bafar.flujos.flujos.controller.Tabla.FlujoTabla", {
         /**
          * @override
@@ -92,11 +93,30 @@ sap.ui.define(
         },
 
         onAddLine: function (oEvent) {
-
+          //agrego una linea vacía para poder cargar un material
+          var materiales = this.getView().getModel("tablaFlujo").getProperty("/");
+          materiales.push({});
+          this.getView().getModel("tablaFlujo").setProperty("/", materiales);
         },
 
         onItemPress: function (oEvent) {
           // this._showPopover(oEvent.getSource(), this.byId("popover"));
+        },
+        valInputs: function () {
+          var valError;
+          $(".valInput").each((i, e) => {
+            var domRef = document.getElementById(e.id);
+            var oControl = $(domRef).control()[0];
+            if (oControl.getValue() === "") {
+              oControl.setValueState("Error");
+              valError = this.get18().getText("flujoTabla.camposVaceos");
+            }
+          });
+          return valError;
+        },
+
+        validar: function (oEvent) {
+          this.valInputs();
         }
       }
     );

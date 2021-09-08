@@ -119,7 +119,7 @@ sap.ui.define(
                       },
                       {
                         C1: "seguimiento",
-                        C2: true
+                        C2: false
                       },
                       {
                         C1: "aprobacion",
@@ -178,7 +178,7 @@ sap.ui.define(
                   default:
                     oCall.mParameters.oEntity.to_pesal = {};
                     oCall.mParameters.oEntity.to_pesal.results  = [{
-                        C1: "XXX",
+                        C1: "001",
                         C2: "1",
                         C3: "2",
                         C4: "",

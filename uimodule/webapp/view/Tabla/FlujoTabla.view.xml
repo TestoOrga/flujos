@@ -12,23 +12,15 @@
             <layout:HorizontalLayout allowWrapping="false">
                 <layout:content>
                     <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine"></Button>
-                    <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
-
-                    <!-- <HBox alignItems="Center"> -->
+                    <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>                    
                     <unified:FileUploader id="Add1" iconOnly="true" buttonOnly="true" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSX}" uploadComplete="onHandleUploadComplete" uploadOnChange="true" enabled="true" fileType="xlsx" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" />
-                    <!-- <Button id="Add2" text="{= ${device>/system/phone}?'':${i18n>XLSX}}" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSX}"/> -->
-                    <Button id="Down1" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>
-                    <!-- <Input id="rowIn" width="54px" placeholder="Filas" change="onFilasChange"></Input> -->
-                    <!-- <ToolbarSpacer width="10px"/>                         -->
-                    <!-- </HBox> -->
+                    <Button id="Down1" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>                    
                 </layout:content>
             </layout:HorizontalLayout>
         </content>
     </Toolbar>
     <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
         <Table id="lineItemsList" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>detailLineItemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect" fixedLayout="false">
-            <!-- <headerToolbar>
-        </headerToolbar> -->
             <columns>
                 <Column>
                     <Text text="Item" width="100px"/>
@@ -74,23 +66,22 @@
                 <ColumnListItem class="lineItemSucc" highlight="Success" type="Navigation" press="onItemPress">
                     <cells>
                         <Button id="colList" text="{tablaFlujo>C1}"/>
-                        <Input id="inputNombre" change="onInputChange"/>
+                        <Input id="inputNombre" change="onInputChange" class="valInput"/>
                         <Text text="{tablaFlujo>C2}"/>
                         <Text text="{tablaFlujo>C3}"/>
                         <Text text="{tablaFlujo>C4}"/>
-                        <Input id="inputCCnom"/>
+                        <Input id="inputCCnom" class="valInput"/>
                         <Text text="{tablaFlujo>C5}"/>
-                        <Input id="inputPagoFaltante"/>
-                        <Input id="inputPini"/>
-                        <Input id="inputAini"/>
+                        <Input id="inputPagoFaltante" class="valInput"/>
+                        <Input id="inputPini" class="valInput"/>
+                        <Input id="inputAini" class="valInput"/>
                         <Text text="{tablaFlujo>C6}"/>
-                        <Input id="inputPfin"/>
-                        <Input id="inputAfin"/>
+                        <Input id="inputPfin" class="valInput"/>
+                        <Input id="inputAfin" class="valInput"/>
                         <Text text="{tablaFlujo>C7}"/>
-                        <Input id="inputImporte"/>
+                        <Input id="inputImporte" class="valInput"/>
                     </cells>
-                    <dependents>
-                        <!-- offsetX="-50%" -->
+                    <dependents>                        
                         <ResponsivePopover id="popover" placement="PreferredTopOrFlip" resizable="true">
                             <layout:VerticalLayout class="sapUiContentPadding" width="100%">
                                 <layout:content>
@@ -102,5 +93,6 @@
                 </ColumnListItem>
             </items>
         </Table>
+        <Button text="testoVal" press="validar"></Button>
     </ScrollContainer>
 </mvc:View>

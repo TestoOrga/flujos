@@ -55,6 +55,14 @@
   padding-left: 0.2rem !important;
   padding-right: 0.2rem !important;
 }
+
+.sapUxAPBlockContainer{  
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+
+/*Tablelike Flows*/
 .sapMListTblSelCol .sapMCb.sapMLIBSelectM {
   margin-left: 5px;
 }

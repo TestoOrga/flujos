@@ -111,12 +111,13 @@ sap.ui.define(
         this.oUserCode = oEvent.getParameter("arguments").code;
       },
       onAddFlow: function (oEvent) {
-        this.onReset();
+        console.log("Event handler: onAddFlow");
         if (this.headerData.proceso === "001") {
           this.addSpecFlow();
         } else {
           this.addSpecFlow1();
         }
+        this.byId("headerFlujosButNuevo").setEnabled(false);
       },
       addSpecFlow1: function () {
         // if (!this.valHeaderInput()) {
@@ -142,16 +143,19 @@ sap.ui.define(
           viewId: "flujostabla",
           viewName: "bafar.flujos.flujos.view.Tabla.FlujoTabla"
         }];
-        var time = 0;
+        // var time = 0;
         this.views.forEach((view) => {
-          setTimeout(() => {
-            this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName);
-            console.log(view.viewId);
-          }, time);
-          time = time + 1000;
+          // setTimeout(() => {
+          var oView = this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName);
+          console.log(view.viewId);
+          oView.then((res) => {
+            res.oView.placeAt(res.oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
+          })
+          // }, time);
+          // time = time + 1000;
         });
       },
-      addSpecFlow: function () {
+      addSpecFlow: async function () {
         if (!this.valHeaderInput()) {
           MessageBox.error(this.get18().getText("createFlowError"));
           return
@@ -194,15 +198,20 @@ sap.ui.define(
             viewName: "bafar.flujos.flujos.view.Comunes.ArchivosExtra"
           }
         ];
-        var time = 0;
+        // var time = 0;
+        var viewArr = [];
         this.views.forEach((view) => {
-          setTimeout(() => {
-            this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName);
-            console.log(view.viewId);
-          }, time);
-          time = time + 1000;
+          //   setTimeout(() => {
+          viewArr.push(this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName));
+          console.log(view.viewId);
+          // }, time);
+          // time = time + 1000;
         });
-
+        let values = await Promise.all(viewArr);
+        values.forEach((element) => {
+          element.oView.placeAt(element.oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
+        });
+        console.log();
       },
 
       valHeaderInput: function () {
@@ -217,26 +226,79 @@ sap.ui.define(
         });
         return noOk;
       },
-      onReset: function (oEvent) {
+      onReset: function (oEvent, fn, text) {
         console.log("Event Handler: onReset");
-        var that = this;
+        this.onConfirmDialogPress(fn ? fn : this.resetFlow.bind(this), text ? text : this.get18().getText("headerFlujos.ResetConfirmationQuestion"));
+      },
+      resetFlow: function () {
+        this.clearHeader();
+        this.setHeaderTitle(this.get18().getText("HeaderTitulo"));
         if (this.views) {
           this.views.forEach((view) => this.getView().byId(view.viewId).destroy());
           delete this.views;
         }
+        this.byId("headerFlujosButNuevo").setEnabled(true);
       },
-      specificFlow: function (controlId, controllerName, viewId, viewName) {
+      onConfirmDialogPress: function (fn, text) {
+        this.oApproveDialog = new Dialog({
+          type: DialogType.Message,
+          icon: this.get18().getText("submitIcon"),
+          title: this.get18().getText("submitConfirmation"),
+          state: "Warning",
+          content: new Text({
+            text: text
+          }),
+          beginButton: new Button({
+            // type: ButtonType.Emphasized,
+            icon: this.get18().getText("submitIconAccept"),
+            // type: sap.m.ButtonType.Accept,
+            press: function () {
+              fn();
+              this.oApproveDialog.close();
+            }.bind(this)
+          }),
+          endButton: new Button({
+            icon: this.get18().getText("submitIconCancel"),
+            // type: sap.m.ButtonType.Reject,
+            press: function () {
+              this.oApproveDialog.close();
+            }.bind(this)
+          })
+        });
+        this.oApproveDialog.open();
+      },
+      clearHeader: function () {
+        this.byId("headerFLujosIdFlujo").setText(this.get18().getText("headerFlujosIdPlaceholder"));
+        $(".valHeaderInput").each((i, e) => {
+          var domRef = document.getElementById(e.id);
+          var oControl = $(domRef).control()[0];
+          oControl.setSelectedKey("");
+        });
+      },
+      specificFlow: async function (controlId, controllerName, viewId, viewName) {
         var oRef = this.getView().byId(controlId);
         var oController = sap.ui.core.mvc.Controller.create({
           name: controllerName
         });
-        XMLView.create({
+
+        // XMLView.create({
+        //   id: this.createId(viewId),
+        //   viewName: viewName
+        // }).then(function (oView) {
+        //   // the instance is available in the callback function
+        //   oView.placeAt(oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
+        // }.bind(this))               
+        const fn = () => XMLView.create({
           id: this.createId(viewId),
           viewName: viewName
-        }).then(function (oView) {
-          // the instance is available in the callback function
-          oView.placeAt(oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
-        }.bind(this));
+        });
+        const oView = await this.getOwnerComponent().runAsOwner(fn);
+        return {
+          oView: oView,
+          oRef: oRef
+        };
+        // oView.placeAt(oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
+
       },
       onGrabar: function () {
         this.onApproveDialogPress();
@@ -253,14 +315,16 @@ sap.ui.define(
             }),
             beginButton: new Button({
               type: ButtonType.Emphasized,
-              text: this.get18().getText("submitSend"),
+              icon: this.get18().getText("submitIconAccept"),
+              type: sap.m.ButtonType.Accept,
               press: function () {
-                this.createFlow();
+                this.submitFlow();
                 this.oApproveDialog.close();
               }.bind(this)
             }),
             endButton: new Button({
-              text: this.get18().getText("submitCancel"),
+              icon: this.get18().getText("submitIconCancel"),
+              type: sap.m.ButtonType.Negative,
               press: function () {
                 this.oApproveDialog.close();
               }.bind(this)
@@ -270,14 +334,18 @@ sap.ui.define(
         this.oApproveDialog.open();
       },
 
-      createFlow: function () {
+      submitFlow: function () {
         MessageToast.show("Flujo enviado para creacion");
       },
       onCancelar: function () {
-        this.onReset();
+        this.onBack();
       },
 
       onBack: function (oEvent) {
+        this.onReset(undefined, this.navBack.bind(this), this.get18().getText("headerFlujosController.ConfirmaCancelarFlujo"));
+      },
+      navBack: function () {
+        this.clearHeader();
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteAccionView", null);
       },
@@ -331,10 +399,13 @@ sap.ui.define(
           oEvent.getSource().setValueState("None");
           this.headerData.proceso = procesoKey;
           this.headerData.titulo = oEvent.getSource().getSelectedItem().getBindingContext("proceso").getObject().C2;
-          this.byId("headerFlujosPageHeader").setObjectTitle(this.headerData.titulo);
+          this.setHeaderTitle(this.headerData.titulo);
         } else {
           oEvent.getSource().setValueState("Error");
         }
+      },
+      setHeaderTitle: function (text) {
+        this.byId("headerFlujosPageHeader").setObjectTitle(text);
       }
     });
   }
