@@ -74,3 +74,13 @@ Iniciar eventbus
         // Eventos
         // var oEventBus = sap.ui.getCore().getEventBus();
         // oEventBus.subscribe("evento1", "canal1", this.manageDetailInsertBut, this);
+
+Crear y agregar vistas alternativa
+        // XMLView.create({
+        //   id: this.createId(viewId),
+        //   viewName: viewName
+        // }).then(function (oView) {
+        //   // the instance is available in the callback function
+        //   oView.placeAt(oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
+        // }.bind(this))
+        // oView.placeAt(oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");

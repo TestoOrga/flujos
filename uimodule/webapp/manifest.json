@@ -17,6 +17,10 @@
           "odataVersion": "2.0",
           "localUri": "localService/metadata.xml"
         }
+      },
+      "flowConfig": {
+        "uri": "localData/flowConfig.json",
+        "type": "JSON"
       }
     }
   },
@@ -65,6 +69,10 @@
       },
       "": {
         "dataSource": "mainService",
+        "preload": true
+      },
+      "flowConfig": {
+        "dataSource": "flowConfig",
         "preload": true
       }
     },
