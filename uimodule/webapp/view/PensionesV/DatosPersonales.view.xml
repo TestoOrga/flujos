@@ -39,8 +39,8 @@
 							</f:FormElement>
 							<f:FormElement label="Periodo Retención" id="periodoRet_Label">
 								<f:fields>
-									<Input width="100%" id="periodoRet_Input"/>
-									<Input width="100%" id="periodoRet_Input1"/>
+									<Input width="100%" id="periodoRet_Input" type="Number" maxLength="1" enabled="false"/>
+									<Input width="100%" id="periodoRet_Input1" type="Number" maxLength="1" submit="onEnterFechaRet" enabled="false"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Fecha Inicio Ret." id="fechaIniRet_Label">
