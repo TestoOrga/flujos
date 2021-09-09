@@ -34,6 +34,26 @@ sap.ui.define(
           // this.getView().setModel(new JSONModel(testModel), "tablaFlujo");
           this.initTab();
           console.log('finInit');
+          // this.getView().addEventDelegate({
+          //   onBeforeHide: function (oEvent) {
+          //     console.log("BeforeHide");
+          //   },
+          //   onAfterHide: function (oEvent) {
+          //     console.log("AfterHide");
+          //   },
+          //   onExit: function (oEvent) {
+          //     this.destroyIds();
+          //   }
+          // }, this);
+        },
+        onExit: function () {
+          this.destroyIds();
+        },
+
+        //destruir ids que causan conflicto duplicatedID
+        destroyIds: function () {
+          this.byId("attachPopover").destroy();
+          this.byId("popover").destroy();
         },
         initTab: function () {
           this.getView().setModel(new JSONModel([{}]), "tablaFlujo");
@@ -71,7 +91,7 @@ sap.ui.define(
             default:
               break;
           }
-          this.addpopover(oEvent.getSource().getParent().getAggregation("cells").find(x => x.sId.includes("colList")));
+          this.addpopover(oEvent.getSource().getParent().getAggregation("cells").find(x => x.sId.includes("attachPopover")));
           oEvent.getSource().getParent().removeStyleClass("lineItemSucc");
           oEvent.getSource().getParent().setHighlight("Error");
           oEvent.getSource().getParent().addStyleClass("lineItemError");
