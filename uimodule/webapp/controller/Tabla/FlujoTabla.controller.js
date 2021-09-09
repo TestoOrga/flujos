@@ -181,6 +181,14 @@ sap.ui.define(
 
           }
         },
+
+        onInputLive: function (oEvent) {
+          if (oEvent.getSource().getValue() !== "") {
+            oEvent.getSource().setValueState("None");
+          } else {
+            oEvent.getSource().setValueState("Error");
+          }
+        }
       }
     );
   }

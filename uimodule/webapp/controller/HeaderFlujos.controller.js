@@ -101,7 +101,8 @@ sap.ui.define(
       onAddFlow: function (oEvent) {
         console.log("Event handler: onAddFlow");
         var flowConfig = this.getModel("flowConfig").getData();
-        var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
+        // var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
+        var flowKey = "001001001";
         var flowViews = flowConfig.find(x => x[flowKey]);
         if (flowViews) {
           this.addSpecFlow(flowViews[flowKey]);

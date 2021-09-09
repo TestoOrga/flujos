@@ -5,44 +5,45 @@
     xmlns:layout="sap.ui.layout"
     xmlns:u="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
     <Panel expandable="true" width="auto" class="sapUiResponsiveMargin" backgroundDesign="Solid" headerText="{i18n>Comunes.archivosExtra}">
+
         <content>
-            <Table id="lineItemsList" width="auto" items="{path:'archivos>Seccion_Details/', templateShareable:false}" noDataText="{i18n>detailLineItemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect">
-                <headerToolbar>
-                    <Toolbar >
-                        <Title id="lineItemsTitle" text="{detailView>/lineItemListTitle}" titleStyle="H5" level="H5"/>
-                        <ToolbarSpacer/>
-                        <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownSelection" enabled="false" id="tabInPanelButtDown"/>
-                        <Button icon="sap-icon://add-photo" press="onAddPhoto"/>
-                        <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete" uploadOnChange="true" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" enabled="true" change="handleUploadChange"/>
-                        <Button icon="sap-icon://delete" press="onTabDelete" id="tabInPanelButtDel" enabled="false"/>
-                    </Toolbar>
-                </headerToolbar>
+            <!-- <List id="idList" items="{files>/}" selectionChange="onSelectionChange" mode="MultiSelect" includeItemInSelection="true"> -->
+            <Table id="lineItemsList" width="auto" items="{path:'files>/', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" selectionChange="detailTabSelect">
+                <infoToolbar>
+                    <OverflowToolbar visible="true" id="idInfoToolbar" design="Transparent">
+                        <!-- <Label id="idFilterLabel" text="testo"/> -->
+                        <SearchField liveChange="onSearch" width="100%"/>
+                    </OverflowToolbar>
+                </infoToolbar>
                 <columns>
-                    <Column>
-                        <Text text="{i18n>detailLineItemTableIDColumn}"/>
+                    <Column width="auto">
+                        <Text text="{i18n>archivosMultipleView.Nombre}"/>
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                        <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" width="auto">
+                        <Text text="{i18n>archivosMultipleView.Detalles}"/>
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" width="auto">
                         <Text text=" "/>
                     </Column>
                 </columns>
                 <items>
-                    <ColumnListItem>
+                    <ColumnListItem >
                         <cells>
-                            <ObjectIdentifier title="{archivos>Archivo}" text="{archivos>Iddoc}"/>
-                            <ObjectNumber number="{
-									path: 'Corto',
-									formatter: '.formatter.currencyValue'
-								}"/>
+                            <ObjectIdentifier title="{files>Archivo}" text="{files>Iddoc}" class="sapUiTinyMarginTopBottom"/>
+                            <VBox>
+                                <HBox alignContent="Center">
+                                    <Label text="{i18n>archivosMultipleView.FechaCreacion}" class="sapUiTinyMarginEnd"/>
+                                    <Text text="{ path: 'files>Erdat', formatter: '.formatter.date' }" />
+                                </HBox>
+                            </VBox>
                             <HBox justifyContent="End" alignContent="Center">
-                                <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownFile"/>
+                                <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton sapUiTinyMarginEnd" press="onDownFile" />
                                 <Button icon="sap-icon://delete" press="onItemDelete"/>
                             </HBox>
                         </cells>
                     </ColumnListItem>
                 </items>
+                <!-- </List> -->
             </Table>
         </content>
     </Panel>
