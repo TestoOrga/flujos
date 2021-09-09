@@ -47,6 +47,19 @@ sap.ui.define(
             console.log("display");
           }
         }, this);
+
+        //eventlisteners
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.subscribe("flowResults", "flowValid", this.onFlowValid, this);
+        oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
+      },
+      /**
+       * @override
+       */
+      onExit: function () {
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
+        oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
       },
 
       getDepartamento: function () {
@@ -101,8 +114,8 @@ sap.ui.define(
       onAddFlow: function (oEvent) {
         console.log("Event handler: onAddFlow");
         var flowConfig = this.getModel("flowConfig").getData();
-        // var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
-        var flowKey = "001001001";
+        var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
+        // var flowKey = "001001001";
         var flowViews = flowConfig.find(x => x[flowKey]);
         if (flowViews) {
           this.addSpecFlow(flowViews[flowKey]);
@@ -216,6 +229,8 @@ sap.ui.define(
         this.onConfirmDialogPress(fn ? fn : this.resetFlow.bind(this), text ? text : this.get18().getText("headerFlujos.ResetConfirmationQuestion"));
       },
       resetFlow: function () {
+        delete this.valFlowStart;
+        delete this.getFlowDataStart;
         this.clearHeader();
         this.setHeaderTitle(this.get18().getText("HeaderTitulo"));
         if (this.views) {
@@ -283,11 +298,50 @@ sap.ui.define(
 
       },
       onGrabar: function () {
-        this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true)
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.publish("flowRequest", "valFlow");
       },
+      onFlowValid: function (sChannel, oEvent, valOk) {
+        if (!this.valFlowStart) {
+          this.valFlowStart = sap.ui.getCore().getEventBus()._mChannels.flowRequest.mEventRegistry.valFlow.length;
+          this.valFlowRes = [];
+        }
+        this.valFlowStart--;
+        this.valFlowRes.push(valOk.res);
+        if (this.valFlowStart === 0) {
+          delete this.valFlowStart;
+          var okFlow = true;
+          this.valFlowRes.forEach(element => {
+            if (!element) okFlow = false;
+          });
+          this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
 
+          // if (okFlow) {
+          //   this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
+          // } else {
+          //   MessageBox.error(this.get18().getText("headerFlujosController.CompleteTodosLosCampos"));
+          // }
+        };
+      },
       submitFlow: function () {
-        MessageToast.show("Flujo enviado para creacion");
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.publish("flowRequest", "flowData");
+      },
+      onFlowData: function (sChannel, oEvent, flowData) {
+        if (!this.getFlowDataStart) {
+          this.getFlowDataStart = sap.ui.getCore().getEventBus()._mChannels.flowRequest.mEventRegistry.valFlow.length;
+          this.getFlowDataRes = [];
+        }
+        this.getFlowDataStart--;
+        this.getFlowDataRes.push(flowData.res);
+        if (this.getFlowDataStart === 0) {
+        console.log();
+          // if (flowData) {
+        //   MessageToast.show({
+        //     ...flowData
+        //   });
+        // }
+        }
       },
       onCancelar: function () {
         this.onBack();

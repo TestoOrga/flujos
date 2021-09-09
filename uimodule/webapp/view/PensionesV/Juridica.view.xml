@@ -22,7 +22,7 @@
 					<Label text="Receptor" required="true"/>
 					<Input id="receptor" value=""/>
 					<Label text="Cve. Banco" required="true"/>
-					<Select id="cveBancoSelect" maxWidth="100%" width ="auto" items="{/claveBanco}" change="onSelectClaveBanco" forceSelection="false">
+					<Select id="cveBancoSelect" maxWidth="100%" width ="auto" items="{ path: '/claveBanco', sorter: { path: 'C2', descending: false }}" change="onSelectClaveBanco" forceSelection="false">
 						<core:Item key="{C2}" text="{C1} {C2}"/>
 					</Select>
 					<Input id="_claveBancoInput" fieldWidth="100%" editable="false" maxLength="18"/>

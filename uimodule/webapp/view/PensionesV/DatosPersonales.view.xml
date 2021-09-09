@@ -54,8 +54,7 @@
 				<f:layout>
 					<f:ResponsiveGridLayout id="__layout8"/>
 				</f:layout>
-			</f:Form>
-			<Button id="But" text="Action" press="onButAction"/>
+			</f:Form>			
 		</content>
 	</Panel>
 </mvc:View>

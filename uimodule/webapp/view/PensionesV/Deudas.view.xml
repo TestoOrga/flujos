@@ -30,7 +30,7 @@
 					<Input id ="descuentoCurr" liveChange="" change="formatCurrency" visible ="false" width="35%"/>			
 				</f:content>
 			</f:SimpleForm>
-			
+			<Button id="But" text="Action" press="onButAction"/>
 		</content>
 	</Panel>
 

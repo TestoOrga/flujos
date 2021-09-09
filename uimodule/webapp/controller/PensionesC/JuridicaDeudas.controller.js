@@ -151,7 +151,17 @@ sap.ui.define(
         //
 
         //
+        //eventlisteners
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
+        oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
       },
+      onExit: function () {
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
+        oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
+      },
+
       onButAction: function (oEvent, param) {
         MessageToast.show(param);
       },
@@ -278,15 +288,23 @@ sap.ui.define(
       saveJuridicaDeudasData: function () {
 
         var claveBancoSplit = claveBancoText.split(' ')[0];
-        juridicaDeudasData = {
-          ClaveBanco: claveBancoSplit,
-          ViaPago: this.getView().byId("_viaPagoSelect").getSelectedKey(),
-          Receptor: this.getView().byId("receptor").getValue(),
-          CuentaBancaria: this.getView().byId("cuentaBancariaInput").getValue(),
-          NumeroOrden: this.getView().byId("numeroOrdenInput").getValue(),
-          TipoDescuento: this.getView().byId("_tipoDescuento").getSelectedKey(),
-          UnidadIntervalo: this.getView().byId("_unidadIntervalo").getSelectedKey()
+        if (this.getView().byId("_viaPagoSelect")) {
+          juridicaDeudasData = {
+            ClaveBanco: claveBancoSplit,
+            ViaPago: this.getView().byId("_viaPagoSelect").getSelectedKey(),
+            Receptor: this.getView().byId("receptor").getValue(),
+            CuentaBancaria: this.getView().byId("cuentaBancariaInput").getValue(),
+            NumeroOrden: this.getView().byId("numeroOrdenInput").getValue()
+          };
+        } else {
+          juridicaDeudasData = {
+            TipoDescuento: this.getView().byId("_tipoDescuento").getSelectedKey(),
+            UnidadIntervalo: this.getView().byId("_unidadIntervalo").getSelectedKey(),
+            CantDescuento: this.getView().byId("descuentoCurr").getSelectedKey()
+          };
         }
+        return juridicaDeudasData;
+
         //GuardadoJuridicaDeudas
 
 
@@ -327,6 +345,23 @@ sap.ui.define(
         var val = inputCurrency.getValue();
         val = val.replace(/[^\d]/g, '');
         inputCurrency.setValue(val);
+      },
+      onButAction: function () {
+        this.validateFieldsJuridicaDeudas();
+      },
+      getValInputs: function () {
+        var oEventBus = sap.ui.getCore().getEventBus();
+        var result = this.validateFieldsJuridicaDeudas();
+        oEventBus.publish("flowResults", "flowValid", {
+          res: result
+        });
+      },
+      getData: function () {
+        var oEventBus = sap.ui.getCore().getEventBus();
+        var result = this.saveJuridicaDeudasData();
+        oEventBus.publish("flowResults", "flowData", {
+          res: result
+        });
       }
     });
   }

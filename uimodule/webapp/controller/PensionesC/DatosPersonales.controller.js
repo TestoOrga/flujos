@@ -11,10 +11,19 @@ sap.ui.define(
     var fechIniRet;
 
     return Controller.extend(
-      "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
-      {
+      "bafar.flujos.flujos.controller.PensionesC.DatosPersonales", {
         onInit: function () {
           window.console.log("Se inicia onInit");
+          //eventlisteners
+          var oEventBus = sap.ui.getCore().getEventBus();
+          oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
+          oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
+
+        },
+        onExit: function () {
+          var oEventBus = sap.ui.getCore().getEventBus();
+          oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
+          oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
         },
 
         onEnterInputNoPersonal: function (oEvent) {
@@ -154,7 +163,7 @@ sap.ui.define(
               this.getView().byId(datosPersonalesFields[i]).getValue()
             );
           }
-
+          return datosPersonalesData;
           //console.log(datosPersonalesData);
         },
 
@@ -209,6 +218,7 @@ sap.ui.define(
               }
             }
           }
+          return error;
         },
         /**
          * @override
@@ -222,6 +232,18 @@ sap.ui.define(
         onButAction: function () {
           //MessageToast.show("Datos Personales");
         },
+        getValInputs: function(){
+          var oEventBus = sap.ui.getCore().getEventBus();
+          var result = !this.onValidateInputs();
+          oEventBus.publish("flowResults", "flowValid", {res: result});
+        },
+        getData: function(){
+          var oEventBus = sap.ui.getCore().getEventBus();
+          var result = this.onGetDataFromInput();
+          oEventBus.publish("flowResults", "flowData", {
+            res: result
+          });
+        }
       }
     );
   }

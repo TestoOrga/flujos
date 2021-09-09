@@ -71,9 +71,16 @@ Agregar y remover paneles
       // }
 
 Iniciar eventbus
-        // Eventos
+        // Receptor de evento
         // var oEventBus = sap.ui.getCore().getEventBus();
         // oEventBus.subscribe("evento1", "canal1", this.manageDetailInsertBut, this);
+
+        // Disparador de evento
+        // var oEventBus = sap.ui.getCore().getEventBus();
+        // odata.fileName = fileName;
+        // odata.panelTab = panelTab;
+        // oEventBus.publish("driveAnswer", "errorDataInfo", odata);
+
 
 Crear y agregar vistas alternativa
         // XMLView.create({
