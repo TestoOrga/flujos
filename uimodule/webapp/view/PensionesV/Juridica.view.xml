@@ -16,26 +16,26 @@
 		<content>
 			<f:SimpleForm id="SimpleForm1" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
 				<f:content>					
-					<Label text="Número de órden"/>
-					<Input value="Numero Orden"></Input>
-					<DatePicker xmlns="sap.m" id="picker0"/>
-					<Label text="Receptor"/>
-					<Input id="name" value="{}"/>
-					<Label text="Cve. Banco"/>
+					<Label text="Número de órden" required="true"/>
+					<Input id="numeroOrdenInput" value=""></Input>
+					<DatePicker xmlns="sap.m" id="numeroOrdenDate" editable="false"/>
+					<Label text="Receptor" required="true"/>
+					<Input id="receptor" value=""/>
+					<Label text="Cve. Banco" required="true"/>
 					<Select id="cveBancoSelect" maxWidth="100%" width ="auto" items="{/claveBanco}" change="onSelectClaveBanco" forceSelection="false">
-						<core:Item key="{C2}" text="{C1}"/>
+						<core:Item key="{C2}" text="{C1} {C2}"/>
 					</Select>
-					<Input id="_claveBancoInput" fieldWidth="100%" editable="false"/>
-					<Label text="Cuenta Bancaria"/>
-					<Input value="Cuenta bancaria"/>
-					<Label text="Via Pago"/>
+					<Input id="_claveBancoInput" fieldWidth="100%" editable="false" maxLength="18"/>
+					<Label required="true" text="Cuenta Bancaria"/>
+					<Input value="" id="cuentaBancariaInput" maxLength="18"/>
+					<Label required="true" text="Via Pago"/>
 					<Select id="_viaPagoSelect" maxWidth="100%" width ="auto" items="{/viaPago}" change="onSelectViaPago" forceSelection="false">
 						<core:Item key="{C2}" text="{C1}"/>
 					</Select>
-					<Input id="_viaPagoInput" fieldWidth="100%" editable="false"/>				
+					<Input required="true" id="_viaPagoInput" fieldWidth="100%" editable="false"/>				
 				</f:content>
 			</f:SimpleForm>
-			<Button id="But" text="Action" press="onButAction($event, 'Juridico')"/>
+			
 		</content>
 	</Panel>
 </mvc:View>
