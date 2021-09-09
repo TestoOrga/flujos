@@ -1,6 +1,6 @@
 [
     {
-        "pensiones": [
+        "NOM001001": [
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
@@ -28,7 +28,7 @@
         ]
     },
     {
-        "sueldos": [
+        "NOM001002": [
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.Tabla.FlujoTabla",

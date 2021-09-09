@@ -12,15 +12,15 @@
             <layout:HorizontalLayout allowWrapping="false">
                 <layout:content>
                     <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine"></Button>
-                    <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>                    
-                    <unified:FileUploader id="Add1" iconOnly="true" buttonOnly="true" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSX}" uploadComplete="onHandleUploadComplete" uploadOnChange="true" enabled="true" fileType="xlsx" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" />
-                    <Button id="Down1" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>                    
+                    <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLine" enabled="false"></Button>
+                    <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
+                    <Button id="Down1" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>
                 </layout:content>
             </layout:HorizontalLayout>
         </content>
     </Toolbar>
     <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
-        <Table id="lineItemsList" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>detailLineItemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect" fixedLayout="false">
+        <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:true}" noDataText="{i18n>detailLineItemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false">
             <columns>
                 <Column>
                     <Text text="Item" width="100px"/>
@@ -61,27 +61,29 @@
                 <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                     <Text text="Importe" width="100px"/>
                 </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                    <Text text="Documentacion" width="100px"/>
+                </Column>
             </columns>
             <items>
                 <ColumnListItem class="lineItemSucc" highlight="Success" type="Navigation" press="onItemPress">
                     <cells>
-                        <Button id="colList" text="{tablaFlujo>C1}"/>
-                        <Input id="inputNombre" change="onInputChange" class="valInput"/>
-                        <Text text="{tablaFlujo>C2}"/>
-                        <Text text="{tablaFlujo>C3}"/>
-                        <Text text="{tablaFlujo>C4}"/>
-                        <Input id="inputCCnom" class="valInput"/>
-                        <Text text="{tablaFlujo>C5}"/>
-                        <Input id="inputPagoFaltante" class="valInput"/>
-                        <Input id="inputPini" class="valInput"/>
-                        <Input id="inputAini" class="valInput"/>
-                        <Text text="{tablaFlujo>C6}"/>
-                        <Input id="inputPfin" class="valInput"/>
-                        <Input id="inputAfin" class="valInput"/>
-                        <Text text="{tablaFlujo>C7}"/>
-                        <Input id="inputImporte" class="valInput"/>
+                        <Text id="colList" text="{tablaFlujo>vis1}"/>
+                        <Input id="inputNombre" value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput"/>
+                        <Text text="{tablaFlujo>vis2}"/>
+                        <Text text="{tablaFlujo>vis3}"/>
+                        <Text text="{tablaFlujo>vis4}"/>
+                        <Input id="inputCCnom" value="{tablaFlujo>in2}" class="valInput"/>
+                        <Text text="{tablaFlujo>vis5}"/>
+                        <Input id="inputPagoFaltante" value="{tablaFlujo>in3}" class="valInput"/>
+                        <Input id="inputPini" value="{tablaFlujo>in4}" class="valInput"/>
+                        <Input id="inputAini" value="{tablaFlujo>in5}" class="valInput"/>
+                        <Text text="{tablaFlujo>vis6}"/>
+                        <Input id="inputPfin" value="{tablaFlujo>in6}" class="valInput"/>
+                        <Input id="inputImporte" value="{tablaFlujo>in7}" class="valInput"/>
+                        <unified:FileUploader id="Add1" iconOnly="true" buttonOnly="true" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSX}" uploadComplete="onHandleUploadComplete" uploadOnChange="true" enabled="true" fileType="xlsx" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" />
                     </cells>
-                    <dependents>                        
+                    <dependents>
                         <ResponsivePopover id="popover" placement="PreferredTopOrFlip" resizable="true">
                             <layout:VerticalLayout class="sapUiContentPadding" width="100%">
                                 <layout:content>

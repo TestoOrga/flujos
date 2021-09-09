@@ -101,12 +101,14 @@ sap.ui.define(
       onAddFlow: function (oEvent) {
         console.log("Event handler: onAddFlow");
         var flowConfig = this.getModel("flowConfig").getData();
-        if (this.headerData.proceso === "001") {                 
-          this.addSpecFlow(flowConfig.find(x=>x.pensiones).pensiones);
+        var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
+        var flowViews = flowConfig.find(x => x[flowKey]);
+        if (flowViews) {
+          this.addSpecFlow(flowViews[flowKey]);
+          this.byId("headerFlujosButNuevo").setEnabled(false);
         } else {
-          this.addSpecFlow(flowConfig.find(x=>x.sueldos).sueldos);
+          MessageBox.error(this.get18().getText("headerFlujosController.FlujoNoConfigurado"));
         }
-        this.byId("headerFlujosButNuevo").setEnabled(false);
       },
       // addSpecFlow1: function () {
       //   // if (!this.valHeaderInput()) {
@@ -185,9 +187,9 @@ sap.ui.define(
         //   }
         // ];        
         var viewArr = [];
-        this.views.forEach((view) => {          
+        this.views.forEach((view) => {
           viewArr.push(this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName));
-          console.log(view.viewId);          
+          console.log(view.viewId);
         });
         let values = await Promise.all(viewArr);
         values.forEach((element) => {
@@ -260,7 +262,7 @@ sap.ui.define(
           oControl.setSelectedKey("");
         });
       },
-      
+
       // Crea vistas de acuerdo al flujo seleccionado
       specificFlow: async function (controlId, controllerName, viewId, viewName) {
         var oRef = this.getView().byId(controlId);
@@ -280,7 +282,7 @@ sap.ui.define(
 
       },
       onGrabar: function () {
-        this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true)        
+        this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true)
       },
 
       submitFlow: function () {
