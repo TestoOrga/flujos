@@ -63,7 +63,30 @@ sap.ui.define(
                 } else {
                     this.getRouter().navTo("appHome", {}, true /*no history*/);
                 }
-            }
+            },
+            formatDate: function (oDate) {
+                if (oDate) {
+                  function parse(t, a) {
+                    function format(m) {
+                      let f = new Intl.DateTimeFormat("en", m);
+                      return f.format(t).padStart(2, "0");
+                    }
+                    return a.map(format);
+                  }
+                  var a = [{
+                      year: "numeric"
+                    },
+                    {
+                      month: "short"
+                    },
+                    {
+                      day: "numeric"
+                    },
+                  ];
+                  let s = parse(oDate, a);
+                  return s[0] + " " + s[1] + " " + s[2];
+                }
+              }
         });
     }
 );

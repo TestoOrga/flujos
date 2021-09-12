@@ -12,6 +12,10 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
        * @override
        */
       onInit: function () {
+        this.viewConfig = {
+          tabModelName: "files",
+          tabControlId: "lineItemsList",
+        };
         this.setModel(new JSONModel([]
           //   [{
           //   archivo: "asdasd",
@@ -33,6 +37,8 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
           //   status: "pendiente"
           // }]
         ), "files");
+        this._tabModel = this.getModel("files");
+        this._oTab = this.byId("lineItemsList");
 
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.subscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
@@ -57,14 +63,14 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
           state: "Warning",
           status: this.get18().getText("archivosMultipleController.pendienteDeGrabar")
         };
-        var tabData = this.getModel("files").getData();
+        var tabData = this._tabModel.getData();
         tabData.push(newFile);
-        this.getModel("files").setData(tabData);
+        this._tabModel.setData(tabData);
       },
       sendFilesFinal: function () {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.publish("flowRes", "filesLoaded", {
-          filesTab: this.getModel("files").getData()
+          filesTab: this._tabModel.getData()
         });
       },
 
@@ -75,23 +81,23 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         if (sQuery) {
           aFilter = [new Filter("itemId", FilterOperator.Contains, sQuery)];
         }
-        this.byId("lineItemsList").getBinding("items").filter(aFilter, "Application");
+        this._oTab.getBinding("items").filter(aFilter, "Application");
       },
 
       onItemDelete: function (oEvent) {
         var oItemContextPath = oEvent.oSource.getBindingContext("files").sPath;
         var idx = oItemContextPath.split("/")[1];
-        var oTempData = this.getModel("files").getData();
+        var oTempData = this._tabModel.getData();
         // Now get the selected index and split it.
         oTempData.splice(idx, 1);
-        this.getModel("files").setData(oTempData);
+        this._tabModel.setData(oTempData);
       },
       deleteItemFiles: function (sChannel, oEvent, data) {
-        var currFiles = this.getModel("files").getData();
+        var currFiles = this._tabModel.getData();
         var newFiles = currFiles.filter(element => {
           return element.itemId !== data.itemId.toString();
         });
-        this.getModel("files").setData(newFiles);
+        this._tabModel.setData(newFiles);
       }
     }
   );

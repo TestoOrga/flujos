@@ -25,6 +25,8 @@ sap.ui.define(
           this._tabModel = this.getModel(this.viewConfig.tabModelName);
           this._oTab = this.byId(this.viewConfig.tabControlId);
           console.log("finInit");
+
+          
         },
         onExit: function () {
           this.destroyIds();
@@ -44,30 +46,6 @@ sap.ui.define(
           this.itemId++;
           return this.itemId.toString().padStart(6, "0");
         },
-        formatDate: function (oDate) {
-          if (oDate) {
-            function parse(t, a) {
-              function format(m) {
-                let f = new Intl.DateTimeFormat("en", m);
-                return f.format(t).padStart(2, "0");
-              }
-              return a.map(format);
-            }
-            var a = [{
-                year: "numeric"
-              },
-              {
-                month: "short"
-              },
-              {
-                day: "numeric"
-              },
-            ];
-            let s = parse(oDate, a);
-            return s[0] + " " + s[1] + " " + s[2];
-          }
-        },
-
         onInputChange: function (oEvent, param) {
           switch (param) {
             case "in1":
@@ -263,6 +241,9 @@ sap.ui.define(
           if (this._oTab.getSelectedItems().length === 0) {
             this.byId("toolbarDel").setEnabled(false);
           }
+        },
+        getFlowData: function (oEvent){
+          return this._tabModel.getData();
         }
       }
     );
