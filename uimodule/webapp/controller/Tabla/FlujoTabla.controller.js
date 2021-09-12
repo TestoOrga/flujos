@@ -17,37 +17,14 @@ sap.ui.define(
           this.loadedFiles = [];
           this.fileId = 0;
           this.itemId = 0;
-          // var testModel = [{
-          //   C1: "000001",
-          //   C2: "GUZMAN AUGUSTO",
-          //   C3: "B2",
-          //   C4: this.formatDate(Date.now()),
-          //   C5: "Compensacion",
-          //   C6: this.formatDate(Date.now()),
-          //   C7: this.formatDate(Date.now()),
-          // }, {
-          //   C1: "000001",
-          //   C2: "GUZMAN AUGUSTO",
-          //   C3: "B2",
-          //   C4: this.formatDate(Date.now()),
-          //   C5: "Compensacion",
-          //   C6: this.formatDate(Date.now()),
-          //   C7: this.formatDate(Date.now()),
-          // }];
-          // this.getView().setModel(new JSONModel(testModel), "tablaFlujo");
+          this.viewConfig = {
+            tabModelName: "tablaFlujo",
+            tabControlId: "mainTable",
+          };
           this.initTab();
+          this._tabModel = this.getModel(this.viewConfig.tabModelName);
+          this._oTab = this.byId(this.viewConfig.tabControlId);
           console.log("finInit");
-          // this.getView().addEventDelegate({
-          //   onBeforeHide: function (oEvent) {
-          //     console.log("BeforeHide");
-          //   },
-          //   onAfterHide: function (oEvent) {
-          //     console.log("AfterHide");
-          //   },
-          //   onExit: function (oEvent) {
-          //     this.destroyIds();
-          //   }
-          // }, this);
         },
         onExit: function () {
           this.destroyIds();
@@ -61,7 +38,7 @@ sap.ui.define(
         initTab: function () {
           this.getView().setModel(new JSONModel([{
             vis1: this.newItemId()
-          }]), "tablaFlujo");
+          }]), this.viewConfig.tabModelName);
         },
         newItemId: function () {
           this.itemId++;
@@ -114,13 +91,13 @@ sap.ui.define(
             P3: oEvent.getParameter("value"),
             to_pesal: [],
           };
-          var lineContext = oEvent.getSource().getBindingContext("tablaFlujo");
+          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
           var sPath = lineContext.sPath;
           var lineData = lineContext.getObject();
           this.getCatData(oEntityData).then((res) => {
             var pernrData = res[0];
             lineData.vis2 = pernrData.C2;
-            this.getModel("tablaFlujo").setProperty(sPath, lineData);
+            this._tabModel.setProperty(sPath, lineData);
             console.log("departamentoLoaded");
           });
         },
@@ -153,8 +130,6 @@ sap.ui.define(
           }, this);
         },
         _showPopover: function (targetControl, popover) {
-          // var oCarpeta = this.getView().getModel("detailModel").getProperty(targetControl.getBindingContext("detailModel").sPath);
-          // this.byId("infoPopUpText").setText(oCarpeta.Ayuda);
           var testo = "asdfasdfasdf";
           this.byId("infoPopUpText").setText(testo);
           this.byId("popover").setTitle(testo);
@@ -166,13 +141,12 @@ sap.ui.define(
 
         onAddLine: function (oEvent) {
           console.log("Event Handler: onAddLine");
-          //agrego una linea vacía para poder cargar un material
-          // this.byId("mainTable").removeSelections(true)
-          var materiales = this.getView().getModel("tablaFlujo").getProperty("/");
-          materiales.push({
+          // this._oTab.removeSelections(true)
+          var items = this._tabModel.getProperty("/");
+          items.push({
             vis1: this.newItemId()
           });
-          this.getView().getModel("tablaFlujo").setProperty("/", materiales);
+          this._tabModel.setProperty("/", items);
         },
 
         onItemPress: function (oEvent) {
@@ -196,20 +170,20 @@ sap.ui.define(
         },
 
         onRemoveLines: function (oEvent) {
-          var itemTab = this.byId("mainTable").getItems();
+          var itemTab = this._oTab.getItems();
           var oEventBus = sap.ui.getCore().getEventBus();
-          this.byId("mainTable").getSelectedItems().forEach(element => {
+          this._oTab.getSelectedItems().forEach(element => {
             oEventBus.publish("flowReq", "delItem", {
-              itemId: element.getBindingContext("tablaFlujo").getObject().vis1
+              itemId: element.getBindingContext(this.viewConfig.tabModelName).getObject().vis1
             });
           }, this);
           var newTab = itemTab.filter(element => {
             return !element.getProperty("selected");
           }).map(element => {
-            return element.getBindingContext("tablaFlujo").getObject();
+            return element.getBindingContext(this.viewConfig.tabModelName).getObject();
           });
-          this.getModel("tablaFlujo").setData(newTab);
-          this.byId("mainTable").removeSelections(true);
+          this._tabModel.setData(newTab);
+          this._oTab.removeSelections(true);
         },
 
         mainTabSelect: function (oEvent) {
@@ -233,7 +207,7 @@ sap.ui.define(
           console.log("Event Handler: onHandleUploadComplete");
           var oFileUploader = oEvent.oSource;
           var inFile = oFileUploader.getFocusDomRef().files[0];
-          var lineItem = oEvent.oSource.getBindingContext("tablaFlujo");
+          var lineItem = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
           var reader = new FileReader();
           reader.onload = function (readerEvt) {
 
@@ -257,7 +231,7 @@ sap.ui.define(
             var name = inFile.name.substr(0, inFile.name.lastIndexOf("."));
             var ext = inFile.name.substr(inFile.name.lastIndexOf(".") + 1);
 
-            this.getModel("tablaFlujo").setProperty(lineItem.sPath + "/atta", false);
+            this._tabModel.setProperty(lineItem.sPath + "/atta", false);
             this.fileId++;
             this.loadedFiles.push({
               itemId: lineItem.getObject().vis1,
@@ -276,17 +250,17 @@ sap.ui.define(
             });
           }.bind(this);
           reader.onerror = function (err) {
-            this.getModel("tablaFlujo").setProperty(sPath + "/atta", false);
+            this._tabModel.setProperty(sPath + "/atta", false);
           }.bind(this);
           reader.readAsDataURL(inFile);
         },
 
         onHandleUploadStart: function (oEvent) {
-          this.getModel("tablaFlujo").setProperty(oEvent.getSource().getBindingContext("tablaFlujo").sPath + "/atta", true);
+          this._tabModel.setProperty(oEvent.getSource().getBindingContext("tablaFlujo").sPath + "/atta", true);
         },
 
         onTableUpdateFinished: function (oEvent) {
-          if (this.byId("mainTable").getSelectedItems().length === 0) {
+          if (this._oTab.getSelectedItems().length === 0) {
             this.byId("toolbarDel").setEnabled(false);
           }
         }
