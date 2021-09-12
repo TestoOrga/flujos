@@ -1,11 +1,13 @@
 sap.ui.define(
   ["bafar/flujos/flujos/controller/BaseController",
     "sap/ui/model/json/JSONModel",
-    "sap/m/MessageToast"
+    "sap/m/MessageToast",
+    "sap/m/MessageBox"
   ],
   function (BaseController,
     JSONModel,
-    MessageToast) {
+    MessageToast,
+    MessageBox) {
     "use strict";
 
     return BaseController.extend(
@@ -26,9 +28,14 @@ sap.ui.define(
           this._oTab = this.byId(this.viewConfig.tabControlId);
           console.log("finInit");
 
-          
+          var oEventBus = sap.ui.getCore().getEventBus();
+          oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
+          oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
+
         },
         onExit: function () {
+          oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
+          oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
           this.destroyIds();
         },
 
@@ -242,9 +249,31 @@ sap.ui.define(
             this.byId("toolbarDel").setEnabled(false);
           }
         },
-        getFlowData: function (oEvent){
+        getFlowData: function (oEvent) {
           return this._tabModel.getData();
-        }
+        },
+        getData: function () {
+          var oEventBus = sap.ui.getCore().getEventBus();
+          var result = this.getFlowData();
+          oEventBus.publish("flowResults", "flowData", {
+            res: result
+          });
+        },
+
+        getValInputs: function () {
+          var oEventBus = sap.ui.getCore().getEventBus();
+          var errorMsg = this.valInputs();
+          if (errorMsg !== "") {
+            MessageBox.error(errorMsg);
+            oEventBus.publish("flowResults", "flowValid", {
+              res: false
+            });
+          } else {
+            oEventBus.publish("flowResults", "flowValid", {
+              res: true
+            });
+          }
+        },
       }
     );
   }
