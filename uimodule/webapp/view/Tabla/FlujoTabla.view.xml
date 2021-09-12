@@ -14,7 +14,7 @@
                         <layout:content>
                             <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
                             <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine"></Button>
-                            <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLine" enabled="false"></Button>
+                            <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLines" enabled="false"></Button>
                             <Button id="toolbarLoad" text="{= ${device>/system/phone}?'':${i18n>XLSXload}}" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSXload}" press="onUploadTemplate" type="Transparent"/>
                             <Button id="toolbarDown" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>
                         </layout:content>
@@ -22,7 +22,7 @@
                 </content>
             </Toolbar>
             <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
-                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:true}" noDataText="{i18n>detailLineItemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false">
+                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:true}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished">
                     <columns>
                         <Column>
                             <Text text="Item" width="100px"/>
@@ -83,7 +83,7 @@
                                 <Text text="{tablaFlujo>vis6}"/>
                                 <Input value="{tablaFlujo>in6}" class="valInput"/>
                                 <Input value="{tablaFlujo>in7}" class="valInput"/>
-                                <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSX}" uploadComplete="onHandleUploadComplete" uploadOnChange="true" enabled="true" fileType="xlsx" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" />
+                                <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="onHandleUploadComplete" uploadOnChange="true" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}"/>
                             </cells>
                             <dependents>
                                 <ResponsivePopover id="popover" placement="PreferredTopOrFlip" resizable="true">

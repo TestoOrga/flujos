@@ -7,19 +7,17 @@
     <Panel expandable="true" width="auto" class="sapUiResponsiveMargin" backgroundDesign="Solid" headerText="{i18n>Comunes.archivosExtra}">
 
         <content>
-            <!-- <List id="idList" items="{files>/}" selectionChange="onSelectionChange" mode="MultiSelect" includeItemInSelection="true"> -->
-            <Table id="lineItemsList" width="auto" items="{path:'files>/', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" selectionChange="detailTabSelect">
+            <Table id="lineItemsList" width="auto" items="{path:'files>/', sorter: { path: 'itemId', group: true }, templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" selectionChange="detailTabSelect">
                 <infoToolbar>
                     <OverflowToolbar visible="true" id="idInfoToolbar" design="Transparent">
-                        <!-- <Label id="idFilterLabel" text="testo"/> -->
-                        <SearchField liveChange="onSearch" width="100%"/>
+                        <SearchField liveChange="onSearch" width="99%" showRefreshButton="true" />
                     </OverflowToolbar>
                 </infoToolbar>
                 <columns>
                     <Column width="auto">
                         <Text text="{i18n>archivosMultipleView.Nombre}"/>
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" width="auto">
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" width="auto">
                         <Text text="{i18n>archivosMultipleView.Detalles}"/>
                     </Column>
                     <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" width="auto">
@@ -29,21 +27,15 @@
                 <items>
                     <ColumnListItem >
                         <cells>
-                            <ObjectIdentifier title="{files>Archivo}" text="{files>Iddoc}" class="sapUiTinyMarginTopBottom"/>
-                            <VBox>
-                                <HBox alignContent="Center">
-                                    <Label text="{i18n>archivosMultipleView.FechaCreacion}" class="sapUiTinyMarginEnd"/>
-                                    <Text text="{ path: 'files>Erdat', formatter: '.formatter.date' }" />
-                                </HBox>
-                            </VBox>
+                            <ObjectIdentifier title="{files>archivo}.{files>ext}" text="{files>itemId}" class="sapUiTinyMarginTopBottom"/>                            
+                            <ObjectStatus inverted="true" state="{files>state}" text="{files>status}" textDirection="Inherit" title="{i18n>archivosMultipleView.estado}"/>                                                        
                             <HBox justifyContent="End" alignContent="Center">
-                                <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton sapUiTinyMarginEnd" press="onDownFile" />
+                                <!-- <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton sapUiTinyMarginEnd" press="onDownFile" /> -->
                                 <Button icon="sap-icon://delete" press="onItemDelete"/>
                             </HBox>
                         </cells>
                     </ColumnListItem>
                 </items>
-                <!-- </List> -->
             </Table>
         </content>
     </Panel>

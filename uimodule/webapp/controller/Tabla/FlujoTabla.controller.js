@@ -14,6 +14,9 @@ sap.ui.define(
          * @override
          */
         onInit: function () {
+          this.loadedFiles = [];
+          this.fileId = 0;
+          this.itemId = 0;
           // var testModel = [{
           //   C1: "000001",
           //   C2: "GUZMAN AUGUSTO",
@@ -33,7 +36,7 @@ sap.ui.define(
           // }];
           // this.getView().setModel(new JSONModel(testModel), "tablaFlujo");
           this.initTab();
-          console.log('finInit');
+          console.log("finInit");
           // this.getView().addEventDelegate({
           //   onBeforeHide: function (oEvent) {
           //     console.log("BeforeHide");
@@ -56,7 +59,13 @@ sap.ui.define(
           this.byId("popover").destroy();
         },
         initTab: function () {
-          this.getView().setModel(new JSONModel([{}]), "tablaFlujo");
+          this.getView().setModel(new JSONModel([{
+            vis1: this.newItemId()
+          }]), "tablaFlujo");
+        },
+        newItemId: function () {
+          this.itemId++;
+          return this.itemId.toString().padStart(6, "0");
         },
         formatDate: function (oDate) {
           if (oDate) {
@@ -156,10 +165,13 @@ sap.ui.define(
         },
 
         onAddLine: function (oEvent) {
+          console.log("Event Handler: onAddLine");
           //agrego una linea vacía para poder cargar un material
-          this.byId("mainTable").removeSelections(true)
+          // this.byId("mainTable").removeSelections(true)
           var materiales = this.getView().getModel("tablaFlujo").getProperty("/");
-          materiales.push({});
+          materiales.push({
+            vis1: this.newItemId()
+          });
           this.getView().getModel("tablaFlujo").setProperty("/", materiales);
         },
 
@@ -183,14 +195,21 @@ sap.ui.define(
           this.valInputs();
         },
 
-        onRemoveLine: function (oEvent) {
-          var tabItems = this.getView().getModel("tablaFlujo").getData();
-          var selItems = this.byId("mainTable").getSelectedItems();
-          selItems.forEach(element => {
-            var i = parseInt(element.getBindingContextPath("tablaFlujo").slice(1));
-            tabItems.splice(i, 1);
+        onRemoveLines: function (oEvent) {
+          var itemTab = this.byId("mainTable").getItems();
+          var oEventBus = sap.ui.getCore().getEventBus();
+          this.byId("mainTable").getSelectedItems().forEach(element => {
+            oEventBus.publish("flowReq", "delItem", {
+              itemId: element.getBindingContext("tablaFlujo").getObject().vis1
+            });
           }, this);
-          this.getModel("tablaFlujo").setData(tabItems);
+          var newTab = itemTab.filter(element => {
+            return !element.getProperty("selected");
+          }).map(element => {
+            return element.getBindingContext("tablaFlujo").getObject();
+          });
+          this.getModel("tablaFlujo").setData(newTab);
+          this.byId("mainTable").removeSelections(true);
         },
 
         mainTabSelect: function (oEvent) {
@@ -207,6 +226,68 @@ sap.ui.define(
             oEvent.getSource().setValueState("None");
           } else {
             oEvent.getSource().setValueState("Error");
+          }
+        },
+
+        onHandleUploadComplete: function (oEvent) {
+          console.log("Event Handler: onHandleUploadComplete");
+          var oFileUploader = oEvent.oSource;
+          var inFile = oFileUploader.getFocusDomRef().files[0];
+          var lineItem = oEvent.oSource.getBindingContext("tablaFlujo");
+          var reader = new FileReader();
+          reader.onload = function (readerEvt) {
+
+            console.log("processFile");
+            var byteCharacters = atob(readerEvt.target.result.split(",")[1]);
+            // Each character's code point (charCode) will be the value of the byte. We can create an array of byte values by applying this using the .charCodeAt method for each character in the string.
+            var byteNumbers = new Array(byteCharacters.length);
+            for (var i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            // convert this array of byte values into a real typed byte array by passing it to the Uint8Array constructor.
+            if (sap.ui.Device.browser.name === "ie") {
+              var byteArray = Uint8Array(byteNumbers);
+            } else {
+              byteArray = new Uint8Array(byteNumbers);
+            }
+            // This in turn can be converted to a BLOB by wrapping it in an array and passing it to the Blob constructor.
+            var fileData = new Blob([byteArray], {
+              type: inFile.type,
+            });
+            var name = inFile.name.substr(0, inFile.name.lastIndexOf("."));
+            var ext = inFile.name.substr(inFile.name.lastIndexOf(".") + 1);
+
+            this.getModel("tablaFlujo").setProperty(lineItem.sPath + "/atta", false);
+            this.fileId++;
+            this.loadedFiles.push({
+              itemId: lineItem.getObject().vis1,
+              fileId: this.fileId,
+              fileName: name,
+              fileExt: ext,
+              oFile: inFile,
+              fileData: fileData
+            });
+            var oEventBus = sap.ui.getCore().getEventBus();
+            oEventBus.publish("flowRes", "filesLoaded", {
+              itemId: lineItem.getObject().vis1,
+              fileId: this.fileId,
+              fileName: name,
+              fileExt: ext
+            });
+          }.bind(this);
+          reader.onerror = function (err) {
+            this.getModel("tablaFlujo").setProperty(sPath + "/atta", false);
+          }.bind(this);
+          reader.readAsDataURL(inFile);
+        },
+
+        onHandleUploadStart: function (oEvent) {
+          this.getModel("tablaFlujo").setProperty(oEvent.getSource().getBindingContext("tablaFlujo").sPath + "/atta", true);
+        },
+
+        onTableUpdateFinished: function (oEvent) {
+          if (this.byId("mainTable").getSelectedItems().length === 0) {
+            this.byId("toolbarDel").setEnabled(false);
           }
         }
       }
