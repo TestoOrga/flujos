@@ -34,6 +34,7 @@ sap.ui.define(
 
         },
         onExit: function () {
+          var oEventBus = sap.ui.getCore().getEventBus();
           oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
           oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
           this.destroyIds();

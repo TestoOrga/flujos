@@ -1,9 +1,10 @@
 sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
   "sap/ui/model/json/JSONModel",
   "sap/ui/model/Filter",
-  "sap/ui/model/FilterOperator"
+  "sap/ui/model/FilterOperator",
+  "bafar/flujos/onedrive/library"
 ], function (BaseController,
-  JSONModel, Filter, FilterOperator) {
+  JSONModel, Filter, FilterOperator, onedrive) {
   "use strict";
 
   return BaseController.extend(
@@ -12,6 +13,8 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
        * @override
        */
       onInit: function () {
+        var testo = new onedrive.Example();
+        var testa = new onedrive.oneDrive();
         this.viewConfig = {
           tabModelName: "files",
           tabControlId: "lineItemsList",
