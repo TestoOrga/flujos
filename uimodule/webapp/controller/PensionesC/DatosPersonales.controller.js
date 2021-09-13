@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
+/* global xlsx:true */
+/* global filesaver:true */
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/m/MessageToast"],
+  ["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "bafar/flujos/flujos/libs/filesaver", "bafar/flujos/flujos/libs/xlsx.full.min"],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, MessageToast) {
+  function (Controller, MessageToast, filesaver, xlsx) {
     "use strict";
 
     var noPersonalIn;
@@ -15,6 +17,44 @@ sap.ui.define(
       {
         onInit: function () {
           window.console.log("Se inicia onInit");
+          this.onDownloadAsExcel();
+        },
+
+        onDownloadAsExcel: function () {
+          // Test Data
+          var data = [
+            {
+              IN1: "dato1",
+              IN2: "dato2",
+              IN3: "dato3",
+              IN4: "dato4",
+            },
+          ];
+
+          const worksheet = XLSX.utils.json_to_sheet(data);
+          const workbook = {
+            Sheets: {
+              data: worksheet,
+            },
+            SheetNames: ["data"],
+          };
+          const excelBuffer = XLSX.write(workbook, {
+            bookType: "xlsx",
+            type: "array",
+          });
+          console.log(excelBuffer);
+          this.onSaveAsExcel(excelBuffer, "myFile");
+        },
+
+        onSaveAsExcel: function (buffer, filename) {
+          const EXCEL_TYPE =
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+          const EXCEL_EXTENSION = ".xlsx";
+          const data = new Blob([buffer], { type: EXCEL_TYPE });
+          saveAs(
+            data,
+            filename + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+          );
         },
 
         onEnterInputNoPersonal: function (oEvent) {
