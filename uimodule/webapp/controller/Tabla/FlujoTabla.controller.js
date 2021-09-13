@@ -225,7 +225,8 @@ sap.ui.define(
               fileName: name,
               fileExt: ext,
               oFile: inFile,
-              fileData: fileData
+              fileData: fileData,
+              size: readerEvt.total
             });
             var oEventBus = sap.ui.getCore().getEventBus();
             oEventBus.publish("flowRes", "filesLoaded", {
