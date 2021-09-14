@@ -1,6 +1,6 @@
 sap.ui.define(
-    ["sap/ui/core/UIComponent", "sap/ui/Device", "bafar/flujos/flujos/model/models"],
-    function (UIComponent, Device, models) {
+    ["sap/ui/core/UIComponent", "sap/ui/Device", "bafar/flujos/flujos/model/models", "./libs/OneDrive"],
+    function (UIComponent, Device, models, OneDrive) {
         "use strict";
 
         return UIComponent.extend("bafar.flujos.flujos.Component", {
@@ -22,6 +22,7 @@ sap.ui.define(
 
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
+                this.oOneDrive = new OneDrive(this);                
             }
         });
     }

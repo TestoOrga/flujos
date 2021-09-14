@@ -11,6 +11,10 @@ sap.ui.define(
         var sServiceUrl = "/sap/opu/odata/sap/ZOD_FLUJOS_SRV";
         this._oModel = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
       },
+      testo: function () {
+        console.log("testo OneDrive");
+        return 1;
+      },
       fetchToken: function () {
         return this.getTokenBack().then((response) => {
           console.log("habemus Token");
@@ -28,10 +32,7 @@ sap.ui.define(
         return new Promise((resolve, reject) => {
           resolve("noLogin");
         });
-      },panel: panelId,
-      oFileBack: oFileBack,
-panel: panelId,
-      oFileBack: oFileBack,
+      },
       getTokenBack: function () {
         var entitySet = "/TokenSet('o')"
         var that = this;
