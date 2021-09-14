@@ -28,13 +28,17 @@
         ]
     },
     {
-        "001001001": [            
+        "001001001": [
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.Tabla.FlujoTabla",
                 "viewId": "flujostabla",
                 "viewName": "bafar.flujos.flujos.view.Tabla.FlujoTabla"
-            },
+            }
+        ]
+    },
+    {
+        "NOM001002": [
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosMultiple",
@@ -42,8 +46,5 @@
                 "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosMultiple"
             }
         ]
-    },
-    {
-        "NOM001002": ""
     }
 ]
