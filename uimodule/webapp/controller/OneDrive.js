@@ -28,7 +28,10 @@ sap.ui.define(
         return new Promise((resolve, reject) => {
           resolve("noLogin");
         });
-      },
+      },panel: panelId,
+      oFileBack: oFileBack,
+panel: panelId,
+      oFileBack: oFileBack,
       getTokenBack: function () {
         var entitySet = "/TokenSet('o')"
         var that = this;
@@ -59,14 +62,11 @@ sap.ui.define(
       /* Upload                                                      */
       /* =========================================================== */
       UploadFiles: function (aFiles) {
-        this.fetchToken().then(res => {
-          this.processInputFile.bind(this), {
-            file: file,
-            oFileBack: oFileBack,
-            path: path,
-            panelId: panelId,
-          };
-        });
+        aFiles.forEach(file => {
+          this.fetchToken().then(() => {
+            this.processInputFile(file);
+          });
+        }, this);
       },
       //turns file uploaded into blob and calls upload routines
       processInputFile: function (oInFile) {
@@ -78,10 +78,10 @@ sap.ui.define(
               oInFile.oFileBack.Ruta + fileFolder)
             .then(
               function (res) {
-                this.sendResults(res, oInFile.panelId, oInFile.oFileBack);
+                this.sendResults(res, oInFile.ItemId);
               }.bind(this))
             .catch(function (error) {
-              this.sendError(error, oInFile.panelId, oInFile.oFileBack);
+              this.sendError(error, oInFile.ItemId);
             }.bind(this));
         } else {
           // small files
@@ -91,10 +91,10 @@ sap.ui.define(
               oInFile.oFileBack.Ruta + fileFolder)
             .then(
               function (res) {
-                this.sendResults(res, oInFile.panelId, oInFile.oFileBack);
+                this.sendResults(res, oInFile.ItemId);
               }.bind(this))
             .catch(function (error) {
-              this.sendError(error, oInFile.panelId, oInFile.oFileBack)
+              this.sendError(error, oInFile.ItemId)
             }.bind(this));
         }
       },
@@ -118,20 +118,18 @@ sap.ui.define(
       },
       /* =========================================================== */
       //sends result via events
-      sendResults: function (oRes, panelId, oFileBack) {
+      sendResults: function (oRes, itemId) {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.publish("driveAnswer", "fileUploaded", {
           result: oRes,
-          panel: panelId,
-          oFileBack: oFileBack,
+          itemId: itemId
         });
       },
-      sendError: function (oRes, panelId, oFileBack) {
+      sendError: function (oRes, itemId) {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.publish("driveAnswer", "fileUploadError", {
           result: oRes,
-          panel: panelId,
-          oFileBack: oFileBack,
+          itemId: itemId
         });
       },
       /* =========================================================== */
@@ -245,6 +243,7 @@ sap.ui.define(
           });
         });
       },
+
       /* =========================================================== */
       /* Download                                                    */
       /* =========================================================== */
