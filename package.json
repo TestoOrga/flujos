@@ -31,7 +31,7 @@
     "ui5-middleware-livereload": "^0.5.1",
     "ui5-middleware-simpleproxy": "^0.7.3",
     "ui5-task-transpile": "^0.1.7",
-    "onedrive": "1.0.0"
+    "zonedrive": "1.0.0"
   },
   "ui5": {
     "dependencies": [
@@ -40,7 +40,7 @@
       "@sap/ux-ui5-tooling",
       "ui5-task-transpile",
       "fiori-tools",
-      "onedrive"
+      "zonedrive"
     ]
   },
   "dependencies": {

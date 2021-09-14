@@ -48,6 +48,9 @@
       "async": true,
       "id": "idAppControl"
     },
+    "resourceRoots": {
+      "flujos.zonedrive": "../../zonedrive/flujos/zonedrive"
+    },
     "dependencies": {
       "minUI5Version": "1.87.0",
       "libs": {

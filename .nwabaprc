@@ -4,7 +4,7 @@
     "conn_server": "https://svgwdap0.grupobafar.com:8443/",
     "conn_client" : "100",
     "conn_user": "AGUZMAN",
-    "conn_password": "Sap_2021",
+    "conn_password": "Sapgw_2021",
     "abap_package": "ZHR",
     "abap_transport": "GWDK900420",
     "abap_bsp": "Z_FLUJOS",
