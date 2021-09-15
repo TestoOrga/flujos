@@ -4,6 +4,7 @@ sap.ui.define(
     "sap/m/MessageToast",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/mvc/XMLView",
+    "sap/m/MessageBox",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -90,7 +91,7 @@ sap.ui.define(
         oModel.create("/BaseSet", oEntityClaveBanco, {
           success: function (oData, oResponse) {
             // Success
-            sap.m.MessageToast.show(" Created Successfully");
+            // sap.m.MessageToast.show(" Created Successfully");
             window.console.log(oData.to_pesal.results);
             var data = oODataJSONModel.getData();
             data.claveBanco = oData.to_pesal.results;
@@ -101,14 +102,14 @@ sap.ui.define(
 
           error: function (oError) {
             // Error
-            sap.m.MessageToast.show(" Creation failed");
+            MessageBox.error("Creation failed");
           },
         });
 
         oModel.create("/BaseSet", oEntityViaPago, {
           success: function (oData, oResponse) {
             // Success
-            sap.m.MessageToast.show(" Created Successfully");
+            // sap.m.MessageToast.show(" Created Successfully");
             //window.console.log(oData.to_pesal);
             var data = oODataJSONModel.getData();
             data.viaPago = oData.to_pesal.results;
@@ -119,14 +120,14 @@ sap.ui.define(
 
           error: function (oError) {
             // Error
-            sap.m.MessageToast.show(" Creation failed");
+            MessageBox.error("Creation failed");
           },
         });
 
         oModel.create("/BaseSet", oEntityTipoDescuento, {
           success: function (oData, oResponse) {
             // Success
-            sap.m.MessageToast.show(" Created Successfully");
+            // sap.m.MessageToast.show(" Created Successfully");
             //window.console.log(oData.to_pesal);
             var data = oODataJSONModel.getData();
             data.tipoDescuento = oData.to_pesal.results;
@@ -137,7 +138,7 @@ sap.ui.define(
 
           error: function (oError) {
             // Error
-            sap.m.MessageToast.show(" Creation failed");
+            MessageBox.error("Creation failed");
           },
         });
 
@@ -197,7 +198,7 @@ sap.ui.define(
         });
         oSelectUnidadIntervalo.setModel(oODataJSONModel);
 
-        var descuentoSplit = descuentoText.split(' ')[1];
+        var descuentoSplit = descuentoText.split(" ")[1];
         this.getView().byId("descuentoCurrLabel").setVisible(true);
         this.getView().byId("descuentoCurrLabel").setText(descuentoSplit);
         this.getView().byId("descuentoCurr").setVisible(true);
@@ -229,7 +230,7 @@ sap.ui.define(
         var hour = today.getHours();
         var Minutes = today.getMinutes();
         var Seconds = today.getSeconds();
-        var today1 = (dd + '.' + mm + '.' + yyyy);
+        var today1 = (dd + "." + mm.toString().padStart(2, "0") + "." + yyyy);
         numeroOrdenDate = this.getView().byId("numeroOrdenDate");
         if (typeof (numeroOrdenDate) !== "undefined") {
           numeroOrdenDate.setValue(today1);
@@ -246,6 +247,7 @@ sap.ui.define(
           "receptor",
           "cuentaBancariaInput",
           "numeroOrdenInput",
+
           "_tipoDescuento",
           "_unidadIntervalo",
 
@@ -275,6 +277,9 @@ sap.ui.define(
             }
           }
         }
+        error = this.valClave(error);
+        error = this.valCantidad(error);
+
         if (error) {
           return false;
         } else {
@@ -282,12 +287,41 @@ sap.ui.define(
         }
       },
 
+      valCantidad: function (error) {
+        try {
+          if (this.byId("descuentoCurr").getValue().includes("NaN")) {
+            this.byId("descuentoCurr").setValueState("Error");
+            return true;
+          } else {
+            this.byId("descuentoCurr").setValueState("None");
+            return error;
+          };
+        } catch (oError) {
+          return error;
+        };
+      },
+
+      valClave: function (error) {
+        try {
+          var clave = (this.byId("cuentaBancariaInput").getValue().length);
+          if (clave < 18) {
+            this.byId("cuentaBancariaInput").setValueState("Error");
+            return true;
+          } else {
+            this.byId("cuentaBancariaInput").setValueState("None");
+            return error;
+          };
+        } catch (oError) {
+          return error;
+        };
+      },
+
       //Validate Fields JuridicaDeudas
 
       //Guardado JuridicaDeudas
       saveJuridicaDeudasData: function () {
 
-        var claveBancoSplit = claveBancoText.split(' ')[0];
+        var claveBancoSplit = claveBancoText.split(" ")[0];
         if (this.getView().byId("_viaPagoSelect")) {
           juridicaDeudasData = {
             ClaveBanco: claveBancoSplit,
@@ -300,7 +334,7 @@ sap.ui.define(
           juridicaDeudasData = {
             TipoDescuento: this.getView().byId("_tipoDescuento").getSelectedKey(),
             UnidadIntervalo: this.getView().byId("_unidadIntervalo").getSelectedKey(),
-            CantDescuento: this.getView().byId("descuentoCurr").getSelectedKey()
+            CantDescuento: this.getView().byId("descuentoCurr").getValue()
           };
         }
         return juridicaDeudasData;
@@ -326,9 +360,9 @@ sap.ui.define(
 
       //Descuento Currency field format
       formatCurrency: function () {
-        var formatter = new Intl.NumberFormat('en-us', {
-          style: 'currency',
-          currency: 'USD'
+        var formatter = new Intl.NumberFormat("en-us", {
+          style: "currency",
+          currency: "USD"
         });
         var currency = this.getView().byId("descuentoCurr").getValue();
         var currencyFormated = formatter.format(currency);
@@ -343,7 +377,7 @@ sap.ui.define(
       validateNumericValues: function (oEvent) {
         var inputCurrency = oEvent.getSource();
         var val = inputCurrency.getValue();
-        val = val.replace(/[^\d]/g, '');
+        val = val.replace(/[^\d]/g, "");
         inputCurrency.setValue(val);
       },
       onButAction: function () {
@@ -362,6 +396,18 @@ sap.ui.define(
         oEventBus.publish("flowResults", "flowData", {
           res: result
         });
+      },
+
+      claveInput: function (oEvent) {
+        oEvent.oSource.setValue(oEvent.getParameter("newValue").replace(/\D/g, ""));
+      },
+
+      numOrdenLiveChange: function (oEvent) {
+        oEvent.oSource.setValue(oEvent.getParameter("newValue").replace(/\D/g, ""));
+      },
+
+      cantLiveChange: function (oEvent) {
+        // oEvent.oSource.setValue(oEvent.getParameter("newValue").replace(/\D/g, ""));
       }
     });
   }

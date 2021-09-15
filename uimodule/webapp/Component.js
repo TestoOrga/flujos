@@ -1,6 +1,6 @@
 sap.ui.define(
-    ["sap/ui/core/UIComponent", "sap/ui/Device", "bafar/flujos/flujos/model/models"],
-    function (UIComponent, Device, models) {
+    ["sap/ui/core/UIComponent", "sap/ui/Device", "bafar/flujos/flujos/model/models", "./controller/SendData"],
+    function (UIComponent, Device, models, SendData) {
         "use strict";
 
         return UIComponent.extend("bafar.flujos.flujos.Component", {
@@ -15,6 +15,7 @@ sap.ui.define(
              */
             init: function () {
                 // call the base component's init function
+                this.oSendData = new SendData(this);
                 UIComponent.prototype.init.apply(this, arguments);
 
                 // enable routing

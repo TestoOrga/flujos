@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/m/MessageToast"],
+  ["sap/ui/core/mvc/Controller",
+	"sap/m/MessageBox"],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, MessageToast) {
+  function (Controller,
+	MessageBox) {
     "use strict";
 
     var noPersonalIn;
@@ -84,7 +86,7 @@ sap.ui.define(
             this.getView().byId("periodoRet_Input").setEnabled(true);
             this.getView().byId("periodoRet_Input1").setEnabled(true);
           } else {
-            sap.m.MessageToast.show("No existen registros");
+            MessageBox.error("No existen registros");
           }
         },
 
@@ -127,16 +129,15 @@ sap.ui.define(
             });
 
             if (oDataResults2.length === 0) {
-              sap.m.MessageToast.show("No existen registros");
+              this.byId("fechaIniRet_Input").setValue("");
+              MessageBox.error("No existen registros");              
             }
 
             // Seteat campo Fecha Ini Ret
             fechIniRet = oDataResults2[0].C1;
             this.getView().byId("fechaIniRet_Input").setValue(fechIniRet);
           } else {
-            sap.m.MessageToast.show(
-              "Favor de validar los campos Área Nómina / Periodo de retención"
-            );
+            MessageBox.error("Favor de validar los campos Área Nómina / Periodo de retención");            
           }
         },
 
@@ -170,17 +171,17 @@ sap.ui.define(
         onValidateInputs: function () {
           var datosPersonalesFields = [
             "noPeronsal_Input",
-            "noPeronsal_Input1",
-            "sociedad_Input",
-            "sociedad_Input1",
-            "division_Input",
-            "division_Input1",
-            "funcion_Input",
-            "funcion_Input1",
-            "areaNomina_Input",
+            // "noPeronsal_Input1",
+            // "sociedad_Input",
+            // "sociedad_Input1",
+            // "division_Input",
+            // "division_Input1",
+            // "funcion_Input",
+            // "funcion_Input1",
+            // "areaNomina_Input",
             "periodoRet_Input",
             "periodoRet_Input1",
-            "fechaIniRet_Input",
+            // "fechaIniRet_Input",
           ];
 
           var error = false;
@@ -232,17 +233,22 @@ sap.ui.define(
         onButAction: function () {
           //MessageToast.show("Datos Personales");
         },
-        getValInputs: function(){
+        getValInputs: function () {
           var oEventBus = sap.ui.getCore().getEventBus();
           var result = !this.onValidateInputs();
-          oEventBus.publish("flowResults", "flowValid", {res: result});
+          oEventBus.publish("flowResults", "flowValid", {
+            res: result
+          });
         },
-        getData: function(){
+        getData: function () {
           var oEventBus = sap.ui.getCore().getEventBus();
           var result = this.onGetDataFromInput();
           oEventBus.publish("flowResults", "flowData", {
             res: result
           });
+        },
+        periodoInput: function (oEvent) {
+          oEvent.oSource.setValue(oEvent.getParameter("newValue").replace(/\D/g, ""));
         }
       }
     );

@@ -27,10 +27,10 @@
 					</Select>
 					<Input id="_unidadIntervaloInput" editable="false" fieldWidth="100%"></Input>		
 					<Label id="descuentoCurrLabel" visible="false"/>
-					<Input id ="descuentoCurr" liveChange="" change="formatCurrency" visible ="false" width="35%"/>			
+					<Input id ="descuentoCurr" liveChange="cantLiveChange" change="formatCurrency" visible ="false" width="35%"/>			
 				</f:content>
 			</f:SimpleForm>
-			<Button id="But" text="Action" press="onButAction"/>
+			<!-- <Button id="But" text="Action" press="onButAction"/> -->
 		</content>
 	</Panel>
 

@@ -52,6 +52,7 @@ sap.ui.define(
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.subscribe("flowResults", "flowValid", this.onFlowValid, this);
         oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
+        oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);        
       },
       /**
        * @override
@@ -60,6 +61,7 @@ sap.ui.define(
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
         oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
+        oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);        
       },
 
       getDepartamento: function () {
@@ -314,13 +316,13 @@ sap.ui.define(
           this.valFlowRes.forEach(element => {
             if (!element) okFlow = false;
           });
-          this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
+          // this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
 
-          // if (okFlow) {
-          //   this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
-          // } else {
-          //   MessageBox.error(this.get18().getText("headerFlujosController.CompleteTodosLosCampos"));
-          // }
+          if (okFlow) {
+            this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
+          } else {
+            MessageBox.error(this.get18().getText("headerFlujosController.CompleteTodosLosCampos"));
+          }
         };
       },
       submitFlow: function () {
@@ -335,13 +337,17 @@ sap.ui.define(
         this.getFlowDataStart--;
         this.getFlowDataRes.push(flowData.res);
         if (this.getFlowDataStart === 0) {
-        console.log();
+        console.log("eventEnded");
+        this.getOwnerComponent().oSendData.mapData(this.headerData.departamento + this.headerData.actividad + this.headerData.proceso, this.getFlowDataRes);
           // if (flowData) {
         //   MessageToast.show({
         //     ...flowData
         //   });
         // }
         }
+      },
+      onFlowBackResult: function() {
+			
       },
       onCancelar: function () {
         this.onBack();
