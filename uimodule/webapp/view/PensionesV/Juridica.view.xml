@@ -6,12 +6,6 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:form="sap.ui.layout.form"
 	xmlns:layout="sap.ui.layout">
-	<!-- <Shell id="shell">
-		<App id="app">
-			<pages>
-				<Page id="page" title="{i18n>title}">
-					<content> -->
-
 	<Panel expandable="true" headerText="{i18n>Pensiones.Juridico.panel}" width="auto" class="sapUiResponsiveMargin" expanded="true">
 		<content>
 			<f:SimpleForm id="SimpleForm1" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
