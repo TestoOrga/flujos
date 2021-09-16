@@ -8,6 +8,7 @@
         <content>
             <Toolbar height="4rem">
                 <content>
+                <!--texto-->
                     <Title id="listTitle" text="{i18n>totalPosiciones}" class="sapUiSmallMarginBegin" titleStyle="H4"/>
                     <ToolbarSpacer id="space1"/>
                     <layout:HorizontalLayout allowWrapping="false">
