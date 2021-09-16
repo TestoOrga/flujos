@@ -369,8 +369,8 @@ sap.ui.define(
         } else {
           var messText = this.get18().getText("headerFlujosController.FlujoCreado", [this.headerData.id]);
           MessageBox.success(messText);
-          MessageToast.show("creado to reset");
-          // this.resetFlow();
+          // MessageToast.show("creado to reset");
+          this.resetFlow();
         }
       },
       onCancelar: function () {
