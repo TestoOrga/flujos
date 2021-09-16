@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
 sap.ui.define(
   ["sap/ui/core/mvc/Controller",
-	"sap/m/MessageBox"],
+    "sap/m/MessageBox"
+  ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
   function (Controller,
-	MessageBox) {
+    MessageBox) {
     "use strict";
 
     var noPersonalIn;
@@ -20,12 +21,14 @@ sap.ui.define(
           var oEventBus = sap.ui.getCore().getEventBus();
           oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
           oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
+          oEventBus.subscribe("flowResult", "dataError", this.showErrorTable, this);
 
         },
         onExit: function () {
           var oEventBus = sap.ui.getCore().getEventBus();
           oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
           oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
+          oEventBus.unsubscribe("flowResult", "dataError", this.showErrorTable, this);
         },
 
         onEnterInputNoPersonal: function (oEvent) {
@@ -130,14 +133,14 @@ sap.ui.define(
 
             if (oDataResults2.length === 0) {
               this.byId("fechaIniRet_Input").setValue("");
-              MessageBox.error("No existen registros");              
+              MessageBox.error("No existen registros");
             }
 
             // Seteat campo Fecha Ini Ret
             fechIniRet = oDataResults2[0].C1;
             this.getView().byId("fechaIniRet_Input").setValue(fechIniRet);
           } else {
-            MessageBox.error("Favor de validar los campos Área Nómina / Periodo de retención");            
+            MessageBox.error("Favor de validar los campos Área Nómina / Periodo de retención");
           }
         },
 
@@ -157,12 +160,12 @@ sap.ui.define(
             "fechaIniRet_Input",
           ];
 
-          var datosPersonalesData = [];
-
+          var datosPersonalesData = {};
+          var firstC = 11;
           for (var i = 0; i < datosPersonalesFields.length; i++) {
-            datosPersonalesData.push(
-              this.getView().byId(datosPersonalesFields[i]).getValue()
-            );
+            var backId = "C" + firstC;
+            datosPersonalesData[backId] = this.getView().byId(datosPersonalesFields[i]).getValue();
+            firstC++;
           }
           return datosPersonalesData;
           //console.log(datosPersonalesData);
@@ -249,7 +252,16 @@ sap.ui.define(
         },
         periodoInput: function (oEvent) {
           oEvent.oSource.setValue(oEvent.getParameter("newValue").replace(/\D/g, ""));
-        }
+        },
+        //Usa este controlador como el principal, no es necesario mostrar errores en todos los controladores
+        showErrorTable: function (sChannel, oEvent, res) {
+          var fragRes = {
+            "col1": true,
+            "col2": true,
+            "col3": true
+          };
+          this.getOwnerComponent().openErrorFrag(fragRes, res.res.to_pesal.results, this.getOwnerComponent().flowData.id + ": " + res.res.PeMsj);
+        },
       }
     );
   }

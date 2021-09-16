@@ -29,4 +29,11 @@ server:
       configuration:
         baseUri: "http://svgwdap0.grupobafar.com:8000/sap/opu/odata/sap/ZOD_FLUJOS_SRV/"
         username: "AGUZMAN"
-        password: "Sap_2021"
+        password: "Sapgw_2021"
+    - name: ui5-middleware-simpleproxy
+      afterMiddleware: compression
+      mountPath: /sap/opu/odata/sap/ZOD_FLUJOS_IN_SRV/
+      configuration:
+        baseUri: "http://svgwdap0.grupobafar.com:8000/sap/opu/odata/sap/ZOD_FLUJOS_IN_SRV/"
+        username: "AGUZMAN"
+        password: "Sapgw_2021"

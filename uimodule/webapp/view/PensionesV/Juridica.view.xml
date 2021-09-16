@@ -23,14 +23,14 @@
 					<Input id="receptor" value=""/>
 					<Label text="Cve. Banco" required="true"/>
 					<Select id="cveBancoSelect" maxWidth="100%" width ="auto" items="{ path: '/claveBanco', sorter: { path: 'C2', descending: false }}" change="onSelectClaveBanco" forceSelection="false">
-						<core:Item key="{C2}" text="{C1} {C2}"/>
+						<core:Item key="{C1}" text="{C1} {C2}"/>
 					</Select>
 					<Input id="_claveBancoInput" fieldWidth="100%" editable="false" maxLength="18" />
 					<Label required="true" text="Cuenta Bancaria"/>
 					<Input value="" id="cuentaBancariaInput" maxLength="18" liveChange="claveInput"/>
 					<Label required="true" text="Via Pago"/>
 					<Select id="_viaPagoSelect" maxWidth="100%" width ="auto" items="{/viaPago}" change="onSelectViaPago" forceSelection="false">
-						<core:Item key="{C2}" text="{C1}"/>
+						<core:Item key="{C1}" text="{C2}"/>
 					</Select>
 					<Input required="true" id="_viaPagoInput" fieldWidth="100%" editable="false"/>				
 				</f:content>

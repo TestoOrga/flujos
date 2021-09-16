@@ -13,6 +13,7 @@
 					<actions>
 						<m:Button id="headerFlujosButReset" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonReset}}" press="onReset" icon="sap-icon://reset" type="Transparent"/>
 						<m:Button id="headerFlujosButNuevo" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonNuevo}}" press="onAddFlow" icon="sap-icon://add" type="Emphasized"/>
+						<m:Button id="testo" press="testo" icon="sap-icon://add" type="Emphasized"/>
 					</actions>
 				</ObjectPageHeader>
 			</headerTitle>

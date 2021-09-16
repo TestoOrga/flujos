@@ -21,15 +21,16 @@ sap.ui.define(
       claveBancoText,
       juridicaDeudasModel;
 
-    var juridicaDeudasData = {
-      ClaveBanco: "",
-      vViaPago: "",
-      Receptor: "",
-      CuentaBancaria: "",
-      NumeroOrden: "",
-      TipoDescuento: "",
-      UnidadIntervalo: ""
-    }
+    var juridicaDeudasData = [];
+    // var juridicaDeudasData = {
+    //   ClaveBanco: "",
+    //   vViaPago: "",
+    //   Receptor: "",
+    //   CuentaBancaria: "",
+    //   NumeroOrden: "",
+    //   TipoDescuento: "",
+    //   UnidadIntervalo: ""
+    // }
 
     return Controller.extend("namespace.name.project3.controller.View1", {
       onInit: function () {
@@ -171,8 +172,8 @@ sap.ui.define(
         var oSelectUnidadIntervalo = this.getView().byId("_unidadIntervalo");
         if (selectedItem) {
           var descuentoKey = selectedItem.getKey();
-          var descuentoText = selectedItem.getText();
-          this.getView().byId("_tipoDescuentoInput").setValue(descuentoKey);
+          var descuentoText = selectedItem.getBindingContext().getObject().C2;
+          this.getView().byId("_tipoDescuentoInput").setValue(descuentoText);
           oEntityUnidadIntervalo.P3 = descuentoKey;
           this.getView().byId("_unidadIntervalo").setEnabled(true);
           this.getView().byId("_unidadIntervaloLabel").setText("Unidad Intervalo");
@@ -183,7 +184,7 @@ sap.ui.define(
         oModel.create("/BaseSet", oEntityUnidadIntervalo, {
           success: function (oData, oResponse) {
             // Success
-            sap.m.MessageToast.show(" Created Successfully");
+            // sap.m.MessageToast.show(" Created Successfully");
             //window.console.log(oData.to_pesal);
             var data = oODataJSONModel.getData();
             data.unidadIntervalo = oData.to_pesal.results;
@@ -198,9 +199,9 @@ sap.ui.define(
         });
         oSelectUnidadIntervalo.setModel(oODataJSONModel);
 
-        var descuentoSplit = descuentoText.split(" ")[1];
+        // var descuentoSplit = descuentoText.split(" ")[1];
         this.getView().byId("descuentoCurrLabel").setVisible(true);
-        this.getView().byId("descuentoCurrLabel").setText(descuentoSplit);
+        this.getView().byId("descuentoCurrLabel").setText(descuentoText);
         this.getView().byId("descuentoCurr").setVisible(true);
 
 
@@ -208,18 +209,20 @@ sap.ui.define(
       onSelectClaveBanco: function (oEvent) {
         var selectedItem = oEvent.getParameter("selectedItem");
         claveBancoKey = selectedItem.getKey();
-        claveBancoText = selectedItem.getText();
-        this.getView().byId("_claveBancoInput").setValue(claveBancoKey);
+        claveBancoText = selectedItem.getBindingContext().getObject().C2;
+        this.getView().byId("_claveBancoInput").setValue(claveBancoText);
       },
       onSelectViaPago: function (oEvent) {
         var selectedItem = oEvent.getParameter("selectedItem");
         var viaPagoKey = selectedItem.getKey();
-        this.getView().byId("_viaPagoInput").setValue(viaPagoKey);
+        var viaPagoText = selectedItem.getBindingContext().getObject().C2;
+        this.getView().byId("_viaPagoInput").setValue(viaPagoText);
       },
       onSelectUnidadIntervalo: function (oEvent) {
         var selectedItem = oEvent.getParameter("selectedItem");
         var unidadIntervaloKey = selectedItem.getKey();
-        this.getView().byId("_unidadIntervaloInput").setValue(unidadIntervaloKey);
+        var unidadIntervaloText = selectedItem.getBindingContext().getObject().C2;
+        this.getView().byId("_unidadIntervaloInput").setValue(unidadIntervaloText);
       },
       //Funcionalidad fecha actual 
       getDate: function () {
@@ -250,7 +253,7 @@ sap.ui.define(
 
           "_tipoDescuento",
           "_unidadIntervalo",
-
+          "descuentoCurr"
         ];
         var error = false;
         for (var i = 0; i < juridicaDeudasFields.length; i++) {
@@ -289,7 +292,8 @@ sap.ui.define(
 
       valCantidad: function (error) {
         try {
-          if (this.byId("descuentoCurr").getValue().includes("NaN")) {
+          if (this.byId("descuentoCurr").getValue().includes("NaN") ||
+            Number(this.byId("descuentoCurr").getValue()) >= 0) {
             this.byId("descuentoCurr").setValueState("Error");
             return true;
           } else {
@@ -321,36 +325,42 @@ sap.ui.define(
       //Guardado JuridicaDeudas
       saveJuridicaDeudasData: function () {
 
-        var claveBancoSplit = claveBancoText.split(" ")[0];
+        // var claveBancoSplit = claveBancoText.split(" ")[0];
         if (this.getView().byId("_viaPagoSelect")) {
-          juridicaDeudasData = {
-            ClaveBanco: claveBancoSplit,
-            ViaPago: this.getView().byId("_viaPagoSelect").getSelectedKey(),
-            Receptor: this.getView().byId("receptor").getValue(),
-            CuentaBancaria: this.getView().byId("cuentaBancariaInput").getValue(),
-            NumeroOrden: this.getView().byId("numeroOrdenInput").getValue()
-          };
+          var juridicaData = {
+            C22: this.getView().byId("numeroOrdenInput").getValue(),
+            C23: this.getView().byId("numeroOrdenDate").getValue(),
+            C24: this.getView().byId("receptor").getValue(),
+            C25: this.byId("cveBancoSelect").getSelectedKey(),
+            C26: this.byId("_claveBancoInput").getValue(),
+            C27: this.getView().byId("cuentaBancariaInput").getValue(),
+            C28: this.getView().byId("_viaPagoSelect").getSelectedKey(),
+            C29: this.getView().byId("_viaPagoInput").getValue()
+          }
+          return juridicaData;
         } else {
-          juridicaDeudasData = {
-            TipoDescuento: this.getView().byId("_tipoDescuento").getSelectedKey(),
-            UnidadIntervalo: this.getView().byId("_unidadIntervalo").getSelectedKey(),
-            CantDescuento: this.getView().byId("descuentoCurr").getValue()
+          var deudasData = {
+            C30: this.getView().byId("_tipoDescuento").getSelectedKey(),
+            C31: this.getView().byId("_tipoDescuentoInput").getValue(),
+            C32: this.getView().byId("_unidadIntervalo").getSelectedKey(),
+            C33: this.getView().byId("_unidadIntervaloInput").getValue(),
+            C34: this.currencyNum,
           };
+          return deudasData;
         }
-        return juridicaDeudasData;
 
         //GuardadoJuridicaDeudas
 
 
         /*juridicaDeudasData = {
-          ClaveBanco: "test",
-          vViaPago: "test",
-          Receptor: "test",
-          CuentaBancaria: "test",
-          NumeroOrden: "test",
-          TipoDescuento: "test",
-          UnidadIntervalo: "test"
-      }*/
+            ClaveBanco: "test",
+            vViaPago: "test",
+            Receptor: "test",
+            CuentaBancaria: "test",
+            NumeroOrden: "test",
+            TipoDescuento: "test",
+            UnidadIntervalo: "test"
+        }*/
 
 
         /*juridicaDeudasModel = new sap.ui.model.json.JSONModel();
@@ -360,12 +370,19 @@ sap.ui.define(
 
       //Descuento Currency field format
       formatCurrency: function () {
-        var formatter = new Intl.NumberFormat("en-us", {
+        var percent = this.byId("descuentoCurrLabel").getText().includes("orcent");
+        var options = (!percent ? {
           style: "currency",
           currency: "USD"
+        } : {
+          style: "percent",
+          minimumFractionDigits: 2
         });
-        var currency = this.getView().byId("descuentoCurr").getValue();
-        var currencyFormated = formatter.format(currency);
+        var formatter = new Intl.NumberFormat("en-us", options);
+        var currencyT = this.getView().byId("descuentoCurr").getValue();
+        var currency = isNaN(Number(currencyT)) ? 0 : currencyT;
+        this.currencyNum = currency;
+        var currencyFormated = formatter.format(percent ? currency / 100 : currency);
         this.getView().byId("descuentoCurr").setValue(currencyFormated);
 
         /*var currency = this.getView().byId("descuentoCurr").getValue();
@@ -410,5 +427,4 @@ sap.ui.define(
         // oEvent.oSource.setValue(oEvent.getParameter("newValue").replace(/\D/g, ""));
       }
     });
-  }
-);
+  });
