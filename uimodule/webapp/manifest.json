@@ -18,6 +18,14 @@
           "localUri": "localService/metadata.xml"
         }
       },
+      "createService":{
+        "uri": "/sap/opu/odata/sap/ZOD_FLUJOS_IN_SRV/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata1.xml"
+        }
+      },
       "flowConfig": {
         "uri": "localData/flowConfig.json",
         "type": "JSON"
@@ -72,6 +80,10 @@
       },
       "": {
         "dataSource": "mainService",
+        "preload": true
+      },
+      "createModel":{
+        "dataSource": "createService",
         "preload": true
       },
       "flowConfig": {

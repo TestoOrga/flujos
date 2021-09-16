@@ -1,0 +1,35 @@
+<c:FragmentDefinition xmlns="sap.m"
+    xmlns:c="sap.ui.core">
+    <Dialog id="resDialog" type="Message" contentWidth="{= ${device>/system/phone}?'100%':'50%'}" afterOpen="afterOpen">
+        <!-- <Text text="{fragRes>/col1} {fragRes>/col6}"></Text> -->
+        <Table id="idFragTable" items="{
+					path: 'fragResData>/',
+                    templateShareable:false 
+                    }">
+            <columns>
+                <Column id="fragColumn1" hAlign="Initial" />
+                <Column id="fragColumn2" hAlign="Center" demandPopin="true" minScreenWidth="600px" />
+                <Column id="fragColumn3" hAlign="Center" demandPopin="true" minScreenWidth="800px" />
+                <Column id="fragColumn4" hAlign="Initial" demandPopin="true" minScreenWidth="1000px" />
+                <Column id="fragColumn5" hAlign="Initial" demandPopin="true" minScreenWidth="1000px"  />
+                <Column id="fragColumn6" hAlign="End" demandPopin="true" minScreenWidth="1000px" />
+            </columns>
+            <items>
+                <ColumnListItem id="fragColumnListItem">
+                    <cells>
+                        <HBox id="fragHbox1" alignItems="Center">
+                            <Label text="{fragResData>C1}" design="Bold" class="sapUiSmallMarginEnd" visible="{fragRes>/col1}"/>
+                            <Label text="{fragResData>C2}" width="auto" class="sapUiSmallMarginEnd" visible="{fragRes>/col2}"/>
+                            <Label text="{fragResData>C3}" width="auto" class="sapUiSmallMarginEnd" visible="{fragRes>/col3}"/>
+                            <Label text="{fragResData>C4}" width="auto" class="sapUiSmallMarginEnd" visible="{fragRes>/col4}"/>
+                            <Label text="{fragResData>C5}" width="auto" class="sapUiSmallMarginEnd" visible="{fragRes>/col5}"/>
+                            <Label text="{fragResData>C6}" width="auto" class="sapUiSmallMarginEnd" visible="{fragRes>/col6}"/>
+                        </HBox>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        <!-- <Button press="onCloseDialog"> -->
+        <!-- </Button> -->
+    </Dialog>
+</c:FragmentDefinition>

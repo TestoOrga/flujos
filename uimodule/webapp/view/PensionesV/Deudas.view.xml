@@ -6,35 +6,24 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:form="sap.ui.layout.form"
 	xmlns:layout="sap.ui.layout">
-	<!-- <Shell id="shell">
-		<App id="app">
-			<pages>
-				<Page id="page" title="{i18n>title}">
-					<content> -->
-
 	<Panel expandable="true" headerText="{i18n>Pensiones.Deudas.panel}" width="auto" class="sapUiResponsiveMargin" expanded="true">
 		<content>
 			<f:SimpleForm id="SimpleForm1" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
 				<f:content>					
-					<Label text="Tipo Descuento"/>
+					<Label required="true" text="Tipo Descuento"/>
 					<Select id="_tipoDescuento" maxWidth="100%" width ="auto" items="{/tipoDescuento}" change="onSelectDescuento" forceSelection="false">
-						<core:Item key="{C2}" text="{C1}"/>
+						<core:Item key="{C1}" text="{C1} {C2}"/>
 					</Select>
 					<Input id="_tipoDescuentoInput"  fieldWidth="100%" editable="false"/>
-					<Label id="_unidadIntervaloLabel" text="Unidad Intervalo (Selecciona tipo descuento)"/>
-					<Select maxWidth="100%" width ="auto" id="_unidadIntervalo"  items="{/unidadIntervalo}" forceSelection="false" change="onSelectUnidadIntervalo">
-						<core:Item key="{C2}" text="{C1}"/>
+					<Label required="true" id="_unidadIntervaloLabel" text="Unidad Intervalo (Selecciona tipo descuento)"/>
+					<Select enabled="false" maxWidth="100%" width ="auto" id="_unidadIntervalo"  items="{/unidadIntervalo}" forceSelection="false" change="onSelectUnidadIntervalo">
+						<core:Item key="{C1}" text="{C1} {C2}"/>
 					</Select>
-					<Input id="_unidadIntervaloInput" editable="false" fieldWidth="100%"></Input>					
+					<Input id="_unidadIntervaloInput" editable="false" fieldWidth="100%"></Input>		
+					<Label id="descuentoCurrLabel" visible="false"/>
+					<Input id ="descuentoCurr" liveChange="cantLiveChange" change="formatCurrency" visible ="false" width="35%"/>			
 				</f:content>
 			</f:SimpleForm>
-			<Button id="But" text="Action" press="onButAction($event, 'Deudas')"/>
 		</content>
 	</Panel>
-
-	<!-- </content>
-				</Page>
-			</pages>
-		</App>
-	</Shell> -->
 </mvc:View>

@@ -47,6 +47,21 @@ sap.ui.define(
             console.log("display");
           }
         }, this);
+
+        //eventlisteners
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.subscribe("flowResults", "flowValid", this.onFlowValid, this);
+        oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
+        oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+      },
+      /**
+       * @override
+       */
+      onExit: function () {
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
+        oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
+        oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
       },
 
       getDepartamento: function () {
@@ -101,8 +116,8 @@ sap.ui.define(
       onAddFlow: function (oEvent) {
         console.log("Event handler: onAddFlow");
         var flowConfig = this.getModel("flowConfig").getData();
-        // var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
-        var flowKey = "001001001";
+        var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
+        // var flowKey = "001001001";
         var flowViews = flowConfig.find(x => x[flowKey]);
         if (flowViews) {
           this.addSpecFlow(flowViews[flowKey]);
@@ -158,6 +173,10 @@ sap.ui.define(
             var id = res[0].C1;
             this.headerData.id = id;
             this.byId("headerFLujosIdFlujo").setText(id);
+            this.getOwnerComponent().flowData.departamento = this.headerData.departamento;
+            this.getOwnerComponent().flowData.actividad = this.headerData.actividad;
+            this.getOwnerComponent().flowData.proceso = this.headerData.proceso;
+            this.getOwnerComponent().flowData.id = this.headerData.id;
           }
         });
         console.log("Event Handler: onAddFlow");
@@ -216,6 +235,12 @@ sap.ui.define(
         this.onConfirmDialogPress(fn ? fn : this.resetFlow.bind(this), text ? text : this.get18().getText("headerFlujos.ResetConfirmationQuestion"));
       },
       resetFlow: function () {
+        this.getOwnerComponent().flowData.departamento= "";
+        this.getOwnerComponent().flowData.actividad= "";
+        this.getOwnerComponent().flowData.proceso= "";
+        this.getOwnerComponent().flowData.id= "";
+        delete this.valFlowStart;
+        delete this.getFlowDataStart;
         this.clearHeader();
         this.setHeaderTitle(this.get18().getText("HeaderTitulo"));
         if (this.views) {
@@ -283,11 +308,70 @@ sap.ui.define(
 
       },
       onGrabar: function () {
-        this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true)
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.publish("flowRequest", "valFlow");
       },
+      onFlowValid: function (sChannel, oEvent, valOk) {
+        if (!this.valFlowStart) {
+          this.valFlowStart = sap.ui.getCore().getEventBus()._mChannels.flowRequest.mEventRegistry.valFlow.length;
+          this.valFlowRes = [];
+        }
+        this.valFlowStart--;
+        this.valFlowRes.push(valOk.res);
+        if (this.valFlowStart === 0) {
+          delete this.valFlowStart;
+          var okFlow = true;
+          this.valFlowRes.forEach(element => {
+            if (!element) okFlow = false;
+          });
+          // this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
 
+          if (okFlow) {
+            this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
+          } else {
+            MessageBox.error(this.get18().getText("headerFlujosController.CompleteTodosLosCampos"));
+          }
+        };
+      },
       submitFlow: function () {
-        MessageToast.show("Flujo enviado para creacion");
+        var oEventBus = sap.ui.getCore().getEventBus();
+        oEventBus.publish("flowRequest", "flowData");
+      },
+      onFlowData: function (sChannel, oEvent, flowData) {
+        if (!this.getFlowDataStart) {
+          this.getFlowDataStart = sap.ui.getCore().getEventBus()._mChannels.flowRequest.mEventRegistry.valFlow.length;
+          this.getFlowDataRes = [];
+        }
+        this.getFlowDataStart--;
+        this.getFlowDataRes = {
+          ...this.getFlowDataRes,
+          ...flowData.res
+        };
+        if (this.getFlowDataStart === 0) {
+          console.log("eventEnded");
+          this.getOwnerComponent().oSendData.mapData({
+            flowInfo: {
+              departamento: this.headerData.departamento,
+              actividad: this.headerData.actividad,
+              proceso: this.headerData.proceso,
+              id: this.headerData.id
+            },
+            flowData: this.getFlowDataRes
+          });
+        }
+      },
+      onFlowBackResult: function (sChannel, oEvent, res) {
+        var oEventBus = sap.ui.getCore().getEventBus();
+        if (res.PeTmsj === "E") {
+          oEventBus.publish("flowResult", "dataError", {
+            res: res
+          });
+        } else {
+          var messText = this.get18().getText("headerFlujosController.FlujoCreado", [this.headerData.id]);
+          MessageBox.success(messText);
+          // MessageToast.show("creado to reset");
+          this.resetFlow();
+        }
       },
       onCancelar: function () {
         this.onBack();
@@ -358,6 +442,24 @@ sap.ui.define(
       },
       setHeaderTitle: function (text) {
         this.byId("headerFlujosPageHeader").setObjectTitle(text);
+      },
+
+      testo: function (oEvent) {
+        // var headerTitle = "000001";
+        // var fragRes = {
+        //   "col1": true,
+        //   "col2": true,
+        // };
+        // var resto_pesal = [{
+        //   C1: "A",
+        //   C2: "s",
+        //   C6: "xxx"
+        // }, {
+        //   C1: "B",
+        //   C2: "s",
+        //   C6: "xxx"
+        // }];
+        // this.getOwnerComponent().openErrorFrag(fragRes, resto_pesal, this.getOwnerComponent().flowData.id);
       }
     });
   }

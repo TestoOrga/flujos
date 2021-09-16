@@ -28,7 +28,7 @@
         ]
     },
     {
-        "001001001": [
+        "NOM001002": [
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.Tabla.FlujoTabla",
@@ -44,7 +44,7 @@
         ]
     },
     {
-        "NOM001002": [
+        "001001001": [
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosMultiple",
