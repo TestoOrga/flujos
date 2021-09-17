@@ -1,8 +1,10 @@
+/* global xlsx:true */
+/* global filesaver:true */
 sap.ui.define(
   ["bafar/flujos/flujos/controller/BaseController",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox", "bafar/flujos/flujos/libs/filesaver", "bafar/flujos/flujos/libs/xlsx.full.min"
   ],
   function (BaseController,
     JSONModel,
@@ -23,6 +25,14 @@ sap.ui.define(
             tabModelName: "tablaFlujo",
             tabControlId: "mainTable",
           };
+          this.headerData = {
+            sociedad: "",
+            division: "",
+            tipo: ""
+          };
+          this.setModel(new JSONModel({
+            release: false
+          }), "viewGeneral");
           this.initTab();
           this._tabModel = this.getModel(this.viewConfig.tabModelName);
           this._oTab = this.byId(this.viewConfig.tabControlId);
@@ -32,6 +42,24 @@ sap.ui.define(
           oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
           oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
 
+        },
+        onBeforeRendering() {
+          var oPayload = {
+            P1: "CAT",
+            P2: "BUKRS",
+            to_pesal: []
+          };
+          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
+            this.setModel(new JSONModel(res), "sociedad");
+          });
+          oPayload = {
+            P1: "CAT",
+            P2: "PAGOS",
+            to_pesal: []
+          };
+          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
+            this.setModel(new JSONModel(res), "tipo");
+          })
         },
         onExit: function () {
           var oEventBus = sap.ui.getCore().getEventBus();
@@ -59,46 +87,57 @@ sap.ui.define(
             case "in1":
               this.getPernr(oEvent);
               break;
-
+            case "in2":
+              this.getCC(oEvent);
+              break;
             default:
               break;
           }
-          this.addpopover(oEvent.getSource().getParent().getAggregation("cells").find(x => x.sId.includes("attachPopover")));
-          oEvent.getSource().getParent().removeStyleClass("lineItemSucc");
-          oEvent.getSource().getParent().setHighlight("Error");
-          oEvent.getSource().getParent().addStyleClass("lineItemError");
-          console.log();
         },
 
         getPernr: function (oEvent) {
-          var oEntityData = {
+          var oPayload = {
             P1: "CAT",
             P2: "PERNR",
             P3: oEvent.getParameter("value"),
+            P4: this.headerData.sociedad,
+            P5: this.headerData.division,
             to_pesal: [],
           };
           var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
           var sPath = lineContext.sPath;
           var lineData = lineContext.getObject();
-          this.getCatData(oEntityData).then((res) => {
+          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
             var pernrData = res[0];
             lineData.vis2 = pernrData.C2;
             this._tabModel.setProperty(sPath, lineData);
-            console.log("departamentoLoaded");
+            console.log("PERNR Loaded");
+            this.loadPopOver(oEvent);
           });
-        },
-        getCatData: function (oPayload) {
-          return new Promise((resolve, reject) => {
-            this.getModel().create("/BaseSet", oPayload, {
-              async: true,
-              success: function (req, res) {
-                resolve(res.data.to_pesal.results);
-              },
-              error: function (error) {
-                reject(error);
-              }
-            });
-          })
+        },        
+        loadPopOver: function (oEvent) {
+          this.addpopover(oEvent.getSource().getParent().getAggregation("cells").find(x => x.sId.includes("attachPopover")));
+          // oEvent.getSource().getParent().removeStyleClass("lineItemSucc");
+          // oEvent.getSource().getParent().setHighlight("Error");
+          // oEvent.getSource().getParent().addStyleClass("lineItemError");
+          // console.log();			
+        },        
+        getCC: function (oEvent){
+          var oPayload = {
+            P1: "CAT",
+            P2: "CCNOM",
+            P3: this.headerData.tipo,
+            to_pesal: [],
+          };
+          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+          var sPath = lineContext.sPath;
+          var lineData = lineContext.getObject();          
+          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
+            var ccData = res[0];
+            lineData.vis2 = ccData.C2;
+            this._tabModel.setProperty(sPath, lineData);
+            console.log("CC Loaded");
+          });
         },
         addpopover: function (oControl) {
           this._popoverDelegate = {
@@ -276,6 +315,79 @@ sap.ui.define(
             });
           }
         },
+        onDownloadAsExcel: function () {
+          // Test Data
+          var data = [{
+            IN1: "dato1",
+            IN2: "dato2",
+            IN3: "dato3",
+            IN4: "dato4",
+          }, ];
+
+          const worksheet = XLSX.utils.json_to_sheet(data);
+          const workbook = {
+            Sheets: {
+              data: worksheet,
+            },
+            SheetNames: ["data"],
+          };
+          const excelBuffer = XLSX.write(workbook, {
+            bookType: "xlsx",
+            type: "array",
+          });
+          console.log(excelBuffer);
+          this.onSaveAsExcel(excelBuffer, "myFile");
+        },
+        onSaveAsExcel: function (buffer, filename) {
+          const EXCEL_TYPE =
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+          const EXCEL_EXTENSION = ".xlsx";
+          const data = new Blob([buffer], {
+            type: EXCEL_TYPE
+          });
+          saveAs(
+            data,
+            filename + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+          );
+        },
+        onDownTemplate: function (oEvent) {
+          this.onDownloadAsExcel();
+        },
+
+        onSelect: function (oEvent, param) {
+          var selKey = oEvent.oSource.getSelectedKey();
+          switch (param) {
+            case "sociedad":
+              this.headerData.sociedad = selKey;
+              var oPayload = {
+                P1: "CAT",
+                P2: "WERKS",
+                P3: selKey,
+                to_pesal: []
+              };
+              this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
+                if (res.length > 0) {
+                  this.setModel(new JSONModel(res), "division");
+                  this.byId("titleSelDivision").setEnabled(true);
+                }
+              });
+              break;
+            case "division":
+              this.headerData.division = selKey;
+              break;
+            default:
+              this.headerData.tipo = selKey;
+              break;
+          }
+          if (this.headerData.sociedad !== "" &&
+            this.headerData.division !== "" &&
+            this.headerData.tipo !== "") {
+            this.getModel("viewGeneral").setProperty("/release", true);
+          } else {
+            this.getModel("viewGeneral").setProperty("/release", false);
+          }
+        }
+
       }
     );
   }

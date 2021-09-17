@@ -37,7 +37,7 @@ sap.ui.define(
         // set the device model
         this.setModel(models.createDeviceModel(), "device");
         this.oErrorFrag = new ErrorFrag(this.getRootControl());
-        this.oOneDrive = new OneDrive(this); 
+        this.oOneDrive = new OneDrive(this);
       },
       exit: function () {
         this.oErrorFrag.destroy();
@@ -46,6 +46,19 @@ sap.ui.define(
       },
       openErrorFrag: function (config, data, title) {
         this.oErrorFrag.open(config, data, title);
+      },
+      getCatDataComp: function (oPayload, oModel) {
+        return new Promise((resolve, reject) => {
+          oModel.create("/BaseSet", oPayload, {
+            async: true,
+            success: function (req, res) {
+              resolve(res.data.to_pesal.results);
+            },
+            error: function (error) {
+              reject(error);
+            }
+          });
+        })
       }
     });
   }

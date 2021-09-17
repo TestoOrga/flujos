@@ -1,4 +1,4 @@
-<mvc:View controllerName="bafar.flujos.flujos.controller.PagosDescuentos.PagosDescuentos"
+<mvc:View xmlns:form="sap.ui.layout.form" controllerName="bafar.flujos.flujos.controller.PagosDescuentos.PagosDescuentos"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:c="sap.ui.core"
@@ -6,9 +6,25 @@
     xmlns:unified="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
     <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Datos Personales" height="auto" width="auto" class="sapUiResponsiveMargin">
         <content>
-            <Toolbar height="4rem">
+            <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
+                <form:content>
+                    <Label required="true" text="{i18n>PagosDescuentosView.Sociedad}"/>
+                    <Select maxWidth="100%" width ="auto" items="{sociedad>/}" change="onSelect($event, 'sociedad')" forceSelection="false">
+                        <c:Item key="{sociedad>C1}" text="{sociedad>C1} {sociedad>C2}"/>
+                    </Select>
+                    <Label required="true" text="{i18n>PagosDescuentosView.DivisionPersonal}" />
+                    <Select id="titleSelDivision" enabled="false" maxWidth="100%" width ="auto" items="{division>/}" change="onSelect($event, 'division')" forceSelection="false">
+                        <c:Item key="{division>C1}" text="{division>C1} {division>C2}"/>
+                    </Select>
+                    <Label required="true" text="{i18n>PagosDescuentosView.Tipo}"/>
+                    <Select maxWidth="100%" width ="auto" items="{tipo>/}" change="onSelect($event)" selectedKey="" forceSelection="false">
+                        <c:Item key="{tipo>C1}" text="{tipo>C1} {tipo>C2}"/>
+                    </Select>
+                </form:content>
+            </form:SimpleForm>
+            <Toolbar height="4rem" enabled="{viewGeneral>/release}">
                 <content>
-                <!--texto-->
+                    <!--texto-->
                     <Title id="listTitle" text="{i18n>totalPosiciones}" class="sapUiSmallMarginBegin" titleStyle="H4"/>
                     <ToolbarSpacer id="space1"/>
                     <layout:HorizontalLayout allowWrapping="false">
@@ -23,7 +39,7 @@
                 </content>
             </Toolbar>
             <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
-                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:true}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished">
+                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:true}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" blocked="{= !${viewGeneral>/release}}">
                     <columns>
                         <Column>
                             <Text text="Item" width="100px"/>
@@ -38,7 +54,7 @@
                             <Text text="A.N." width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Fecah Ingreso" width="100px"/>
+                            <Text text="Fec. Ingreso" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="CC nom." width="100px"/>
@@ -50,19 +66,19 @@
                             <Text text="Motivo" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="P.Ini" width="100px"/>
+                            <Text text="Importe" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="A.Ini" width="100px"/>
+                            <Text text="Periodo Inicio" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Periodo Fin" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Fecha Inicio" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Fecha Fin" width="100px"/>
-                        </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Importe" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Documentacion" width="100px"/>
@@ -78,19 +94,49 @@
                                 <Text text="{tablaFlujo>vis4}"/>
                                 <Input value="{tablaFlujo>in2}" class="valInput"/>
                                 <Text text="{tablaFlujo>vis5}"/>
-                                <Input value="{tablaFlujo>in3}" class="valInput"/>
+                                <!-- <Input value="{tablaFlujo>in3}" class="valInput"/> -->
+                                <DatePicker
+                                    displayFormat="WW-y"
+                                    maxDate=""
+                                    minDate=""                                                                   
+                                >
+                                    
+                                </DatePicker> 
+                                                       <DatePicker
+                                    displayFormat="ww-y"
+                                    maxDate=""
+                                    minDate=""                                                                   
+                                >
+                                    
+                                </DatePicker> 
+                                                                                    <DatePicker
+                                    displayFormat="y"
+                                    maxDate=""
+                                    minDate=""                                                                   
+                                >
+                                    
+                                </DatePicker> 
                                 <Input value="{tablaFlujo>in4}" class="valInput"/>
                                 <Input value="{tablaFlujo>in5}" class="valInput"/>
-                                <Text text="{tablaFlujo>vis6}"/>
                                 <Input value="{tablaFlujo>in6}" class="valInput"/>
-                                <Input value="{tablaFlujo>in7}" class="valInput"/>
+                                <Text text="{tablaFlujo>vis6}"/>
+                                <Text text="{tablaFlujo>vis7}"/>
                                 <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="onHandleUploadComplete" uploadOnChange="true" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}"/>
                             </cells>
                             <dependents>
                                 <ResponsivePopover id="popover" placement="PreferredTopOrFlip" resizable="true">
                                     <layout:VerticalLayout class="sapUiContentPadding" width="100%">
                                         <layout:content>
-                                            <Text ></Text>
+                                        <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
+                                                <form:content>
+                                                    <Label required="true" text="Sociedad"/>            
+                                                    <Text text="X"/>
+                                                    <Label required="true" text="Division Personal" />                                                    
+                                                    <Text text="Y"/>
+                                                    <Label required="true" text="Tipo"/>                                                    
+                                                    <Text text="Z"/>
+                                                </form:content>
+                                            </form:SimpleForm>                                            
                                         </layout:content>
                                     </layout:VerticalLayout>
                                 </ResponsivePopover>
