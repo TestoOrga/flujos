@@ -48,6 +48,7 @@ sap.ui.define(
         this.oErrorFrag.open(config, data, title);
       },
       getCatDataComp: function (oPayload, oModel) {
+        oModel.setUseBatch(false);
         return new Promise((resolve, reject) => {
           oModel.create("/BaseSet", oPayload, {
             async: true,

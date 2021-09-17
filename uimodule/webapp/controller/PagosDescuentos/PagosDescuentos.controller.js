@@ -90,9 +90,9 @@ sap.ui.define(
             case "in2":
               this.getCC(oEvent);
               break;
-            case "in4":
-                this.getPeriodo(oEvent);
-                break;
+            case "in5":
+              this.getPeriodo(oEvent);
+              break;
             default:
               break;
           }
@@ -113,19 +113,21 @@ sap.ui.define(
           this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
             var pernrData = res[0];
             lineData.vis2 = pernrData.C2;
+            lineData.vis3 = pernrData.C12;
+            lineData.vis4 = pernrData.C19;
             this._tabModel.setProperty(sPath, lineData);
             console.log("PERNR Loaded");
             this.loadPopOver(oEvent);
           });
-        },        
+        },
         loadPopOver: function (oEvent) {
           this.addpopover(oEvent.getSource().getParent().getAggregation("cells").find(x => x.sId.includes("attachPopover")));
           // oEvent.getSource().getParent().removeStyleClass("lineItemSucc");
           // oEvent.getSource().getParent().setHighlight("Error");
           // oEvent.getSource().getParent().addStyleClass("lineItemError");
           // console.log();			
-        },        
-        getCC: function (oEvent){
+        },
+        getCC: function (oEvent) {
           var oPayload = {
             P1: "CAT",
             P2: "CCNOM",
@@ -134,15 +136,15 @@ sap.ui.define(
           };
           var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
           var sPath = lineContext.sPath;
-          var lineData = lineContext.getObject();          
+          var lineData = lineContext.getObject();
           this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
             var ccData = res[0];
-            lineData.vis2 = ccData.C2;
+            lineData.vis5 = ccData.C2;
             this._tabModel.setProperty(sPath, lineData);
             console.log("CC Loaded");
           });
         },
-        getPeriodo: function (oEvent){
+        getPeriodo: function (oEvent) {
           var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
           var oPayload = {
             P1: "CAT",
@@ -151,14 +153,14 @@ sap.ui.define(
             to_pesal: [],
           };
           var sPath = lineContext.sPath;
-          var lineData = lineContext.getObject();          
+          var lineData = lineContext.getObject();
           this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
             var periodoData = res[0];
             lineData.vis2 = periodoData.C2;
             this._tabModel.setProperty(sPath, lineData);
             console.log("CC Loaded");
           });
-        },        
+        },
         addpopover: function (oControl) {
           this._popoverDelegate = {
             onmouseover: function (oEvent) {
@@ -375,6 +377,15 @@ sap.ui.define(
         },
 
         onSelect: function (oEvent, param) {
+          const afterSelect = () => {
+            if (this.headerData.sociedad !== "" &&
+              this.headerData.division !== "" &&
+              this.headerData.tipo !== "") {
+              this.getModel("viewGeneral").setProperty("/release", true);
+            } else {
+              this.getModel("viewGeneral").setProperty("/release", false);
+            }
+          };
           var selKey = oEvent.oSource.getSelectedKey();
           switch (param) {
             case "sociedad":
@@ -386,10 +397,17 @@ sap.ui.define(
                 to_pesal: []
               };
               this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
+                if (this.getModel("division")) {
+                  this.getModel("division").setProperty("/", []);
+                }
                 if (res.length > 0) {
                   this.setModel(new JSONModel(res), "division");
                   this.byId("titleSelDivision").setEnabled(true);
+                  this.headerData.division = this.byId("titleSelDivision").getSelectedKey();
+                } else {
+                  this.headerData.division = "";
                 }
+                afterSelect();
               });
               break;
             case "division":
@@ -399,15 +417,24 @@ sap.ui.define(
               this.headerData.tipo = selKey;
               break;
           }
-          if (this.headerData.sociedad !== "" &&
-            this.headerData.division !== "" &&
-            this.headerData.tipo !== "") {
-            this.getModel("viewGeneral").setProperty("/release", true);
-          } else {
-            this.getModel("viewGeneral").setProperty("/release", false);
-          }
+          afterSelect();
+        },
+        formatCurrency: function (oEvent) {
+          var options = {
+            style: "currency",
+            currency: "USD"
+          };
+          var formatter = new Intl.NumberFormat("en-us", options);
+          var currencyT = oEvent.oSource.getValue();
+          var currency = isNaN(Number(currencyT)) ? 0 : currencyT;
+          var currencyFormated = formatter.format(currency);
+          // this.getView().byId("descuentoCurr").setValue(currencyFormated);
+          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+          var lineData = lineContext.getObject();
+          lineData.in4 = currencyFormated;
+          lineData.in4Num = currency;
+          this._tabModel.setProperty(sPath, lineData);
         }
-
       }
     );
   }

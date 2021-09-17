@@ -44,7 +44,7 @@
         ]
     },
     {
-        "001001001": [
+        "NOM001002": [
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.PagosDescuentos.PagosDescuentos",
