@@ -90,6 +90,9 @@ sap.ui.define(
             case "in2":
               this.getCC(oEvent);
               break;
+            case "in4":
+                this.getPeriodo(oEvent);
+                break;
             default:
               break;
           }
@@ -139,6 +142,23 @@ sap.ui.define(
             console.log("CC Loaded");
           });
         },
+        getPeriodo: function (oEvent){
+          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+          var oPayload = {
+            P1: "CAT",
+            P2: "PERIODO",
+            P3: lineContext.getObject().vis3,
+            to_pesal: [],
+          };
+          var sPath = lineContext.sPath;
+          var lineData = lineContext.getObject();          
+          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
+            var periodoData = res[0];
+            lineData.vis2 = periodoData.C2;
+            this._tabModel.setProperty(sPath, lineData);
+            console.log("CC Loaded");
+          });
+        },        
         addpopover: function (oControl) {
           this._popoverDelegate = {
             onmouseover: function (oEvent) {

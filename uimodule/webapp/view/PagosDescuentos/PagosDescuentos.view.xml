@@ -94,28 +94,7 @@
                                 <Text text="{tablaFlujo>vis4}"/>
                                 <Input value="{tablaFlujo>in2}" class="valInput"/>
                                 <Text text="{tablaFlujo>vis5}"/>
-                                <!-- <Input value="{tablaFlujo>in3}" class="valInput"/> -->
-                                <DatePicker
-                                    displayFormat="WW-y"
-                                    maxDate=""
-                                    minDate=""                                                                   
-                                >
-                                    
-                                </DatePicker> 
-                                                       <DatePicker
-                                    displayFormat="ww-y"
-                                    maxDate=""
-                                    minDate=""                                                                   
-                                >
-                                    
-                                </DatePicker> 
-                                                                                    <DatePicker
-                                    displayFormat="y"
-                                    maxDate=""
-                                    minDate=""                                                                   
-                                >
-                                    
-                                </DatePicker> 
+                                <Input value="{tablaFlujo>in3}" class="valInput"/>          
                                 <Input value="{tablaFlujo>in4}" class="valInput"/>
                                 <Input value="{tablaFlujo>in5}" class="valInput"/>
                                 <Input value="{tablaFlujo>in6}" class="valInput"/>
