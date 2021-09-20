@@ -3,7 +3,7 @@ sap.ui.define(
   function (ManagedObject, MessageBox, Fragment, JSONModel) {
     "use strict";
 
-    return ManagedObject.extend("bafar.flujos.flujos.utils.SendData", {
+    return ManagedObject.extend("bafar.flujos.flujos.utils.ErrorFrag", {
       constructor: function (oView) {
         this._oView = oView;
       },

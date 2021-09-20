@@ -526,6 +526,10 @@ sap.ui.define(
           };
           this.getOwnerComponent().openErrorFrag(fragRes, res.res.to_pesal.results, this.getOwnerComponent().flowData.id + ": " + res.res.PeMsj);
         },
+        testo: function (){
+          this.getOwnerComponent().oOneDrive.fetchToken();
+          this.getOwnerComponent().oOneDrive.testo();
+        }
       }
     );
   }

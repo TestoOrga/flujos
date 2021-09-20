@@ -133,7 +133,7 @@
                         </ColumnListItem>
                     </items>
                 </Table>
-                <!-- <Button text="testoVal" press="validar"></Button> -->
+                <Button text="testoVal" press="testo"></Button>
             </ScrollContainer>
         </content>
     </Panel>

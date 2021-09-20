@@ -3,12 +3,12 @@ sap.ui.define(
   function (BaseObject, Log) {
     "use strict";
 
-    return BaseObject.extend("bf.exp.bafarexp.controller.OneDriveController", {
+    return BaseObject.extend("bafar.flujos.flujos.libs.OneDrive", {
       /* =========================================================== */
       /* drive configuration                                         */
       /* =========================================================== */
       constructor: function (oComponent) {
-        var sServiceUrl = "/sap/opu/odata/sap/ZOD_ONEDRIVE_API";
+        var sServiceUrl = "/sap/opu/odata/sap/ZOD_ONEDRIVE_SRV";
         this._oModel = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
       },
       testo: function () {
@@ -29,9 +29,9 @@ sap.ui.define(
         }.bind(this));
       },
       loginDrive: function () {
-        return new Promise((resolve, reject) => {
-          resolve("noLogin");
-        });
+        // return new Promise((resolve, reject) => {
+        //   resolve("noLogin");
+        // });
       },
       getTokenBack: function () {
         var entitySet = "/TokenSet('o')"
