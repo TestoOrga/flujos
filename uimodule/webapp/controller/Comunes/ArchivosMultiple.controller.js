@@ -76,6 +76,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         oEventBus.publish("flowRes", "filesLoaded", {
           filesTab: this._tabModel.getData()
         });
+        this._oTab.setBusy(true);
       },
 
       onSearch: function (oEvent) {
