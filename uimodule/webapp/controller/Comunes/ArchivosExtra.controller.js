@@ -1,7 +1,7 @@
 sap.ui.define([
-  "bafar/flujos/flujos/controller/BaseController", "sap/ui/model/json/JSONModel",   "sap/ui/model/Filter",
+  "bafar/flujos/flujos/controller/BaseController", "sap/ui/model/json/JSONModel", "sap/ui/model/Filter",
   "sap/ui/model/FilterOperator", "sap/m/GroupHeaderListItem"
-], function (BaseController, JSONModel, Filter, FilterOperator,  GroupHeaderListItem) {
+], function (BaseController, JSONModel, Filter, FilterOperator, GroupHeaderListItem) {
   "use strict";
 
   return BaseController.extend(
@@ -41,19 +41,18 @@ sap.ui.define([
         this._oTab = this.byId("lineItemsList");
         this.filesLoading = 0;
         this.loadedFiles = [];
-        this.fileId = 0;
 
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.subscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
-        // oEventBus.subscribe("flowReq", "delItem", this.deleteItemFiles, this);
-      },
+        oEventBus.subscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
+      },	
       /**
        * @override
        */
       onExit: function () {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.unsubscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
-        // oEventBus.unsubscribe("flowReq", "delItem", this.deleteItemFiles, this);
+        oEventBus.unsubscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
       },
 
       // receiveFilesLoaded: function (sChannel, oEvent, data) {
@@ -70,11 +69,8 @@ sap.ui.define([
       //   this._tabModel.setData(tabData);
       // },
       sendFilesFinal: function () {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.publish("flowRes", "filesLoaded", {
-          filesTab: this._tabModel.getData()
-        });
         this._oTab.setBusy(true);
+        return this._tabModel.getData();
       },
 
       onSearch: function (oEvent) {
@@ -147,7 +143,7 @@ sap.ui.define([
           // this._tabModel.setProperty(lineItem.sPath + "/atta", false);
           this.fileId++;
           this.loadedFiles.push({
-            fileId: this.fileId.toString(),
+            fileId: "000001",
             fileName: name,
             fileExt: ext,
             oFile: inFile,
@@ -173,6 +169,13 @@ sap.ui.define([
           console.log("Event Handler: onHandleUploadStart");
           this.getView().byId("cargaXLSX").setVisible(true);
         }
+      },
+      fileUpladed: function(sChannel, oEvent, data) {
+        //TODO change object Status
+      },
+
+      testo: function () {
+        this.getOwnerComponent().oOneDrive.UploadFiles(this.sendFilesFinal());
       }
     }
   );

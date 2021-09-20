@@ -1,24 +1,6 @@
 [
     {
-        "NOM001001": [
-            {
-                "controlId": "headerFlujosInsertPanel1",
-                "controllerName": "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
-                "viewId": "PensionesDatosPersonales",
-                "viewName": "bafar.flujos.flujos.view.PensionesV.DatosPersonales"
-            },
-            {
-                "controlId": "headerFlujosInsertPanel1",
-                "controllerName": "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
-                "viewId": "PensionesDatosJuridica",
-                "viewName": "bafar.flujos.flujos.view.PensionesV.Juridica"
-            },
-            {
-                "controlId": "headerFlujosInsertPanel1",
-                "controllerName": "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
-                "viewId": "PensionesDatosDeudas",
-                "viewName": "bafar.flujos.flujos.view.PensionesV.Deudas"
-            },
+        "NOM001001": [           
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosExtra",
@@ -58,5 +40,25 @@
                 "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosExtra"
             }
         ]
+    },
+
+    
+    {
+        "controlId": "headerFlujosInsertPanel1",
+        "controllerName": "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
+        "viewId": "PensionesDatosPersonales",
+        "viewName": "bafar.flujos.flujos.view.PensionesV.DatosPersonales"
+    },
+    {
+        "controlId": "headerFlujosInsertPanel1",
+        "controllerName": "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
+        "viewId": "PensionesDatosJuridica",
+        "viewName": "bafar.flujos.flujos.view.PensionesV.Juridica"
+    },
+    {
+        "controlId": "headerFlujosInsertPanel1",
+        "controllerName": "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
+        "viewId": "PensionesDatosDeudas",
+        "viewName": "bafar.flujos.flujos.view.PensionesV.Deudas"
     }
 ]

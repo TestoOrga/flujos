@@ -235,10 +235,10 @@ sap.ui.define(
         this.onConfirmDialogPress(fn ? fn : this.resetFlow.bind(this), text ? text : this.get18().getText("headerFlujos.ResetConfirmationQuestion"));
       },
       resetFlow: function () {
-        this.getOwnerComponent().flowData.departamento= "";
-        this.getOwnerComponent().flowData.actividad= "";
-        this.getOwnerComponent().flowData.proceso= "";
-        this.getOwnerComponent().flowData.id= "";
+        this.getOwnerComponent().flowData.departamento = "";
+        this.getOwnerComponent().flowData.actividad = "";
+        this.getOwnerComponent().flowData.proceso = "";
+        this.getOwnerComponent().flowData.id = "";
         delete this.valFlowStart;
         delete this.getFlowDataStart;
         this.clearHeader();
@@ -343,10 +343,16 @@ sap.ui.define(
           this.getFlowDataRes = [];
         }
         this.getFlowDataStart--;
-        this.getFlowDataRes = {
-          ...this.getFlowDataRes,
-          ...flowData.res
-        };
+        if (flowData.typeArr) {
+          flowData.res.forEach(element => {
+            this.getFlowDataRes.push(element);
+          })
+        } else {
+          this.getFlowDataRes = {
+            ...this.getFlowDataRes,
+            ...flowData.res
+          };
+        }
         if (this.getFlowDataStart === 0) {
           console.log("eventEnded");
           this.getOwnerComponent().oSendData.mapData({
@@ -445,7 +451,7 @@ sap.ui.define(
       },
 
       testo: function (oEvent) {
-        // var headerTitle = "000001";
+        // var headerTi
         // var fragRes = {
         //   "col1": true,
         //   "col2": true,
@@ -459,7 +465,9 @@ sap.ui.define(
         //   C2: "s",
         //   C6: "xxx"
         // }];
-        // this.getOwnerComponent().openErrorFrag(fragRes, resto_pesal, this.getOwnerComponent().flowData.id);
+        // this.getOwnerComponent().openErrorFrag(fragtle = "000001";Res, resto_pesal, this.getOwnerComponent().flowData.id);
+        this.getOwnerComponent().oOneDrive.fetchToken();
+        this.getOwnerComponent().oOneDrive.testo();
       }
     });
   }

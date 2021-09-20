@@ -94,7 +94,7 @@
                                 <!-- <Text text="{tablaFlujo>vis4}"/> -->
                                 <Text text="{path: 'tablaFlujo>vis4',formatter: '.formatter.fooErdat1'}"/>
                                 <!-- <Input value="{tablaFlujo>in2}" change="onInputChange($event, 'in2')" class="valInput"/> -->                                
-                                <Select id="in2" items="{path: 'in2>/', templateShareable: false}" change="onSelect($event, 'in2')" forceSelection="false" class="valInput">
+                                <Select id="in2" items="{path: 'in2>/', templateShareable: false}" selectedKey="{tablaFlujo>in2}" change="onSelect($event, 'in2')" forceSelection="false" class="valInput">
                                     <c:Item key="{in2>C1}" text="{in2>C1} {in2>C2}"/>
                                 </Select>
                                 <Text text="{tablaFlujo>vis5}"/>
@@ -102,10 +102,10 @@
                                 <Input value="{tablaFlujo>in4}" change="formatCurrency" class="valInput"/>
                                 <!-- <Input value="{tablaFlujo>in5}" change="onInputChange($event, 'in5')" class="valInput"/>
                                 <Input value="{tablaFlujo>in6}" class="valInput"/> -->
-                                <Select id="in5" items="{path: 'in5>/', templateShareable: false}" change="onSelect($event, 'in5')" forceSelection="false" class="valInput">
+                                <Select id="in5" items="{path: 'in5>/', templateShareable: false}" selectedKey="{tablaFlujo>in5}" change="onSelect($event, 'in5')" forceSelection="false" class="valInput">
                                     <c:Item key="{in5>C1}" text="{in5>C1}"/>
                                 </Select>
-                                <Select id="in6" items="{path: 'in6>/', templateShareable: false}" change="onSelect($event, 'in6')" forceSelection="false" class="valInput">
+                                <Select id="in6" items="{path: 'in6>/', templateShareable: false}" selectedKey="{tablaFlujo>in6}" change="onSelect($event, 'in6')" forceSelection="false" class="valInput">
                                     <c:Item key="{in6>C1}" text="{in6>C1}"/>
                                 </Select>
                                 <Text text="{path: 'tablaFlujo>vis6',formatter: '.formatter.fooErdat1'}"/>

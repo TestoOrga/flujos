@@ -15,6 +15,9 @@ sap.ui.define(
           case "NOM001001":
             this.NOM001001(flowInfo, arrData);
             break;
+          case "NOM001002":
+            this.NOM001002(flowInfo, arrData);
+            break;
           default:
             break;
         }
@@ -80,6 +83,39 @@ sap.ui.define(
         };
         this.submitCall(oPayload);
       },
+      NOM001002: function (flowInfo, arrData) {
+        var to_pesal = [];
+        arrData.forEach(element => {
+          to_pesal.push({
+            C1: "REG",
+            C5: element.in3,
+            C6: flowInfo.departamento,
+            C7: flowInfo.actividad,
+            C8: flowInfo.proceso,
+            C9: flowInfo.id,
+            C10: element.head1,
+            C11: element.head2,
+            C12: element.head3,
+            C13: element.vis1,
+            C14: element.in1,
+            C15: element.vis2,
+            C16: element.vis3,
+            C17: element.vis4,
+            C18: element.in2,
+            C19: element.vis5,
+            C20: element.in3,
+            C21: element.in4,
+            C22: element.in5,
+            C23: element.vis6,
+            C24: element.vis7
+          })
+        });
+        var oPayload = {
+          P1: "SEND",
+          to_pesal: to_pesal
+        };
+        // this.submitCall(oPayload);
+      }
     });
   }
 );

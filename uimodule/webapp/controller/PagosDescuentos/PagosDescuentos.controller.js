@@ -215,11 +215,16 @@ sap.ui.define(
           // this._showPopover(oEvent.getSource(), this.byId("popover"));
         },
         valInputs: function () {
-          var valError;
+          var valError = "";
           $(".valInput").each((i, e) => {
             var domRef = document.getElementById(e.id);
             var oControl = $(domRef).control()[0];
-            if (oControl.getValue() === "") {
+            try {
+              var value = oControl.getValue();
+            } catch (error) {
+              var value = oControl.getSelectedKey();
+            }
+            if (value === "") {
               oControl.setValueState("Error");
               valError = this.get18().getText("flujoTabla.camposVaceos");
             }
@@ -227,9 +232,9 @@ sap.ui.define(
           return valError;
         },
 
-        validar: function (oEvent) {
-          this.valInputs();
-        },
+        // validar: function (oEvent) {
+        //   this.valInputs();
+        // },
 
         onRemoveLines: function (oEvent) {
           var itemTab = this._oTab.getItems();
@@ -335,8 +340,14 @@ sap.ui.define(
         getData: function () {
           var oEventBus = sap.ui.getCore().getEventBus();
           var result = this.getFlowData();
+          result.forEach(element=>{
+            element.head1 = this.headerData.sociedad;
+            element.head2 = this.headerData.division;
+            element.head3 = this.headerData.tipo; 
+          })
           oEventBus.publish("flowResults", "flowData", {
-            res: result
+            res: result,
+            typeArr: true
           });
         },
 
@@ -526,7 +537,7 @@ sap.ui.define(
           };
           this.getOwnerComponent().openErrorFrag(fragRes, res.res.to_pesal.results, this.getOwnerComponent().flowData.id + ": " + res.res.PeMsj);
         },
-        testo: function (){
+        testo: function () {
           this.getOwnerComponent().oOneDrive.fetchToken();
           this.getOwnerComponent().oOneDrive.testo();
         }

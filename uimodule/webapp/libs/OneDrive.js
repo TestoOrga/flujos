@@ -8,8 +8,12 @@ sap.ui.define(
       /* drive configuration                                         */
       /* =========================================================== */
       constructor: function (oComponent) {
+        this.oComponent = oComponent
         var sServiceUrl = "/sap/opu/odata/sap/ZOD_ONEDRIVE_SRV";
-        this._oModel = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
+        this._oModel = new sap.ui.model.odata.v2.ODataModel(sServiceUrl, true);
+
+        var sServiceUrl1 = "/sap/opu/odata/sap/ZOD_FLUJOS_SRV";
+        this._oModelCat = new sap.ui.model.odata.v2.ODataModel(sServiceUrl1, true);
       },
       testo: function () {
         console.log("testo OneDrive");
@@ -60,42 +64,78 @@ sap.ui.define(
         });
       },
       /* =========================================================== */
+      /* Rutas                                                       */
+      /* =========================================================== */
+      getRoutesFromBack: function (oFile) {
+        const currDate = () => {
+          var today = new Date();
+          var dd = String(today.getDate()).padStart(2, "0");
+          var mm = String(today.getMonth() + 1).padStart(2, "0");
+          var yyyy = today.getFullYear();
+          return yyyy + mm + dd;
+        };
+        var oPayload = {
+          P1: "ONEDRIVE",
+          P2: this.oComponent.flowData.departamento,
+          P3: this.oComponent.flowData.actividad,
+          P4: this.oComponent.flowData.proceso,
+          P5: currDate(),
+          P6: this.oComponent.flowData.id,
+          P7: oFile.fileId,
+          to_pesal: []
+        };
+        return this.oComponent.getCatDataComp(oPayload, this._oModelCat);
+
+        // return new Promise((resolve, reject) => {
+        //   this._oModelCat.create("/BaseSet", oPayload, {
+        //     async: true,
+        //     success: function (req, res) {
+        //       resolve(res.data.to_pesal.results);
+        //     },
+        //     error: function (error) {
+        //       reject(error);
+        //     }
+        //   })
+        // })
+      },
+      /* =========================================================== */
       /* Upload                                                      */
       /* =========================================================== */
       UploadFiles: function (aFiles) {
         aFiles.forEach(file => {
-          this.fetchToken().then(() => {
-            this.processInputFile(file);
-          });
+          this.fetchToken()
+            .then(() => this.getRoutesFromBack(file))
+            .then((routes) => this.processInputFile(file, routes[0]))
+            .catch(error => this.sendError(error, file));
         }, this);
       },
       //turns file uploaded into blob and calls upload routines
-      processInputFile: function (oInFile) {
-        if (readerEvt.total > 4000000) {
+      processInputFile: function (oInFile, oRoutes) {
+        if (oInFile.size > 4000000) {
           this.uploadLargeFile({
-                fileName: oInFile.oFileBack.Archivo + "." + Ext,
-                fileData: fileData,
+                fileName: oInFile.fileName + "." + oInFile.fileExt,
+                fileData: oInFile.fileData,
               },
-              oInFile.oFileBack.Ruta + fileFolder)
+              oRoutes.C2 + oRoutes.C3)
             .then(
               function (res) {
-                this.sendResults(res, oInFile.ItemId);
+                this.sendResults(res, oInFile.fileId, oRoutes.C1);
               }.bind(this))
             .catch(function (error) {
-              this.sendError(error, oInFile.ItemId);
+              this.sendError(error, oInFile.fileId);
             }.bind(this));
         } else {
           // small files
           this.uploadToDrive(
-              fileData,
-              oInFile.oFileBack.Archivo + "." + Ext,
-              oInFile.oFileBack.Ruta + fileFolder)
+              oInFile.fileData,
+              oInFile.fileName + "." + oInFile.fileExt,
+              oRoutes.C2 + oRoutes.C3)
             .then(
               function (res) {
-                this.sendResults(res, oInFile.ItemId);
+                this.sendResults(res, oInFile.fileId, oRoutes.C1);
               }.bind(this))
             .catch(function (error) {
-              this.sendError(error, oInFile.ItemId)
+              this.sendError(error, oInFile.fileId)
             }.bind(this));
         }
       },
@@ -119,11 +159,12 @@ sap.ui.define(
       },
       /* =========================================================== */
       //sends result via events
-      sendResults: function (oRes, itemId) {
+      sendResults: function (oRes, itemId, seccId) {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.publish("driveAnswer", "fileUploaded", {
           result: oRes,
-          itemId: itemId
+          itemId: itemId,
+          seccId: seccId
         });
       },
       sendError: function (oRes, itemId) {
@@ -138,7 +179,7 @@ sap.ui.define(
         console.log("upload");
         var rootPath = "";
         var driveURL =
-          "https://graph.microsoft.com/v1.0/3e67a7ed-0ddf-4afa-ba03-f204fad6d749/users/d9b62329-106b-4b3d-83f6-919c6f76b457/drive/root:/" +
+          // "https://graph.microsoft.com/v1.0/3e67a7ed-0ddf-4afa-ba03-f204fad6d749/users/d9b62329-106b-4b3d-83f6-919c6f76b457/drive/root:/" +
           rootPath +
           fileFolder +
           "/" +

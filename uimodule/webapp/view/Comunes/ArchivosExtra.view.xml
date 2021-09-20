@@ -48,6 +48,7 @@
                     </ColumnListItem>
                 </items>
             </Table>
+            <Button press="testo"></Button>
         </content>
     </Panel>
 </mvc:View>
