@@ -9,38 +9,39 @@
             <OverflowToolbar visible="true" id="idInfoToolbar" design="Transparent">
                 <SearchField liveChange="onSearch" width="95%" showRefreshButton="true" />
             </OverflowToolbar>
-            <Table id="lineItemsList" width="auto" items="{path:'archivos>Seccion_Details/', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect">
+            <!-- mode="MultiSelect"  -->
+            <Table id="lineItemsList" width="auto" items="{path:'files>/', sorter: { path: 'itemOwner' , group: '.getGroup' }, groupHeaderFactory: '.getGroupHeader', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" selectionChange="detailTabSelect">
+
+                <!-- <Table id="lineItemsList" width="auto" items="{path:'archivos>Seccion_Details/', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect"> -->
                 <headerToolbar>
                     <Toolbar >
                         <Title id="lineItemsTitle" text="{detailView>/lineItemListTitle}" titleStyle="H5" level="H5"/>
                         <ToolbarSpacer/>
+                        <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>                        
                         <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownSelection" enabled="false" id="tabInPanelButtDown"/>
-                        <Button icon="sap-icon://add-photo" press="onAddPhoto"/>
-                        <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete" uploadOnChange="true" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" enabled="true" change="handleUploadChange"/>
+                        <Button icon="sap-icon://add-photo" press="onAddPhoto"/>                       
+                        <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete" uploadOnChange="true" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment"  uploadStart="onHandleUploadStart" change="onHandleUploadStart" />
                         <Button icon="sap-icon://delete" press="onTabDelete" id="tabInPanelButtDel" enabled="false"/>
                     </Toolbar>
                 </headerToolbar>
                 <columns>
-                    <Column>
-                        <Text text="{i18n>detailLineItemTableIDColumn}"/>
+                    <Column width="auto">
+                        <Text text="{i18n>archivosMultipleView.Nombre}"/>
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                        <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" width="auto">
+                        <Text text="{i18n>archivosMultipleView.Detalles}"/>
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                    <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" width="auto">
                         <Text text=" "/>
                     </Column>
                 </columns>
                 <items>
-                    <ColumnListItem>
+                    <ColumnListItem >
                         <cells>
-                            <ObjectIdentifier title="{archivos>Archivo}" text="{archivos>Iddoc}"/>
-                            <ObjectNumber number="{
-									path: 'Corto',
-									formatter: '.formatter.currencyValue'
-								}"/>
+                            <ObjectIdentifier title="{files>fileName}.{files>fileExt}" text="{files>fileId}" class="sapUiTinyMarginTopBottom"/>
+                            <ObjectStatus inverted="true" state="{files>state}" text="{files>status}" textDirection="Inherit" title="{i18n>archivosMultipleView.estado}"/>
                             <HBox justifyContent="End" alignContent="Center">
-                                <!-- <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownFile"/> -->
+                                <!-- <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton sapUiTinyMarginEnd" press="onDownFile" /> -->
                                 <Button icon="sap-icon://delete" press="onItemDelete"/>
                             </HBox>
                         </cells>
