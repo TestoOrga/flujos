@@ -11,6 +11,8 @@ sap.ui.define([
       onInit: function () {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.subscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
+        oEventBus.subscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
+        oEventBus.subscribe("flowReq", "delItem", this.deleteItemFiles, this);
       },
       /**
        * @override
@@ -18,6 +20,8 @@ sap.ui.define([
       onExit: function () {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.unsubscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
+        oEventBus.unsubscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
+        oEventBus.unsubscribe("flowReq", "delItem", this.deleteItemFiles, this);
       }
     }
   );

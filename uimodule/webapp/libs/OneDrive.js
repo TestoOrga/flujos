@@ -8,7 +8,7 @@ sap.ui.define(
       /* drive configuration                                         */
       /* =========================================================== */
       constructor: function (oComponent) {
-        var sServiceUrl = "/sap/opu/odata/sap/ZOD_FLUJOS_SRV";
+        var sServiceUrl = "/sap/opu/odata/sap/ZOD_ONEDRIVE_API";
         this._oModel = new sap.ui.model.odata.ODataModel(sServiceUrl, true);
       },
       testo: function () {

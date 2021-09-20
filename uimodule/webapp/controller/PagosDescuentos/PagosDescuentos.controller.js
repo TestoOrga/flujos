@@ -41,7 +41,7 @@ sap.ui.define(
           var oEventBus = sap.ui.getCore().getEventBus();
           oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
           oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
-
+          oEventBus.subscribe("flowResult", "dataError", this.showErrorTable, this);
         },
         onBeforeRendering() {
           var oPayload = {
@@ -65,6 +65,7 @@ sap.ui.define(
           var oEventBus = sap.ui.getCore().getEventBus();
           oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
           oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
+          oEventBus.unsubscribe("flowResult", "dataError", this.showErrorTable, this);
           this.destroyIds();
         },
 
@@ -87,12 +88,6 @@ sap.ui.define(
             case "in1":
               this.getPernr(oEvent);
               break;
-            case "in2":
-              this.getCC(oEvent);
-              break;
-            case "in5":
-              this.getPeriodo(oEvent);
-              break;
             default:
               break;
           }
@@ -110,62 +105,75 @@ sap.ui.define(
           var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
           var sPath = lineContext.sPath;
           var lineData = lineContext.getObject();
-          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
-            var pernrData = res[0];
-            lineData.vis2 = pernrData.C2;
-            lineData.vis3 = pernrData.C12;
-            lineData.vis4 = pernrData.C19;
-            this._tabModel.setProperty(sPath, lineData);
-            console.log("PERNR Loaded");
-            this.loadPopOver(oEvent);
-          });
+          var controlForPopover = oEvent.getSource().getParent().getAggregation("cells").find(x => x.sId.includes("attachPopover"));
+          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel())
+            .then((res) => {
+              var pernrData = res[0];
+              if (pernrData) {
+                lineData.vis2 = pernrData.C2;
+                lineData.vis3 = pernrData.C12;
+                lineData.vis4 = pernrData.C19;
+                lineData.popUp = {
+                  visP1: pernrData.C13,
+                  visP2: pernrData.C6,
+                  visP3: pernrData.C31,
+                  visP4: pernrData.C32,
+                };
+              } else {
+                lineData.vis2 = "";
+                lineData.vis3 = "";
+                lineData.vis4 = "";
+                lineData.popUp = {};
+              }
+              this._tabModel.setProperty(sPath, lineData);
+              console.log("PERNR Loaded");
+              this.loadPopOver(controlForPopover);
+            })
+            .then(
+              () => {
+                this.getPeriodo(lineContext);
+              }
+            );
         },
-        loadPopOver: function (oEvent) {
-          this.addpopover(oEvent.getSource().getParent().getAggregation("cells").find(x => x.sId.includes("attachPopover")));
+        loadPopOver: function (oControl) {
+          this.addpopover(oControl);
           // oEvent.getSource().getParent().removeStyleClass("lineItemSucc");
           // oEvent.getSource().getParent().setHighlight("Error");
           // oEvent.getSource().getParent().addStyleClass("lineItemError");
           // console.log();			
         },
-        getCC: function (oEvent) {
-          var oPayload = {
-            P1: "CAT",
-            P2: "CCNOM",
-            P3: this.headerData.tipo,
-            to_pesal: [],
-          };
-          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
-          var sPath = lineContext.sPath;
-          var lineData = lineContext.getObject();
-          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
-            var ccData = res[0];
-            lineData.vis5 = ccData.C2;
-            this._tabModel.setProperty(sPath, lineData);
-            console.log("CC Loaded");
-          });
-        },
-        getPeriodo: function (oEvent) {
-          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+        getPeriodo: function (oContext) {
+          var lineContext = oContext;
           var oPayload = {
             P1: "CAT",
             P2: "PERIODO",
             P3: lineContext.getObject().vis3,
             to_pesal: [],
           };
-          var sPath = lineContext.sPath;
-          var lineData = lineContext.getObject();
           this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
-            var periodoData = res[0];
-            lineData.vis2 = periodoData.C2;
-            this._tabModel.setProperty(sPath, lineData);
-            console.log("CC Loaded");
+            if (this.getModel("in5")) {
+              this.getModel("in5").setProperty("/", []);
+            }
+            if (res.length > 0) {
+              this.setModel(new JSONModel(res), "in5");
+              // var finDate = res.map(element => {
+              //   element.compareDate = element.C1.replace(".", "");
+              //   return element;
+              // })
+              this.setModel(new JSONModel(res), "in6");
+            }
           });
         },
         addpopover: function (oControl) {
           this._popoverDelegate = {
             onmouseover: function (oEvent) {
               // MessageToast.show("sadgfhsdfkgj");
-              this.attachPopoverOnMouseover(oEvent.srcControl, this.byId("popover"));
+              // this._showPopover.bind(this, targetControl, popover),
+              this._showPopover(oEvent.srcControl, this.byId("popover"));
+              // this.attachPopoverOnMouseover(oEvent.srcControl, this.byId("popover"));
+            },
+            onmouseout: function (oEvent) {
+              this._clearPopover(this.byId("popover"))
             }
           };
           oControl.addEventDelegate(this._popoverDelegate, this);
@@ -177,9 +185,16 @@ sap.ui.define(
           }, this);
         },
         _showPopover: function (targetControl, popover) {
-          var testo = "asdfasdfasdf";
-          this.byId("infoPopUpText").setText(testo);
-          this.byId("popover").setTitle(testo);
+          var lineData = this.getModel("tablaFlujo").getProperty(targetControl.getBindingContext("tablaFlujo").sPath);
+          // this.byId("infoPopUpText").setText(testo);
+          // var popModel = this.getModel("popLine");
+          // if (popModel) {
+          //   popModel.setProperty("/", "");
+          // } else {
+          this.byId("popover").setModel(new JSONModel(lineData.popUp), "popLine");
+          // }
+          // popModel.setProperty("/", lineData.popUp);
+          this.byId("popover").setTitle(lineData.popUp.vis1);
           this._timeId = setTimeout(() => popover.openBy(targetControl), 500);
         },
         _clearPopover: function (popover) {
@@ -292,6 +307,7 @@ sap.ui.define(
             var oEventBus = sap.ui.getCore().getEventBus();
             oEventBus.publish("flowRes", "filesLoaded", {
               itemId: lineItem.getObject().vis1,
+              itemOwner: lineItem.getObject().vis2,
               fileId: this.fileId,
               fileName: name,
               fileExt: ext
@@ -310,9 +326,10 @@ sap.ui.define(
         onTableUpdateFinished: function (oEvent) {
           if (this._oTab.getSelectedItems().length === 0) {
             this.byId("toolbarDel").setEnabled(false);
-          }
+          };
+          this.byId("listTitle").setText(this.get18().getText("totalPosiciones", [this._oTab.getItems().length]));
         },
-        getFlowData: function (oEvent) {
+        getFlowData: function () {
           return this._tabModel.getData();
         },
         getData: function () {
@@ -327,7 +344,7 @@ sap.ui.define(
           var oEventBus = sap.ui.getCore().getEventBus();
           var errorMsg = this.valInputs();
           if (errorMsg !== "") {
-            MessageBox.error(errorMsg);
+            // MessageBox.error(errorMsg);
             oEventBus.publish("flowResults", "flowValid", {
               res: false
             });
@@ -413,11 +430,77 @@ sap.ui.define(
             case "division":
               this.headerData.division = selKey;
               break;
-            default:
+            case "in2":
+              this.setCC(oEvent);
+              break;
+            case "in5":
+              this.setIniDate(oEvent);
+              break;
+            case "in6":
+              this.setEndDate(oEvent);
+              break;
+            case "tipo":
               this.headerData.tipo = selKey;
+              this.getCC(oEvent);
+              break;
+            default:
               break;
           }
           afterSelect();
+        },
+        setCC: function (oEvent) {
+          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+          var sPath = lineContext.sPath;
+          var lineData = lineContext.getObject();
+          var selDate = oEvent.oSource.getSelectedItem().getBindingContext("in2").getObject();
+          lineData.vis5 = selDate.C2;
+          this._tabModel.setProperty(sPath, lineData);
+        },
+        setEndDate: function (oEvent) {
+          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+          var sPath = lineContext.sPath;
+          var lineData = lineContext.getObject();
+          var selDate = oEvent.oSource.getSelectedItem().getBindingContext("in6").getObject();
+          lineData.vis7 = selDate.C3;
+          this._tabModel.setProperty(sPath, lineData);
+        },
+        setIniDate: function (oEvent) {
+          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+          var sPath = lineContext.sPath;
+          var lineData = lineContext.getObject();
+          var selDate = oEvent.oSource.getSelectedItem().getBindingContext("in5").getObject();
+          lineData.vis6 = selDate.C2;
+          lineData.vis7 = selDate.C3;
+          oEvent.oSource.getParent().getAggregation("cells").find(x => x.sId.includes("in6")).setSelectedKey(oEvent.oSource.getSelectedKey());
+          this._tabModel.setProperty(sPath, lineData);
+          this.restricEndDate(oEvent.oSource.getSelectedKey(), oEvent.oSource.getParent().getAggregation("cells").find(x => x.sId.includes("in6")));
+        },
+        restricEndDate: function (keyDate, oEndDateCell) {
+          // var bSelected = oControlEvent.getParameter("selectedItem").getProperty("text");
+          // bKeySelected = oControlEvent.getParameter("selectedItem").getKey();
+          //var Odata_Dept =
+          var tfilter = new sap.ui.model.Filter("C1", sap.ui.model.FilterOperator.GE, keyDate);
+          /*var categoryBinding = tdropdown.getBinding("items");
+          categoryBinding.filter=([tfilter]);*/
+          // oEndDateCell.getList().bindAggregation("items", tfilter);
+          //tdropdown.setModel(categoryjson).addStyleClass('dep1Cls'),
+          oEndDateCell.getBinding("items").filter(tfilter);
+        },
+        getCC: function (oEvent) {
+          var oPayload = {
+            P1: "CAT",
+            P2: "CCNOM",
+            P3: this.headerData.tipo,
+            to_pesal: [],
+          };
+          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
+            if (this.getModel("in2")) {
+              this.getModel("in2").setProperty("/", []);
+            }
+            if (res.length > 0) {
+              this.setModel(new JSONModel(res), "in2");
+            }
+          });
         },
         formatCurrency: function (oEvent) {
           var options = {
@@ -434,7 +517,15 @@ sap.ui.define(
           lineData.in4 = currencyFormated;
           lineData.in4Num = currency;
           this._tabModel.setProperty(sPath, lineData);
-        }
+        },
+        showErrorTable: function (sChannel, oEvent, res) {
+          var fragRes = {
+            "col1": true,
+            "col2": true,
+            "col3": true
+          };
+          this.getOwnerComponent().openErrorFrag(fragRes, res.res.to_pesal.results, this.getOwnerComponent().flowData.id + ": " + res.res.PeMsj);
+        },
       }
     );
   }

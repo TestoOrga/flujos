@@ -1,9 +1,10 @@
 sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
   "sap/ui/model/json/JSONModel",
   "sap/ui/model/Filter",
-  "sap/ui/model/FilterOperator"
+  "sap/ui/model/FilterOperator",
+  "sap/m/GroupHeaderListItem"
 ], function (BaseController,
-  JSONModel, Filter, FilterOperator) {
+  JSONModel, Filter, FilterOperator, GroupHeaderListItem) {
   "use strict";
 
   return BaseController.extend(
@@ -62,6 +63,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
           archivo: data.fileName,
           ext: data.fileExt,
           itemId: data.itemId.toString(),
+          itemOwner: data.itemOwner,
           state: "Warning",
           status: this.get18().getText("archivosMultipleController.pendienteDeGrabar")
         };
@@ -82,6 +84,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         var aFilter = [];
         if (sQuery) {
           aFilter = [new Filter("itemId", FilterOperator.Contains, sQuery)];
+          aFilter = [new Filter("itemOwner", FilterOperator.Contains, sQuery)];
         }
         this._oTab.getBinding("items").filter(aFilter, "Application");
       },
@@ -100,6 +103,18 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
           return element.itemId !== data.itemId.toString();
         });
         this._tabModel.setData(newFiles);
+      },
+      getGroup: function (oContext){
+        var sKey = this.getModel("files").getProperty(oContext.sPath);
+        return {
+          key: sKey.itemId,
+          title: sKey.itemId + " - " + sKey.itemOwner
+        };
+      },
+      getGroupHeader: function (oGroup) {
+        return new GroupHeaderListItem({
+          title: oGroup.title
+        });
       }
     }
   );

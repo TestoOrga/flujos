@@ -56,25 +56,30 @@
   padding-right: 0.2rem !important;
 }
 
-.sapUxAPBlockContainer{  
+.sapUxAPBlockContainer {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
-
 
 /*Tablelike Flows*/
 .sapMListTblSelCol .sapMCb.sapMLIBSelectM {
   margin-left: 5px;
 }
-@media (min-width: 600px) {
-  .lineItemSucc .sapMListTblSelCol .sapMCb.sapMLIBSelectM {
+@media (min-width: 600px) and (max-width: 1840px) {
+  .lineItemSucc .sapMListTblSelCol .sapMCb.sapMLIBSelectM { 
+    margin-left: 0px;
+  }  
+  .lineItemSucc .sapMListTblSelCol {
     border-left-width: 5px;
     margin-left: 0px;
     border-left-style: solid;
     border-left-color: var(--Positive);
     border-radius: 2px;
   }
-  .lineItemError .sapMListTblSelCol .sapMCb.sapMLIBSelectM {
+  .lineItemError .sapMListTblSelCol .sapMCb.sapMLIBSelectM { 
+    margin-left: 0px;
+  }
+  .lineItemError .sapMListTblSelCol {
     border-left-width: 5px;
     margin-left: 0px;
     border-left-style: solid;
@@ -88,4 +93,3 @@
     border-left-style: solid;
     border-left-color:white;
 } */
-
