@@ -35,9 +35,9 @@
             },
             {
                 "controlId": "headerFlujosInsertPanel1",
-                "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosExtra",
+                "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosMultiple",
                 "viewId": "ArchivosExtra",
-                "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosExtra"
+                "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosMultiple"
             }
         ]
     },
