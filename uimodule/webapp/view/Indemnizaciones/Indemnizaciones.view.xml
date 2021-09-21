@@ -1,11 +1,76 @@
-<mvc:View controllerName="bafar.flujos.flujos.controller.Tabla.Indemnizaciones"
+<mvc:View controllerName="bafar.flujos.flujos.controller.Indemnizaciones.Indemnizaciones"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:c="sap.ui.core"
     xmlns:layout="sap.ui.layout"
     xmlns:unified="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
-    <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Datos Personales" height="auto" width="auto" class="sapUiResponsiveMargin">
+    <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Indemnizaciones" height="auto" width="auto" class="sapUiResponsiveMargin">
         <content>
         </content>
     </Panel>
 </mvc:View>
+ <!-- <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:true}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished">
+                    <columns>
+                        <Column>
+                            <Text text="Item" width="100px"/>
+                        </Column>
+                        <Column hAlign="End">
+                            <Text text="No. Personal" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Nombre" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Fecha Baja" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Gpo." width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="SD" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="SPA" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="ANT" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Tipo" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Monto/Dias" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Motivo" width="100px"/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem class="lineItemSucc" highlight="Success" type="Navigation" press="onItemPress">
+                            <cells>
+                                <Text text="{tablaFlujo>vis1}" id="item"/>
+                                <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive" id="noPersonal"/>
+                                <Text text="{tablaFlujo>vis2}" id="nombre"/>
+                                <DatePicker xmlns="sap.m" id="pickerFechaBaja"/>
+                                <Text text="{tablaFlujo>vis3}" id="gpo"/>
+                                <Text text="{tablaFlujo>vis4}" id="SD"/>
+                                <Input value="{tablaFlujo>in2}" class="valInput" id="SPA"/>
+                                <Text text="{tablaFlujo>vis5}" id="ant"/>
+                                <Select id="selectTipo">
+						        <core:Item key="{}" text="{}"/>
+					            </Select>
+                                <Input value="{tablaFlujo>in3}" class="valInput" id="montoDias"/>
+                                <Input value="{tablaFlujo>in4}" class="valInput" id="motivo"/>
+                            </cells>
+                            <dependents>
+                                <ResponsivePopover id="popover" placement="PreferredTopOrFlip" resizable="true">
+                                    <layout:VerticalLayout class="sapUiContentPadding" width="100%">
+                                        <layout:content>
+                                            <Text ></Text>
+                                        </layout:content>
+                                    </layout:VerticalLayout>
+                                </ResponsivePopover>
+                            </dependents>
+                        </ColumnListItem>
+                    </items>
+                </Table> -->

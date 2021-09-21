@@ -1,11 +1,102 @@
-<mvc:View controllerName="bafar.flujos.flujos.controller.Tabla.CambioSueldo"
+<mvc:View controllerName="bafar.flujos.flujos.controller.CambioSueldo.CambioSueldo"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:c="sap.ui.core"
     xmlns:layout="sap.ui.layout"
     xmlns:unified="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
-    <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Datos Personales" height="auto" width="auto" class="sapUiResponsiveMargin">
-        <content>      
+    <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Cambios de Sueldo" height="auto" width="auto" class="sapUiResponsiveMargin">
+        <content>
         </content>
     </Panel>
 </mvc:View>
+
+                <!-- <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" blocked="{= !${viewGeneral>/release}}">
+                    <columns>
+                        <Column>
+                            <Text text="Item" width="100px"/>
+                        </Column>
+                        <Column hAlign="End">
+                            <Text text="No. Personal" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Nombre" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Sueldo" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Fec. Ingreso" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="CC nom." width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Texto CC" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Motivo" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Importe" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Periodo Inicio" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Periodo Fin" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Fecha Inicio" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Fecha Fin" width="100px"/>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Maximo" width="100px"/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem class="lineItemSucc" highlight="Success">
+                            <cells>
+                                <Text id="attachPopover" text="{tablaFlujo>vis1}"/>
+                                <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive"/>
+                                <Text text="{tablaFlujo>vis2}"/>
+                                <Text text="{tablaFlujo>vis3}"/>
+                                <Text text="{path: 'tablaFlujo>vis4',formatter: '.formatter.fooErdat1'}"/>
+                                <Select id="in2" items="{path: 'in2>/', templateShareable: false}" selectedKey="{tablaFlujo>in2}" change="onSelect($event, 'in2')" forceSelection="false" class="valInput resSelect">
+                                    <c:Item key="{in2>C1}" text="{in2>C1} {in2>C2}"/>
+                                </Select>
+                                <Text text="{tablaFlujo>vis5}"/>
+                                <TextArea value="{tablaFlujo>in3}" class="valInput"/>
+                                <Input value="{tablaFlujo>in4}" change="formatCurrency" class="valInput"/>
+                                <Select id="in5" items="{path: 'tablaFlujo>din5/', templateShareable: false}" selectedKey="{tablaFlujo>in5}" change="onSelect($event, 'in5')" forceSelection="false" class="valInput resSelect">
+                                    <c:Item key="{tablaFlujo>C1}" text="{tablaFlujo>C1}"/>
+                                </Select>
+                                <Select id="in6" items="{path: 'tablaFlujo>din6/', templateShareable: false}" selectedKey="{tablaFlujo>in6}" change="onSelect($event, 'in6')" forceSelection="false" class="valInput resSelect" >
+                                    <c:Item key="{tablaFlujo>C1}" text="{tablaFlujo>C1}"/>
+                                </Select>
+                                <Text text="{path: 'tablaFlujo>vis6',formatter: '.formatter.fooErdat1'}"/>
+                                <Text text="{path: 'tablaFlujo>vis7',formatter: '.formatter.fooErdat1'}"/>
+                                <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="onHandleUploadComplete" uploadOnChange="true" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" enabled="{= ${tablaFlujo>vis2} ? true : false}"/>
+                            </cells>
+                            <dependents>
+                                <ResponsivePopover id="popover" placement="PreferredTopOrFlip" resizable="true">
+                                    <layout:VerticalLayout class="sapUiContentPadding" width="100%">
+                                        <layout:content>
+                                            <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
+                                                <form:content>
+                                                    <Label required="true" text="Funcion"/>
+                                                    <Text text="{popLine>/visP1}"/>
+                                                    <Label required="true" text="Sudivision" />
+                                                    <Text text="{popLine>/visP2} - {popLine>/visP3}"/>
+                                                    <Label required="true" text="Fecha de Solicitud"/>
+                                                    <Text text="{path: 'popLine>/visP4',formatter: '.formatter.fooErdat1'}"/>
+                                                </form:content>
+                                            </form:SimpleForm>
+                                        </layout:content>
+                                    </layout:VerticalLayout>
+                                </ResponsivePopover>
+                            </dependents>
+                        </ColumnListItem>
+                    </items>
+                </Table> -->

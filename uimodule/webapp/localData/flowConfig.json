@@ -1,27 +1,29 @@
 [
     {
-        "NOM001001": [           
+        "NOM001001": [
+            {
+                "controlId": "headerFlujosInsertPanel1",
+                "controllerName": "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
+                "viewId": "PensionesDatosPersonales",
+                "viewName": "bafar.flujos.flujos.view.PensionesV.DatosPersonales"
+            },
+            {
+                "controlId": "headerFlujosInsertPanel1",
+                "controllerName": "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
+                "viewId": "PensionesDatosJuridica",
+                "viewName": "bafar.flujos.flujos.view.PensionesV.Juridica"
+            },
+            {
+                "controlId": "headerFlujosInsertPanel1",
+                "controllerName": "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
+                "viewId": "PensionesDatosDeudas",
+                "viewName": "bafar.flujos.flujos.view.PensionesV.Deudas"
+            },
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosExtra",
                 "viewId": "ArchivosExtra",
                 "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosExtra"
-            }
-        ]
-    },
-    {
-        "NOM001004": [
-            {
-                "controlId": "headerFlujosInsertPanel1",
-                "controllerName": "bafar.flujos.flujos.controller.Tabla.FlujoTabla",
-                "viewId": "flujostabla",
-                "viewName": "bafar.flujos.flujos.view.Tabla.FlujoTabla"
-            },
-            {
-                "controlId": "headerFlujosInsertPanel1",
-                "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosMultiple",
-                "viewId": "ArchivosMultiple",
-                "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosMultiple"
             }
         ]
     },
@@ -36,29 +38,41 @@
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosMultiple",
-                "viewId": "ArchivosExtra",
+                "viewId": "ArchivosMultiple",
                 "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosMultiple"
             }
         ]
     },
-
-    
     {
-        "controlId": "headerFlujosInsertPanel1",
-        "controllerName": "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
-        "viewId": "PensionesDatosPersonales",
-        "viewName": "bafar.flujos.flujos.view.PensionesV.DatosPersonales"
+        "NOM001003": [
+            {
+                "controlId": "headerFlujosInsertPanel1",
+                "controllerName": "bafar.flujos.flujos.controller.Indemnizaciones.Indemnizaciones",
+                "viewId": "flujostabla",
+                "viewName": "bafar.flujos.flujos.view.Indemnizaciones.Indemnizaciones"
+            },
+            {
+                "controlId": "headerFlujosInsertPanel1",
+                "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosMultiple",
+                "viewId": "ArchivosMultiple",
+                "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosMultiple"
+            }
+        ]
     },
     {
-        "controlId": "headerFlujosInsertPanel1",
-        "controllerName": "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
-        "viewId": "PensionesDatosJuridica",
-        "viewName": "bafar.flujos.flujos.view.PensionesV.Juridica"
-    },
-    {
-        "controlId": "headerFlujosInsertPanel1",
-        "controllerName": "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
-        "viewId": "PensionesDatosDeudas",
-        "viewName": "bafar.flujos.flujos.view.PensionesV.Deudas"
+        "NOM001004": [
+            {
+                "controlId": "headerFlujosInsertPanel1",
+                "controllerName": "bafar.flujos.flujos.controller.CambioSueldo.CambioSueldo",
+                "viewId": "flujostabla",
+                "viewName": "bafar.flujos.flujos.view.CambioSueldo.CambioSueldo"
+            },
+            {
+                "controlId": "headerFlujosInsertPanel1",
+                "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosMultiple",
+                "viewId": "ArchivosMultiple",
+                "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosMultiple"
+            }
+        ]
     }
 ]
