@@ -85,19 +85,11 @@ sap.ui.define(
           to_pesal: []
         };
         return this.oComponent.getCatDataComp(oPayload, this._oModelCat);
-
-        // return new Promise((resolve, reject) => {
-        //   this._oModelCat.create("/BaseSet", oPayload, {
-        //     async: true,
-        //     success: function (req, res) {
-        //       resolve(res.data.to_pesal.results);
-        //     },
-        //     error: function (error) {
-        //       reject(error);
-        //     }
-        //   })
-        // })
       },
+      /* =========================================================== */
+      /* infromar Back                                               */
+      /* =========================================================== */ 
+
       /* =========================================================== */
       /* Upload                                                      */
       /* =========================================================== */
