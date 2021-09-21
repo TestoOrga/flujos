@@ -13,8 +13,8 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
        * @override
        */
       onInit: function () {
-        var testo = this.getOwnerComponent().oOneDrive.testo();
-        console.log(testo);
+        // var testo = this.getOwnerComponent().oOneDrive.testo();
+        // console.log(testo);
         this.viewConfig = {
           tabModelName: "files",
           tabControlId: "lineItemsList",

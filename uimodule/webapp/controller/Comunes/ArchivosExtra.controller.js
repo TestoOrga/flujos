@@ -10,8 +10,6 @@ sap.ui.define([
        * @override
        */
       onInit: function () {
-        var testo = this.getOwnerComponent().oOneDrive.testo();
-        console.log(testo);
         this.viewConfig = {
           tabModelName: "files",
           tabControlId: "lineItemsList",
@@ -41,11 +39,13 @@ sap.ui.define([
         this._oTab = this.byId("lineItemsList");
         this.filesLoading = 0;
         this.loadedFiles = [];
+        this.fileId = 0;
 
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.subscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
         oEventBus.subscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
-      },	
+        oEventBus.subscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
+      },
       /**
        * @override
        */
@@ -53,6 +53,8 @@ sap.ui.define([
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.unsubscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
         oEventBus.unsubscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
+        oEventBus.unsubscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
+
       },
 
       // receiveFilesLoaded: function (sChannel, oEvent, data) {
@@ -70,7 +72,9 @@ sap.ui.define([
       // },
       sendFilesFinal: function () {
         this._oTab.setBusy(true);
-        return this._tabModel.getData();
+        var items = this._tabModel.getData();
+        this.itemsLoading = items.length;
+        return items;
       },
 
       onSearch: function (oEvent) {
@@ -143,7 +147,8 @@ sap.ui.define([
           // this._tabModel.setProperty(lineItem.sPath + "/atta", false);
           this.fileId++;
           this.loadedFiles.push({
-            fileId: "000001",
+            fileId: this.fileId.toString(),
+            itemId: "000001",
             fileName: name,
             fileExt: ext,
             oFile: inFile,
@@ -170,10 +175,38 @@ sap.ui.define([
           this.getView().byId("cargaXLSX").setVisible(true);
         }
       },
-      fileUpladed: function(sChannel, oEvent, data) {
-        //TODO change object Status
+      fileUpladed: function (sChannel, oEvent, data) {
+        this.itemsLoading--;
+        var lineObject = this._oTab.getItems().find(element => {
+          var lineData = element.getBindingContext("files");
+          if (lineData) {
+            if (lineData.getObject().fileId === data.itemId) return element;
+          }
+        }, this);
+        var oLine = lineObject.getAggregation("cells").find(x => x.sId.includes("fileStatus"));
+        oLine.setState("Success");
+        oLine.setText(this.get18().getText("ArchivosExtraController.ArchivoGrabadoEnOneDrive"));
+        this.endUpload();
+      },
+      fileUpladedError: function (sChannel, oEvent, data) {
+        this.itemsLoading--;
+        var lineObject = this._oTab.getItems().find(element => {
+          var lineData = element.getBindingContext("files");
+          if (lineData) {
+            if (lineData.getObject().fileId === data.itemId) return element;
+          }
+        }, this);
+        var oLine = lineObject.getAggregation("cells").find(x => x.sId.includes("fileStatus"));
+        oLine.setState("Error");
+        oLine.setText(this.get18().getText("ArchivosExtraController.NoSePudoGrabarElArchivo"));
+        this.endUpload();
       },
 
+      endUpload: function () {
+        if (this.itemsLoading === 0) {
+          this._oTab.setBusy(false);
+        }
+      },
       testo: function () {
         this.getOwnerComponent().oOneDrive.UploadFiles(this.sendFilesFinal());
       }

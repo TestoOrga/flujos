@@ -81,7 +81,7 @@ sap.ui.define(
           P4: this.oComponent.flowData.proceso,
           P5: currDate(),
           P6: this.oComponent.flowData.id,
-          P7: oFile.fileId,
+          P7: oFile.itemId,
           to_pesal: []
         };
         return this.oComponent.getCatDataComp(oPayload, this._oModelCat);
@@ -179,10 +179,10 @@ sap.ui.define(
         console.log("upload");
         var rootPath = "";
         var driveURL =
-          // "https://graph.microsoft.com/v1.0/3e67a7ed-0ddf-4afa-ba03-f204fad6d749/users/d9b62329-106b-4b3d-83f6-919c6f76b457/drive/root:/" +
+          "https://graph.microsoft.com/v1.0/3e67a7ed-0ddf-4afa-ba03-f204fad6d749/users/d9b62329-106b-4b3d-83f6-919c6f76b457/drive/root:/" +
           rootPath +
           fileFolder +
-          "/" +
+          // "/" +
           fileName +
           ":/content";
         return new Promise((resolve, reject) => {
