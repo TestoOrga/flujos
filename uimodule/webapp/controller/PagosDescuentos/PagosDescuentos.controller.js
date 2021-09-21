@@ -34,6 +34,9 @@ sap.ui.define(
           this.initTab();
           this._tabModel = this.getModel(this.viewConfig.tabModelName);
           this._oTab = this.byId(this.viewConfig.tabControlId);
+          this._tabModel.attachPropertyChange(function (oEvent, a, s, d) {
+            console.log("")
+          }, this);
           console.log("finInit");
 
           var oEventBus = sap.ui.getCore().getEventBus();
@@ -192,6 +195,11 @@ sap.ui.define(
         },
 
         onTableUpdateFinished: function (oEvent) {
+          this._oTab.getItems().filter(element => {
+            return element.getBindingContext("tablaFlujo").getObject().template
+          }).forEach(element => {
+            this.getPernr(undefined, element);
+          });
           if (this._oTab.getSelectedItems().length === 0) {
             this.byId("toolbarDel").setEnabled(false);
           };
@@ -208,6 +216,48 @@ sap.ui.define(
         /* =========================================================== */
         /* EXCEL                                                       */
         /* =========================================================== */
+        // onSelectionChange: function (oEvent) {
+        //   var oSelectedItem = oEvent.getParameter("listItem");
+        //   var oModel = oSelectedItem.getBindingContext().getObject();
+        //   alert(JSON.stringify(oModel));
+        // },
+        onHandleTempUploadStart: function (oEvent) {
+          if (oEvent.getParameter("newValue") !== "") {
+            this.templateFile = oEvent.getParameter("files")[0];
+            console.log("Event Handler: onHandleUploadStart");
+            this._oTab.setBusy(true);
+          }
+        },
+        handleTempUploadCompleted: function (oEvent) {
+          console.log("Event Handler: onHandleUploadComplete");
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            // pre-process data
+            var binary = "";
+            var bytes = new Uint8Array(e.target.result);
+            var length = bytes.byteLength;
+            for (var i = 0; i < length; i++) {
+              binary += String.fromCharCode(bytes[i]);
+            }
+            var workbook = XLSX.read(binary, {
+              type: "binary",
+              cellDates: true,
+              cellNF: false,
+              cellText: false,
+            });
+            var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            var jsonObj = XLSX.utils.sheet_to_json(worksheet, {
+              raw: false,
+              dateNF: "DD-MMM-YYYY",
+            });
+            this.setTempVals(jsonObj);
+            this._oTab.setBusy(false);
+          }.bind(this);
+          reader.onerror = function (err) {
+            this._oTab.setBusy(false);
+          }.bind(this);
+          reader.readAsArrayBuffer(this.templateFile);
+        },
         onDownloadAsExcel: function () {
           // Test Data
           var data = [{
@@ -246,6 +296,9 @@ sap.ui.define(
         onDownTemplate: function (oEvent) {
           this.onDownloadAsExcel();
         },
+
+
+
         /* =========================================================== */
         /* Peticiones externas                                         */
         /* =========================================================== */
@@ -297,20 +350,21 @@ sap.ui.define(
               break;
           }
         },
-        getPernr: function (oEvent) {
-          this.resetPeriodos(oEvent.getSource().getParent().getAggregation("cells"));
+        getPernr: function (oEvent, oExtControl) {
+          var oControl = oExtControl ? oExtControl : oEvent.getSource();
+          if (oEvent) this.resetPeriodos(oControl.getParent().getAggregation("cells"));
           var oPayload = {
             P1: "CAT",
             P2: "PERNR",
-            P3: oEvent.getParameter("value"),
+            P3: oEvent ? oEvent.getParameter("value") : oControl.getBindingContext("tablaFlujo").getObject().in1,
             P4: this.headerData.sociedad,
             P5: this.headerData.division,
             to_pesal: [],
           };
-          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+          var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
           var sPath = lineContext.sPath;
           var lineData = lineContext.getObject();
-          var controlForPopover = oEvent.getSource().getParent().getAggregation("cells").find(x => x.sId.includes("attachPopover"));
+          var controlForPopover = (oEvent ? oControl.getParent().getAggregation("cells") : oControl.getAggregation("cells")).find(x => x.sId.includes("attachPopover"));
           this.getOwnerComponent().getCatDataComp(oPayload, this.getModel())
             .then((res) => {
               var pernrData = res[0];
@@ -518,6 +572,23 @@ sap.ui.define(
           lineData.in4 = currencyFormated;
           lineData.in4Num = currency;
           this._tabModel.setProperty(sPath, lineData);
+        },
+        //TODO
+        setTempVals: function (oTab) {
+          if (oTab.length > 0) {
+            var tabData = this._tabModel.getProperty("/");
+            oTab.forEach(element => {
+              tabData.push({
+                template: true,
+                in1: element.IN1,
+                in2: element.IN2,
+                in5: element.IN3.padStart(7, "0")
+              });
+            });
+            this._tabModel.setProperty("/", tabData);
+            this._oTab.removeSelections(true);
+            this._tabModel.refresh(true);
+          }
         }
       }
     );
