@@ -23,9 +23,6 @@ sap.ui.define(
         }
       },
       submitCall: function (oPayload) {
-        // var sServiceUrl = "/sap/opu/odata/sap/ZOD_FLUJOS_IN_SRV";
-        // oModel = new sap.ui.model.odata.v2.ODataModel(sServiceUrl, true);
-        // var oModel = this.getModel("createModel");        
         var that = this;
         this.createModel.create("/BaseSet", oPayload, {
           async: true,
@@ -93,28 +90,52 @@ sap.ui.define(
             C7: flowInfo.actividad,
             C8: flowInfo.proceso,
             C9: flowInfo.id,
-            C10: element.head1,
-            C11: element.head2,
-            C12: element.head3,
-            C13: element.vis1,
-            C14: element.in1,
-            C15: element.vis2,
-            C16: element.vis3,
-            C17: element.vis4,
-            C18: element.in2,
-            C19: element.vis5,
-            C20: element.in3,
-            C21: element.in4,
-            C22: element.in5,
-            C23: element.vis6,
-            C24: element.vis7
+            C11: element.head1,
+            C12: element.head2,
+            C13: element.head3,
+            C14: element.vis1,
+            C15: element.in1,
+            C16: element.vis2,
+            C17: element.vis3,
+            C18: element.vis4,
+            C19: element.in2,
+            C20: element.vis5,
+            C21: element.in3,
+            C22: element.in4,
+            C23: element.in5,
+            C24: element.vis6,
+            C25: element.vis7
           })
+          // to_pesal.push({
+          //   C1: "REG",
+          //   C5: element.in3,
+          //   C6: flowInfo.departamento,
+          //   C7: flowInfo.actividad,
+          //   C8: flowInfo.proceso,
+          //   C9: flowInfo.id,
+          //   // C10: element.head1,
+          //   C11: "1002",
+          //   C12: "1030",
+          //   C13: "001",
+          //   C14: element.vis1,
+          //   C15: element.in1,
+          //   C16: element.vis2,
+          //   C17: element.vis3,
+          //   C18: element.vis4,
+          //   C19: element.in2,
+          //   C20: element.vis5,
+          //   C21: element.in3,
+          //   C22: element.in4,
+          //   C23: element.in5,
+          //   C24: element.vis6,
+          //   C25: element.vis7
+          // })
         });
         var oPayload = {
           P1: "SEND",
           to_pesal: to_pesal
         };
-        // this.submitCall(oPayload);
+        this.submitCall(oPayload);
       }
     });
   }
