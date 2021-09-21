@@ -33,7 +33,6 @@
                             <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine"></Button>
                             <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLines" enabled="false"></Button>
                             <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" enabled="{viewGeneral>/release}"/>
-                            <!-- <Button id="toolbarLoad" text="{= ${device>/system/phone}?'':${i18n>XLSXload}}" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSXload}" press="onUploadTemplate" type="Transparent"/> -->
                             <Button id="toolbarDown" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>
                         </layout:content>
                     </layout:HorizontalLayout>
@@ -92,17 +91,13 @@
                                 <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive"/>
                                 <Text text="{tablaFlujo>vis2}"/>
                                 <Text text="{tablaFlujo>vis3}"/>
-                                <!-- <Text text="{tablaFlujo>vis4}"/> -->
                                 <Text text="{path: 'tablaFlujo>vis4',formatter: '.formatter.fooErdat1'}"/>
-                                <!-- <Input value="{tablaFlujo>in2}" change="onInputChange($event, 'in2')" class="valInput"/> -->
                                 <Select id="in2" items="{path: 'in2>/', templateShareable: false}" selectedKey="{tablaFlujo>in2}" change="onSelect($event, 'in2')" forceSelection="false" class="valInput resSelect">
                                     <c:Item key="{in2>C1}" text="{in2>C1} {in2>C2}"/>
                                 </Select>
                                 <Text text="{tablaFlujo>vis5}"/>
                                 <TextArea value="{tablaFlujo>in3}" class="valInput"/>
                                 <Input value="{tablaFlujo>in4}" change="formatCurrency" class="valInput"/>
-                                <!-- <Input value="{tablaFlujo>in5}" change="onInputChange($event, 'in5')" class="valInput"/>
-                                <Input value="{tablaFlujo>in6}" class="valInput"/> -->
                                 <Select id="in5" items="{path: 'tablaFlujo>din5/', templateShareable: false}" selectedKey="{tablaFlujo>in5}" change="onSelect($event, 'in5')" forceSelection="false" class="valInput resSelect">
                                     <c:Item key="{tablaFlujo>C1}" text="{tablaFlujo>C1}"/>
                                 </Select>
@@ -134,7 +129,7 @@
                         </ColumnListItem>
                     </items>
                 </Table>
-                <Button text="testoVal" press="testo"></Button>
+                <!-- <Button text="testoVal" press="testo"></Button> -->
             </ScrollContainer>
         </content>
     </Panel>
