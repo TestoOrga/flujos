@@ -32,7 +32,7 @@
                             <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
                             <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine"></Button>
                             <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLines" enabled="false"></Button>
-                            <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" sameFilenameAllowed="true"/>
+                            <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" enabled="{viewGeneral>/release}"/>
                             <!-- <Button id="toolbarLoad" text="{= ${device>/system/phone}?'':${i18n>XLSXload}}" icon="sap-icon://excel-attachment" tooltip="{i18n>XLSXload}" press="onUploadTemplate" type="Transparent"/> -->
                             <Button id="toolbarDown" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>
                         </layout:content>
@@ -103,11 +103,11 @@
                                 <Input value="{tablaFlujo>in4}" change="formatCurrency" class="valInput"/>
                                 <!-- <Input value="{tablaFlujo>in5}" change="onInputChange($event, 'in5')" class="valInput"/>
                                 <Input value="{tablaFlujo>in6}" class="valInput"/> -->
-                                <Select id="in5" items="{path: 'in5>/', templateShareable: false}" selectedKey="{tablaFlujo>in5}" change="onSelect($event, 'in5')" forceSelection="false" class="valInput resSelect">
-                                    <c:Item key="{in5>C1}" text="{in5>C1}"/>
+                                <Select id="in5" items="{path: 'tablaFlujo>din5/', templateShareable: false}" selectedKey="{tablaFlujo>in5}" change="onSelect($event, 'in5')" forceSelection="false" class="valInput resSelect">
+                                    <c:Item key="{tablaFlujo>C1}" text="{tablaFlujo>C1}"/>
                                 </Select>
-                                <Select id="in6" items="{path: 'in6>/', templateShareable: false}" selectedKey="{tablaFlujo>in6}" change="onSelect($event, 'in6')" forceSelection="false" class="valInput resSelect">
-                                    <c:Item key="{in6>C1}" text="{in6>C1}"/>
+                                <Select id="in6" items="{path: 'tablaFlujo>din6/', templateShareable: false}" selectedKey="{tablaFlujo>in6}" change="onSelect($event, 'in6')" forceSelection="false" class="valInput resSelect" >
+                                    <c:Item key="{tablaFlujo>C1}" text="{tablaFlujo>C1}"/>
                                 </Select>
                                 <Text text="{path: 'tablaFlujo>vis6',formatter: '.formatter.fooErdat1'}"/>
                                 <Text text="{path: 'tablaFlujo>vis7',formatter: '.formatter.fooErdat1'}"/>

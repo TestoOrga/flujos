@@ -198,6 +198,9 @@ sap.ui.define(
           this._oTab.getItems().filter(element => {
             return element.getBindingContext("tablaFlujo").getObject().template
           }).forEach(element => {
+            this._tabModel.setProperty(element.getBindingContext("tablaFlujo").sPath + "/template", false);
+            // element.getAggregation("cells").find(x=>x.sId.includes("in2")).setSelectedKey(element.getBindingContext("tablaFlujo").getObject().in2);
+            this.setCC(undefined, element.getAggregation("cells").find(x=>x.sId.includes("in2")));
             this.getPernr(undefined, element);
           });
           if (this._oTab.getSelectedItems().length === 0) {
@@ -265,7 +268,10 @@ sap.ui.define(
             IN2: "dato2",
             IN3: "dato3",
             IN4: "dato4",
-          }, ];
+            IN4: "dato5",
+            IN4: "dato6",
+            IN4: "dato7"
+          } ];
 
           const worksheet = XLSX.utils.json_to_sheet(data);
           const workbook = {
@@ -296,9 +302,6 @@ sap.ui.define(
         onDownTemplate: function (oEvent) {
           this.onDownloadAsExcel();
         },
-
-
-
         /* =========================================================== */
         /* Peticiones externas                                         */
         /* =========================================================== */
@@ -388,11 +391,15 @@ sap.ui.define(
               console.log("PERNR Loaded");
               this.loadPopOver(controlForPopover);
             })
-            .then(
-              () => {
-                this.getPeriodo(lineContext);
-              }
-            );
+            .then(this.getPeriodo(lineContext))
+            .then(() => {
+              if (oExtControl) {
+                oExtControl.getAggregation("cells").find(x => x.sId.includes("in5")).setSelectedKey(lineContext.getObject().in5);
+                this.setIniDate(undefined, oExtControl.getAggregation("cells").find(x => x.sId.includes("in5")));
+                oExtControl.getAggregation("cells").find(x => x.sId.includes("in6")).setSelectedKey(lineContext.getObject().in6Temp);
+                this.setEndDate(undefined, oExtControl.getAggregation("cells").find(x => x.sId.includes("in6")));
+              };
+            });
         },
         getPeriodo: function (oContext) {
           var lineContext = oContext;
@@ -402,14 +409,11 @@ sap.ui.define(
             P3: lineContext.getObject().vis3,
             to_pesal: [],
           };
-          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
-            if (this.getModel("in5")) {
-              this.getModel("in5").setProperty("/", []);
-            }
-            if (res.length > 0) {
-              this.setModel(new JSONModel(res), "in5");
-              this.setModel(new JSONModel(res), "in6");
-            }
+          return this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
+            var line = lineContext.getObject();
+            line.din5 = res;
+            line.din6 = res;
+            this._tabModel.setProperty(lineContext.sPath, line);
           });
         },
         getFlowData: function () {
@@ -497,32 +501,35 @@ sap.ui.define(
           }
           afterSelect();
         },
-        setCC: function (oEvent) {
-          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+        setCC: function (oEvent, oExtControl) {
+          var oControl = oExtControl || oEvent.oSource;
+          var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
           var sPath = lineContext.sPath;
           var lineData = lineContext.getObject();
-          var selDate = oEvent.oSource.getSelectedItem().getBindingContext("in2").getObject();
+          var selDate = oControl.getSelectedItem().getBindingContext("in2").getObject();
           lineData.vis5 = selDate.C2;
           this._tabModel.setProperty(sPath, lineData);
         },
-        setEndDate: function (oEvent) {
-          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+        setEndDate: function (oEvent, oExtControl) {
+          var oControl = oExtControl || oEvent.oSource;
+          var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
           var sPath = lineContext.sPath;
           var lineData = lineContext.getObject();
-          var selDate = oEvent.oSource.getSelectedItem().getBindingContext("in6").getObject();
+          var selDate = oControl.getSelectedItem().getBindingContext("tablaFlujo").getObject();
           lineData.vis7 = selDate.C3;
           this._tabModel.setProperty(sPath, lineData);
         },
-        setIniDate: function (oEvent) {
-          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+        setIniDate: function (oEvent, oExtControl) {
+          var oControl = oExtControl || oEvent.oSource;
+          var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
           var sPath = lineContext.sPath;
           var lineData = lineContext.getObject();
-          var selDate = oEvent.oSource.getSelectedItem().getBindingContext("in5").getObject();
+          var selDate = oControl.getSelectedItem().getBindingContext("tablaFlujo").getObject();
           lineData.vis6 = selDate.C2;
           lineData.vis7 = selDate.C3;
-          oEvent.oSource.getParent().getAggregation("cells").find(x => x.sId.includes("in6")).setSelectedKey(oEvent.oSource.getSelectedKey());
+          oControl.getParent().getAggregation("cells").find(x => x.sId.includes("in6")).setSelectedKey(oControl.getSelectedKey());
           this._tabModel.setProperty(sPath, lineData);
-          this.restricEndDate(oEvent.oSource.getSelectedKey(), oEvent.oSource.getParent().getAggregation("cells").find(x => x.sId.includes("in6")));
+          this.restricEndDate(oControl.getSelectedKey(), oControl.getParent().getAggregation("cells").find(x => x.sId.includes("in6")));
         },
         restricEndDate: function (keyDate, oEndDateCell) {
           var tfilter = new sap.ui.model.Filter("C1", sap.ui.model.FilterOperator.GE, keyDate);
@@ -573,16 +580,19 @@ sap.ui.define(
           lineData.in4Num = currency;
           this._tabModel.setProperty(sPath, lineData);
         },
-        //TODO
         setTempVals: function (oTab) {
           if (oTab.length > 0) {
             var tabData = this._tabModel.getProperty("/");
             oTab.forEach(element => {
               tabData.push({
                 template: true,
+                vis1: this.newItemId(),
                 in1: element.IN1,
                 in2: element.IN2,
-                in5: element.IN3.padStart(7, "0")
+                in3: element.IN3,
+                in4: element.IN4,
+                in5: element.IN5.padStart(7, "0"),
+                in6Temp: element.IN6.padStart(7, "0")
               });
             });
             this._tabModel.setProperty("/", tabData);
