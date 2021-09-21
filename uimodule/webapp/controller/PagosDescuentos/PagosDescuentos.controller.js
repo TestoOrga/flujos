@@ -43,12 +43,18 @@ sap.ui.define(
           oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
           oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
           oEventBus.subscribe("flowResult", "dataError", this.showErrorTable, this);
+          oEventBus.subscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
+          oEventBus.subscribe("flowCreated", "finalFiles", this.finalFiles, this);
+          oEventBus.subscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
         },
         onExit: function () {
           var oEventBus = sap.ui.getCore().getEventBus();
           oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
           oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
           oEventBus.unsubscribe("flowResult", "dataError", this.showErrorTable, this);
+          oEventBus.unsubscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
+          oEventBus.unsubscribe("flowCreated", "finalFiles", this.finalFiles, this);
+          oEventBus.unsubscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
           this.destroyIds();
         },
 
@@ -200,7 +206,7 @@ sap.ui.define(
           }).forEach(element => {
             this._tabModel.setProperty(element.getBindingContext("tablaFlujo").sPath + "/template", false);
             // element.getAggregation("cells").find(x=>x.sId.includes("in2")).setSelectedKey(element.getBindingContext("tablaFlujo").getObject().in2);
-            this.setCC(undefined, element.getAggregation("cells").find(x=>x.sId.includes("in2")));
+            this.setCC(undefined, element.getAggregation("cells").find(x => x.sId.includes("in2")));
             this.getPernr(undefined, element);
           });
           if (this._oTab.getSelectedItems().length === 0) {
@@ -215,6 +221,20 @@ sap.ui.define(
             "col3": true
           };
           this.getOwnerComponent().openErrorFrag(fragRes, res.res.to_pesal.results, this.getOwnerComponent().flowData.id + ": " + res.res.PeMsj);
+        },
+        releaseFiles: function () {
+          var oEventBus = sap.ui.getCore().getEventBus();
+          oEventBus.publish("flowCreated", "fileReleaseStart");
+        },
+        finalFiles: function (sChannel, oEvent, res) {
+          var uploadFiles = this.loadedFiles.filter(loaded => {
+            return res.filesTab.find(final => final.itemId === loaded.itemId)
+          })
+          this.getOwnerComponent().oOneDrive.UploadFiles(uploadFiles);
+        },
+        releaseFilesEnded: function () {
+          var oEventBus = sap.ui.getCore().getEventBus();
+          oEventBus.publish("flowCreated", "EndFlow");
         },
         /* =========================================================== */
         /* EXCEL                                                       */
@@ -271,7 +291,7 @@ sap.ui.define(
             IN4: "dato5",
             IN4: "dato6",
             IN4: "dato7"
-          } ];
+          }];
 
           const worksheet = XLSX.utils.json_to_sheet(data);
           const workbook = {

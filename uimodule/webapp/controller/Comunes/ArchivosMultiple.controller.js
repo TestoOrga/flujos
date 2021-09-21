@@ -2,9 +2,14 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
   "sap/ui/model/json/JSONModel",
   "sap/ui/model/Filter",
   "sap/ui/model/FilterOperator",
-  "sap/m/GroupHeaderListItem"
+  "sap/m/GroupHeaderListItem",
+  "sap/m/MessageBox"
 ], function (BaseController,
-  JSONModel, Filter, FilterOperator, GroupHeaderListItem) {
+  JSONModel,
+  Filter,
+  FilterOperator,
+  GroupHeaderListItem,
+  MessageBox) {
   "use strict";
 
   return BaseController.extend(
@@ -18,7 +23,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         this.viewConfig = {
           tabModelName: "files",
           tabControlId: "lineItemsList",
-        };
+        };        
         this.setModel(new JSONModel([]
           //   [{
           //   archivo: "asdasd",
@@ -45,8 +50,11 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
 
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.subscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
-        oEventBus.subscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
+        oEventBus.subscribe("flowCreated", "fileReleaseStart", this.releaseFilesFinal, this);
         oEventBus.subscribe("flowReq", "delItem", this.deleteItemFiles, this);
+
+        oEventBus.subscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
+        oEventBus.subscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
       },
       /**
        * @override
@@ -54,8 +62,11 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
       onExit: function () {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.unsubscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
-        oEventBus.unsubscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
+        oEventBus.subscribe("flowCreated", "fileReleaseStart", this.releaseFilesFinal, this);
         oEventBus.unsubscribe("flowReq", "delItem", this.deleteItemFiles, this);
+
+        oEventBus.unsubscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
+        oEventBus.unsubscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
       },
 
       receiveFilesLoaded: function (sChannel, oEvent, data) {
@@ -64,6 +75,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
           ext: data.fileExt,
           itemId: data.itemId.toString(),
           itemOwner: data.itemOwner,
+          fileid: data.fileId,
           state: "Warning",
           status: this.get18().getText("archivosMultipleController.pendienteDeGrabar")
         };
@@ -71,14 +83,60 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         tabData.push(newFile);
         this._tabModel.setData(tabData);
       },
-      sendFilesFinal: function () {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.publish("flowRes", "filesLoaded", {
-          filesTab: this._tabModel.getData()
-        });
-        this._oTab.setBusy(true);
+      releaseFilesFinal: function () {
+        this._oTab.setBusy(true);        
+        var items = this._tabModel.getData();
+        this.itemsLoading = items.length;
+        if (this.itemsLoading === 0) {
+          this.endUpload(true);
+        } else {
+          var oEventBus = sap.ui.getCore().getEventBus();
+          oEventBus.publish("flowCreated", "finalFiles", {
+            filesTab: items
+          });
+          // this.getOwnerComponent().oOneDrive.UploadFiles(items);
+        }
       },
-
+      fileUpladed: function (sChannel, oEvent, data) {
+        this.itemsLoading--;
+        var lineObject = this._oTab.getItems().find(element => {
+          var lineData = element.getBindingContext("files");
+          if (lineData) {
+            if (lineData.getObject().fileId === data.fileId) return element;
+          }
+        }, this);
+        var oLine = lineObject.getAggregation("cells").find(x => x.sId.includes("fileStatus"));
+        oLine.setState("Success");
+        oLine.setText(this.get18().getText("ArchivosExtraController.ArchivoGrabadoEnOneDrive"));
+        this.endUpload();
+      },
+      fileUpladedError: function (sChannel, oEvent, data) {
+        this.itemsLoading--;
+        var lineObject = this._oTab.getItems().find(element => {
+          var lineData = element.getBindingContext("files");
+          if (lineData) {
+            if (lineData.getObject().fileId === data.fileId) return element;
+          }
+        }, this);
+        var oLine = lineObject.getAggregation("cells").find(x => x.sId.includes("fileStatus"));
+        oLine.setState("Error");
+        oLine.setText(this.get18().getText("ArchivosExtraController.NoSePudoGrabarElArchivo"));
+        this.endUpload();
+      },
+      endUpload: function (nofile) {
+        if (this.itemsLoading === 0) {
+          this._oTab.setBusy(false);
+        }
+        var oEventBus = sap.ui.getCore().getEventBus();
+        if (nofile) {
+          oEventBus.publish("flowCreated", "releaseFilesEnded");
+        } else {
+          MessageBox.warning("Todos los archivos fueron procesados");
+          setTimeout(() => {
+            oEventBus.publish("flowCreated", "releaseFilesEnded");
+          }, 2000);
+        }
+      },
       onSearch: function (oEvent) {
         // this.byId("lineItemsList").filter()
         var sQuery = oEvent.getParameter("newValue");
@@ -105,7 +163,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         });
         this._tabModel.setData(newFiles);
       },
-      getGroup: function (oContext){
+      getGroup: function (oContext) {
         var sKey = this.getModel("files").getProperty(oContext.sPath);
         return {
           key: sKey.itemId,

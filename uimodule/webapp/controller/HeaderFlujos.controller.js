@@ -53,6 +53,7 @@ sap.ui.define(
         oEventBus.subscribe("flowResults", "flowValid", this.onFlowValid, this);
         oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
         oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+        oEventBus.subscribe("flowCreated", "EndFlow", this.onEndflow, this);
       },
       /**
        * @override
@@ -61,7 +62,8 @@ sap.ui.define(
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
         oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
-        oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+        oEventBus.unsubscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+        oEventBus.unsubscribe("flowCreated", "EndFlow", this.onEndflow, this);
       },
 
       getDepartamento: function () {
@@ -375,9 +377,13 @@ sap.ui.define(
         } else {
           var messText = this.get18().getText("headerFlujosController.FlujoCreado", [this.headerData.id]);
           MessageBox.success(messText);
+          oEventBus.publish("flowCreated", "releaseFiles");
           // MessageToast.show("creado to reset");
-          this.resetFlow();
+          // this.resetFlow();
         }
+      },
+      onEndflow: function(){
+        this.resetFlow();
       },
       onCancelar: function () {
         this.onBack();

@@ -28,7 +28,7 @@
                     <ColumnListItem >
                         <cells>
                             <ObjectIdentifier title="{files>archivo}.{files>ext}" text="{files>itemId}" class="sapUiTinyMarginTopBottom"/>                            
-                            <ObjectStatus inverted="true" state="{files>state}" text="{files>status}" textDirection="Inherit" title="{i18n>archivosMultipleView.estado}"/>                                                        
+                            <ObjectStatus id="fileStatus" inverted="true" state="{files>state}" text="{files>status}" textDirection="Inherit" title="{i18n>archivosMultipleView.estado}"/>                                                        
                             <HBox justifyContent="End" alignContent="Center">
                                 <!-- <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton sapUiTinyMarginEnd" press="onDownFile" /> -->
                                 <Button icon="sap-icon://delete" press="onItemDelete"/>

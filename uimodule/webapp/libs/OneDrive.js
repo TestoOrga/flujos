@@ -1,9 +1,13 @@
 sap.ui.define(
-  ["sap/ui/base/Object", "sap/base/Log"],
-  function (BaseObject, Log) {
+  ["sap/ui/base/Object", "sap/base/Log",
+    "sap/m/MessageBox"
+  ],
+  function (Object,
+    Log,
+    MessageBox) {
     "use strict";
 
-    return BaseObject.extend("bafar.flujos.flujos.libs.OneDrive", {
+    return Object.extend("bafar.flujos.flujos.libs.OneDrive", {
       /* =========================================================== */
       /* drive configuration                                         */
       /* =========================================================== */
@@ -14,6 +18,9 @@ sap.ui.define(
 
         var sServiceUrl1 = "/sap/opu/odata/sap/ZOD_FLUJOS_SRV";
         this._oModelCat = new sap.ui.model.odata.v2.ODataModel(sServiceUrl1, true);
+
+        var sServiceUrl2 = "/sap/opu/odata/sap/ZOD_FLUJOS_IN_SRV";
+        this._oModelCreate = new sap.ui.model.odata.v2.ODataModel(sServiceUrl2, true);
       },
       testo: function () {
         console.log("testo OneDrive");
@@ -66,20 +73,20 @@ sap.ui.define(
       /* =========================================================== */
       /* Rutas                                                       */
       /* =========================================================== */
+      currDate: function () {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, "0");
+        var mm = String(today.getMonth() + 1).padStart(2, "0");
+        var yyyy = today.getFullYear();
+        return yyyy + mm + dd;
+      },
       getRoutesFromBack: function (oFile) {
-        const currDate = () => {
-          var today = new Date();
-          var dd = String(today.getDate()).padStart(2, "0");
-          var mm = String(today.getMonth() + 1).padStart(2, "0");
-          var yyyy = today.getFullYear();
-          return yyyy + mm + dd;
-        };
         var oPayload = {
           P1: "ONEDRIVE",
           P2: this.oComponent.flowData.departamento,
           P3: this.oComponent.flowData.actividad,
           P4: this.oComponent.flowData.proceso,
-          P5: currDate(),
+          P5: this.currDate(),
           P6: this.oComponent.flowData.id,
           P7: oFile.itemId,
           to_pesal: []
@@ -87,9 +94,37 @@ sap.ui.define(
         return this.oComponent.getCatDataComp(oPayload, this._oModelCat);
       },
       /* =========================================================== */
-      /* infromar Back                                               */
-      /* =========================================================== */ 
-
+      /* informar Back                                               */
+      /* =========================================================== */
+      submitToBack: function (oRes, oFile, oRoutes) {
+        var oPayload = {
+          P1: "SENDONEDRIVE",
+          to_pesal: [{
+            C2: this.oComponent.flowData.departamento,
+            C3: this.oComponent.flowData.actividad,
+            C4: this.oComponent.flowData.proceso,
+            C5: this.currDate(),
+            C6: this.oComponent.flowData.id,
+            C7: oFile.itemId,
+            C8: oRoutes.C1,
+            C9: oRoutes.C2,
+            C10: oRoutes.C3,
+            C11: oFile.fileName,
+            C12: oFile.fileExt,
+            C13: oRes.id
+          }, ],
+        };
+        var that = this;
+        this._oModelCreate.create("/BaseSet", oPayload, {
+          async: true,
+          success: function (req, res) {
+            console.log("BackEnd Accepted: " + oPayload.to_pesal[0].C11);
+          },
+          error: function (error) {
+            MessageBox.error("BackEnd Rejected: " + oPayload.to_pesal[0].C11 + "; " + error.responseText);
+          },
+        });
+      },
       /* =========================================================== */
       /* Upload                                                      */
       /* =========================================================== */
@@ -111,7 +146,8 @@ sap.ui.define(
               oRoutes.C2 + oRoutes.C3)
             .then(
               function (res) {
-                this.sendResults(res, oInFile.fileId, oRoutes.C1);
+                this.submitToBack(res, oInFile, oRoutes);
+                this.sendResults(res, oInFile.fileId);
               }.bind(this))
             .catch(function (error) {
               this.sendError(error, oInFile.fileId);
@@ -124,7 +160,8 @@ sap.ui.define(
               oRoutes.C2 + oRoutes.C3)
             .then(
               function (res) {
-                this.sendResults(res, oInFile.fileId, oRoutes.C1);
+                this.submitToBack(res, oInFile, oRoutes);
+                this.sendResults(res, oInFile.fileId);
               }.bind(this))
             .catch(function (error) {
               this.sendError(error, oInFile.fileId)
@@ -151,12 +188,11 @@ sap.ui.define(
       },
       /* =========================================================== */
       //sends result via events
-      sendResults: function (oRes, itemId, seccId) {
+      sendResults: function (oRes, itemId) {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.publish("driveAnswer", "fileUploaded", {
           result: oRes,
-          itemId: itemId,
-          seccId: seccId
+          itemId: itemId
         });
       },
       sendError: function (oRes, itemId) {
