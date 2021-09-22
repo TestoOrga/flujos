@@ -188,18 +188,18 @@ sap.ui.define(
       },
       /* =========================================================== */
       //sends result via events
-      sendResults: function (oRes, itemId) {
+      sendResults: function (oRes, fileId) {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.publish("driveAnswer", "fileUploaded", {
           result: oRes,
-          itemId: itemId
+          fileId: fileId
         });
       },
-      sendError: function (oRes, itemId) {
+      sendError: function (oRes, fileId) {
         var oEventBus = sap.ui.getCore().getEventBus();
         oEventBus.publish("driveAnswer", "fileUploadError", {
           result: oRes,
-          itemId: itemId
+          fileId: fileId
         });
       },
       /* =========================================================== */

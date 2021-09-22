@@ -10,7 +10,7 @@
             <Table id="lineItemsList" width="auto" items="{path:'files>/', sorter: { path: 'itemOwner' , group: '.getGroup' }, groupHeaderFactory: '.getGroupHeader', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" selectionChange="detailTabSelect">
                 <infoToolbar>
                     <OverflowToolbar visible="true" id="idInfoToolbar" design="Transparent">
-                        <SearchField liveChange="onSearch" width="90%" showRefreshButton="true" />
+                        <SearchField liveChange="onSearch" width="98%" showRefreshButton="true" />
                     </OverflowToolbar>
                 </infoToolbar>
                 <columns>

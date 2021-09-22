@@ -357,6 +357,7 @@ sap.ui.define(
         }
         if (this.getFlowDataStart === 0) {
           console.log("eventEnded");
+          this.getView().setBusy(true);
           this.getOwnerComponent().oSendData.mapData({
             flowInfo: {
               departamento: this.headerData.departamento,
@@ -369,6 +370,10 @@ sap.ui.define(
         }
       },
       onFlowBackResult: function (sChannel, oEvent, res) {
+        this.getView().setBusy(false);
+        if (!res) {
+          MessageBox.error(error.responseText);
+        }
         var oEventBus = sap.ui.getCore().getEventBus();
         if (res.PeTmsj === "E") {
           oEventBus.publish("flowResult", "dataError", {
@@ -378,11 +383,9 @@ sap.ui.define(
           var messText = this.get18().getText("headerFlujosController.FlujoCreado", [this.headerData.id]);
           MessageBox.success(messText);
           oEventBus.publish("flowCreated", "releaseFiles");
-          // MessageToast.show("creado to reset");
-          // this.resetFlow();
         }
       },
-      onEndflow: function(){
+      onEndflow: function () {
         this.resetFlow();
       },
       onCancelar: function () {

@@ -35,7 +35,7 @@ sap.ui.define(
         });
       },
       creationBackFail: function (error) {
-        MessageBox.error(error.responseText);
+        oEventBus.publish("flowCreation", "flowBackResult");
       },
       creationBackAccepted: function (res) {
         var oEventBus = sap.ui.getCore().getEventBus();

@@ -23,7 +23,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         this.viewConfig = {
           tabModelName: "files",
           tabControlId: "lineItemsList",
-        };        
+        };
         this.setModel(new JSONModel([]
           //   [{
           //   archivo: "asdasd",
@@ -75,7 +75,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
           ext: data.fileExt,
           itemId: data.itemId.toString(),
           itemOwner: data.itemOwner,
-          fileid: data.fileId,
+          fileId: data.fileId,
           state: "Warning",
           status: this.get18().getText("archivosMultipleController.pendienteDeGrabar")
         };
@@ -84,9 +84,10 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         this._tabModel.setData(tabData);
       },
       releaseFilesFinal: function () {
-        this._oTab.setBusy(true);        
+        this._oTab.setBusy(true);
         var items = this._tabModel.getData();
         this.itemsLoading = items.length;
+        console.log("first " + this.itemsLoading)
         if (this.itemsLoading === 0) {
           this.endUpload(true);
         } else {
@@ -124,17 +125,23 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         this.endUpload();
       },
       endUpload: function (nofile) {
-        if (this.itemsLoading === 0) {
-          this._oTab.setBusy(false);
-        }
-        var oEventBus = sap.ui.getCore().getEventBus();
         if (nofile) {
           oEventBus.publish("flowCreated", "releaseFilesEnded");
+          console.log("noFile");
         } else {
-          MessageBox.warning("Todos los archivos fueron procesados");
-          setTimeout(() => {
-            oEventBus.publish("flowCreated", "releaseFilesEnded");
-          }, 2000);
+          console.log(this.itemsLoading);
+          if (this.itemsLoading === 0) {
+            this._oTab.setBusy(false);
+            var oEventBus = sap.ui.getCore().getEventBus();
+            console.log("EndUpload");
+            MessageBox.warning("Todos los archivos fueron procesados",{
+              onClose: function (sAction) {
+                oEventBus.publish("flowCreated", "releaseFilesEnded");                
+              }
+            });
+            // setTimeout(() => {
+            // }, 2000);
+          }
         }
       },
       onSearch: function (oEvent) {

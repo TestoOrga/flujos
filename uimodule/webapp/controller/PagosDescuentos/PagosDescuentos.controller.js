@@ -228,8 +228,10 @@ sap.ui.define(
         },
         finalFiles: function (sChannel, oEvent, res) {
           var uploadFiles = this.loadedFiles.filter(loaded => {
-            return res.filesTab.find(final => final.itemId === loaded.itemId)
-          })
+            var testo = res.filesTab.find(final => {
+              return final.fileId === loaded.fileId });
+            return testo; 
+          });
           this.getOwnerComponent().oOneDrive.UploadFiles(uploadFiles);
         },
         releaseFilesEnded: function () {
