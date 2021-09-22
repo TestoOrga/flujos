@@ -59,7 +59,7 @@ sap.ui.define(
        * @override
        */
       onExit: function () {
-        
+
         this.oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
         this.oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
         this.oEventBus.unsubscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
@@ -310,7 +310,7 @@ sap.ui.define(
 
       },
       onGrabar: function () {
-        
+
         this.oEventBus.publish("flowRequest", "valFlow");
       },
       onFlowValid: function (sChannel, oEvent, valOk) {
@@ -336,7 +336,7 @@ sap.ui.define(
         };
       },
       submitFlow: function () {
-        
+
         this.oEventBus.publish("flowRequest", "flowData");
       },
       onFlowData: function (sChannel, oEvent, flowData) {
@@ -357,7 +357,7 @@ sap.ui.define(
         }
         if (this.getFlowDataStart === 0) {
           console.log("eventEnded");
-          this.getView().setBusy(true);
+          this.byId("headerFlujosMasterPage").setBusy(true);
           this.getOwnerComponent().oSendData.mapData({
             flowInfo: {
               departamento: this.headerData.departamento,
@@ -370,11 +370,11 @@ sap.ui.define(
         }
       },
       onFlowBackResult: function (sChannel, oEvent, res) {
-        this.getView().setBusy(false);
+        this.byId("headerFlujosMasterPage").setBusy(false);
         if (!res) {
           MessageBox.error(error.responseText);
         }
-        
+
         if (res.PeTmsj === "E") {
           this.oEventBus.publish("flowResult", "dataError", {
             res: res

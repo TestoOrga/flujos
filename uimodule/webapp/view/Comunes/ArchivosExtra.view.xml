@@ -18,10 +18,10 @@
                         <Title id="lineItemsTitle" text="{detailView>/lineItemListTitle}" titleStyle="H5" level="H5"/>
                         <ToolbarSpacer/>
                         <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>                        
-                        <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownSelection" enabled="false" id="tabInPanelButtDown"/>
-                        <Button icon="sap-icon://add-photo" press="onAddPhoto"/>                       
+                        <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownSelection" enabled="false" id="tabInPanelButtDown" visible="false"/>
+                        <Button icon="sap-icon://add-photo" press="onAddPhoto" visible="false"/>                       
                         <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete" uploadOnChange="true" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment"  uploadStart="onHandleUploadStart" change="onHandleUploadStart" />
-                        <Button icon="sap-icon://delete" press="onTabDelete" id="tabInPanelButtDel" enabled="false"/>
+                        <Button icon="sap-icon://delete" press="onTabDelete" id="tabInPanelButtDel" enabled="false" visible="false"/>
                     </Toolbar>
                 </headerToolbar>
                 <columns>
@@ -48,7 +48,7 @@
                     </ColumnListItem>
                 </items>
             </Table>
-            <Button press="testo"></Button>
+            <!-- <Button press="testo"></Button> -->
         </content>
     </Panel>
 </mvc:View>

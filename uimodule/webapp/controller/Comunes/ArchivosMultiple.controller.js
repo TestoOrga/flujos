@@ -112,6 +112,8 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         this.endUpload();
       },
       fileUpladedError: function (sChannel, oEvent, data) {
+        console.log("catch in onedrive..." + data.result);
+        console.log(data.result);
         this.itemsLoading--;
         var lineObject = this._oTab.getItems().find(element => {
           var lineData = element.getBindingContext("files");

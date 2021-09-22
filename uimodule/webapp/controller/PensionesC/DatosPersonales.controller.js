@@ -15,17 +15,22 @@ sap.ui.define(
         onInit: function () {
           window.console.log("Se inicia onInit");
           //eventlisteners
-          var oEventBus = sap.ui.getCore().getEventBus();
-          oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
-          oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
-          oEventBus.subscribe("flowResult", "dataError", this.showErrorTable, this);
+          this.oEventBus = this.getOwnerComponent().getEventBus();
+          this.oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
+          this.oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
+          this.oEventBus.subscribe("flowResult", "dataError", this.showErrorTable, this);
 
+          this.oEventBus.subscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
+          this.oEventBus.subscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
         },
         onExit: function () {
-          var oEventBus = sap.ui.getCore().getEventBus();
-          oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
-          oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
-          oEventBus.unsubscribe("flowResult", "dataError", this.showErrorTable, this);
+
+          this.oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
+          this.oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
+          this.oEventBus.unsubscribe("flowResult", "dataError", this.showErrorTable, this);
+
+          this.oEventBus.unsubscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
+          this.oEventBus.subscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
         },
         onEnterInputNoPersonal: function (oEvent) {
           noPersonalIn = this.getView().byId("noPeronsal_Input").getValue();
@@ -233,18 +238,25 @@ sap.ui.define(
           //MessageToast.show("Datos Personales");
         },
         getValInputs: function () {
-          var oEventBus = sap.ui.getCore().getEventBus();
+
           var result = !this.onValidateInputs();
-          oEventBus.publish("flowResults", "flowValid", {
+          this.oEventBus.publish("flowResults", "flowValid", {
             res: result
           });
         },
         getData: function () {
-          var oEventBus = sap.ui.getCore().getEventBus();
+
           var result = this.onGetDataFromInput();
-          oEventBus.publish("flowResults", "flowData", {
+          this.oEventBus.publish("flowResults", "flowData", {
             res: result
           });
+        },
+        releaseFiles: function () {
+          this.oEventBus.publish("flowCreated", "fileReleaseStart");
+        },
+
+        releaseFilesEnded: function (){
+          this.oEventBus.publish("flowCreated", "EndFlow");
         },
         periodoInput: function (oEvent) {
           oEvent.oSource.setValue(oEvent.getParameter("newValue").replace(/\D/g, ""));

@@ -32,7 +32,7 @@
                             <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
                             <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine"></Button>
                             <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLines" enabled="false"></Button>
-                            <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://upload" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" enabled="{viewGeneral>/release}" fileType="xlsx"/>
+                            <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://upload" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" enabled="{viewGeneral>/release}" fileType="xlsx"/>
                             <Button id="toolbarDown" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>
                         </layout:content>
                     </layout:HorizontalLayout>
