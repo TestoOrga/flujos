@@ -1,0 +1,108 @@
+<!-- <mvc:View controllerName="bafar.flujos.flujos.controller.Aprobacion" -->
+<mvc:View xmlns:layout="sap.ui.layout" controllerName="bafar.flujos.flujos.controller.Aprobacion"
+    xmlns="sap.m"
+    xmlns:semantic="sap.f.semantic"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core" core:require="{ BooleanType: 'sap/ui/model/type/Boolean' }"
+    xmlns:mc="sap.suite.ui.microchart"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:f="sap.f">
+
+    <semantic:SemanticPage id="masterPage" preserveHeaderStateOnScroll="false" toggleHeaderOnTitleClick="true" headerPinnable="true" titleAreaShrinkRatio="1:1.6:1.6">
+        <semantic:titleHeading>
+            <Title id="masterPageTitle" text="{masterView>/title}" level="H2"/>
+        </semantic:titleHeading>
+        <semantic:titleSnappedOnMobile>
+            <Title id="masterPageTitlePhone" text="{masterView>/title}" level="H2"/>
+        </semantic:titleSnappedOnMobile>
+        <semantic:headerContent>
+            <fb:FilterBar id="filterbar" reset="onRefresh" search=".onSearch" useToolbar="false" showRestoreOnFB="true" filterBarExpanded="false" showRestoreButton="true">
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem name="A" label="Número de Personal" groupName="g1" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiInput id="filterNumEmpleado" showValueHelp="false" width="auto" valueLiveUpdate="true" liveChange="liveChangeFilter" tooltip="{i18n>masterSearchTooltipA}"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem name="B" label="Unidad Organizativa" groupName="g1" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiInput id="filterUnOrg" showValueHelp="false" tooltip="{i18n>masterSearchTooltipB}" width="auto" valueLiveUpdate="true" liveChange="liveChangeFilter" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem name="C" label="División" groupName="g1" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiInput id="filterDivision" showValueHelp="false" tooltip="{i18n>masterSearchTooltipC}" width="auto" valueLiveUpdate="true" liveChange="liveChangeFilter" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem name="D" label="Subdivision" groupName="g1" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiInput id="filterSubdivision" showValueHelp="false" tooltip="{i18n>masterSearchTooltipD}" width="auto" valueLiveUpdate="true" liveChange="liveChangeFilter" />
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem name="F" label="Sociedad" groupName="g2" visibleInFilterBar="true">
+                        <fb:control>
+                            <Input id="filterSociedad" tooltip="{i18n>masterSearchTooltipF}">
+                                <layoutData>
+                                    <OverflowToolbarLayoutData minWidth="50px" maxWidth="70px" shrinkable="true" />
+                                </layoutData>
+                            </Input>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                    <fb:FilterGroupItem name="E" label="Estatus" groupName="g2" visibleInFilterBar="true">
+                        <fb:control>
+                            <Switch id="filterStat" type="AcceptReject" state="true" tooltip="{i18n>masterSearchTooltipE}"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </semantic:headerContent>
+        <semantic:content >
+        <!-- <Text text="testo"></Text> -->
+            <List id="list" width="auto" class="sapUiContentPadding" items="{
+					path: 'lazyModel>/IniSet',
+					sorter: {
+						path: 'Pernr',
+						descending: false
+					},
+					groupHeaderFactory: '.createGroupHeader'
+				}" busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true" updateFinished=".onUpdateFinished" selectionChange=".onSelectionChange">
+                <headerToolbar>
+                    <OverflowToolbar >
+                        <SearchField liveChange="onSfToUpperCase" id="searchField1" showRefreshButton="true" search=".onSearchLocal" width="100%" placeholder="{i18n>masterLocalSearchPlaceHolder}">
+                            <layoutData>
+                                <OverflowToolbarLayoutData minWidth="150px" shrinkable="true" priority="NeverOverflow"/>
+                            </layoutData>
+                        </SearchField>
+                        <ToolbarSpacer/>
+                        <Button id="sortButton" press=".onOpenViewSettings" icon="sap-icon://sort" type="Transparent"/>
+                        <Button id="groupButton" press=".onOpenViewSettings" icon="sap-icon://group-2" type="Transparent"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <items>
+                    <CustomListItem id="listItem" type="Navigation" press=".onSelectionChange" class="claseitem FlexContentList">
+                        <content>
+                            <FlexBox width="100%">
+                                <items>
+                                    <layout:HorizontalLayout>
+                                        <layout:content>
+                                            <f:Avatar src="{path: 'lazyModel>tipo',formatter: '.formatter.getIconMaster'}" displaySize="S" displayShape="Square"></f:Avatar>
+                                            <ObjectIdentifier class="sapUiSmallMarginBegin sapUiSmallMarginTop" title="{lazyModel>Name}" text="{lazyModel>Role}" titleActive="false"></ObjectIdentifier>
+                                        </layout:content>
+                                    </layout:HorizontalLayout>
+                                    <layout:HorizontalLayout>
+
+                                        <layout:VerticalLayout>
+                                            <ObjectAttribute title="División" text="{lazyModel>Werks}"/>
+                                            <ObjectAttribute title="Subdivisión" text="{lazyModel>Btrtl}"/>
+                                        </layout:VerticalLayout>
+                                    </layout:HorizontalLayout>
+                                </items>
+                            </FlexBox>
+                        </content>
+                    </CustomListItem>
+                </items>
+            </List>
+            <!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
+
+        </semantic:content>
+    </semantic:SemanticPage>
+</mvc:View>

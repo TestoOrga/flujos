@@ -1,0 +1,20 @@
+<mvc:View xmlns:uxap="sap.uxap"
+    xmlns:semantic="sap.m.semantic" controllerName="bafar.flujos.flujos.controller.Aprobacion.AprobacionFlow"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core" displayBlock="true" height="100%" busyIndicatorDelay="0">
+    <semantic:SemanticPage floatingFooter="true">
+        <semantic:content>
+            <Panel id="panelId"></Panel>
+        </semantic:content>
+        <semantic:customFooterContent>
+            <OverflowToolbar id="footer" design="Solid" style="Clear">
+                <content>
+                    <ToolbarSpacer id="spacer"/>
+                    <Button id="headerFlujosButGrabar" type="Accept" text="Aprobar" press="onGrabar"/>
+                    <Button id="headerFlujosButCancelar" type="Reject" text="{i18n>HeaderFlujosFooterButCancelar}" press="onCancelar"/>
+                </content>
+            </OverflowToolbar>
+        </semantic:customFooterContent>
+    </semantic:SemanticPage>
+</mvc:View>
