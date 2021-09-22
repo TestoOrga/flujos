@@ -12,7 +12,8 @@ sap.ui.define(
       /* drive configuration                                         */
       /* =========================================================== */
       constructor: function (oComponent) {
-        this.oComponent = oComponent
+        this.oComponent = oComponent;
+        this.oEventBus = oComponent.getEventBus();
         var sServiceUrl = "/sap/opu/odata/sap/ZOD_ONEDRIVE_SRV";
         this._oModel = new sap.ui.model.odata.v2.ODataModel(sServiceUrl, true);
 
@@ -65,8 +66,8 @@ sap.ui.define(
         })
       },
       sendTokenError: function (error) {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.publish("driveAnswer", "tokenError", {
+        
+        this.oEventBus.publish("driveAnswer", "tokenError", {
           res: error
         });
       },
@@ -189,15 +190,15 @@ sap.ui.define(
       /* =========================================================== */
       //sends result via events
       sendResults: function (oRes, fileId) {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.publish("driveAnswer", "fileUploaded", {
+        
+        this.oEventBus.publish("driveAnswer", "fileUploaded", {
           result: oRes,
           fileId: fileId
         });
       },
       sendError: function (oRes, fileId) {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.publish("driveAnswer", "fileUploadError", {
+        
+        this.oEventBus.publish("driveAnswer", "fileUploadError", {
           result: oRes,
           fileId: fileId
         });
@@ -375,10 +376,10 @@ sap.ui.define(
           }.bind(that),
           error: function (odata) {
             console.log(odata);
-            var oEventBus = sap.ui.getCore().getEventBus();
+            
             odata.fileName = fileName;
             odata.panelTab = panelTab;
-            oEventBus.publish("driveAnswer", "errorDataInfo", odata);
+            this.oEventBus.publish("driveAnswer", "errorDataInfo", odata);
           },
         });
       },
@@ -463,12 +464,12 @@ sap.ui.define(
           url: driveURL,
           processData: false,
           success: function (odata) {
-            var oEventBus = sap.ui.getCore().getEventBus();
+            
             if (!odata) {
               var odata = {};
             }
             odata.panelTab = panelTab;
-            oEventBus.publish("driveAnswer", "deleted", odata);
+            this.oEventBus.publish("driveAnswer", "deleted", odata);
             console.log(odata);
           }.bind(that),
           error: function (odata) {
@@ -482,8 +483,8 @@ sap.ui.define(
               );
             } else {
               odata.panelTab = panelTab;
-              var oEventBus = sap.ui.getCore().getEventBus();
-              oEventBus.publish("driveAnswer", "deletedError", odata);
+              
+              this.oEventBus.publish("driveAnswer", "deletedError", odata);
               console.log(odata);
             }
           },

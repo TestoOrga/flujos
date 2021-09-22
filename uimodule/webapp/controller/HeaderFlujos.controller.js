@@ -49,21 +49,21 @@ sap.ui.define(
         }, this);
 
         //eventlisteners
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.subscribe("flowResults", "flowValid", this.onFlowValid, this);
-        oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
-        oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
-        oEventBus.subscribe("flowCreated", "EndFlow", this.onEndflow, this);
+        this.oEventBus = this.getOwnerComponent().getEventBus();
+        this.oEventBus.subscribe("flowResults", "flowValid", this.onFlowValid, this);
+        this.oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
+        this.oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+        this.oEventBus.subscribe("flowCreated", "EndFlow", this.onEndflow, this);
       },
       /**
        * @override
        */
       onExit: function () {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
-        oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
-        oEventBus.unsubscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
-        oEventBus.unsubscribe("flowCreated", "EndFlow", this.onEndflow, this);
+        
+        this.oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
+        this.oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
+        this.oEventBus.unsubscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+        this.oEventBus.unsubscribe("flowCreated", "EndFlow", this.onEndflow, this);
       },
 
       getDepartamento: function () {
@@ -310,12 +310,12 @@ sap.ui.define(
 
       },
       onGrabar: function () {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.publish("flowRequest", "valFlow");
+        
+        this.oEventBus.publish("flowRequest", "valFlow");
       },
       onFlowValid: function (sChannel, oEvent, valOk) {
         if (!this.valFlowStart) {
-          this.valFlowStart = sap.ui.getCore().getEventBus()._mChannels.flowRequest.mEventRegistry.valFlow.length;
+          this.valFlowStart = this.oEventBus._mChannels.flowRequest.mEventRegistry.valFlow.length;
           this.valFlowRes = [];
         }
         this.valFlowStart--;
@@ -336,12 +336,12 @@ sap.ui.define(
         };
       },
       submitFlow: function () {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.publish("flowRequest", "flowData");
+        
+        this.oEventBus.publish("flowRequest", "flowData");
       },
       onFlowData: function (sChannel, oEvent, flowData) {
         if (!this.getFlowDataStart) {
-          this.getFlowDataStart = sap.ui.getCore().getEventBus()._mChannels.flowRequest.mEventRegistry.valFlow.length;
+          this.getFlowDataStart = this.oEventBus._mChannels.flowRequest.mEventRegistry.valFlow.length;
           this.getFlowDataRes = [];
         }
         this.getFlowDataStart--;
@@ -374,15 +374,15 @@ sap.ui.define(
         if (!res) {
           MessageBox.error(error.responseText);
         }
-        var oEventBus = sap.ui.getCore().getEventBus();
+        
         if (res.PeTmsj === "E") {
-          oEventBus.publish("flowResult", "dataError", {
+          this.oEventBus.publish("flowResult", "dataError", {
             res: res
           });
         } else {
           var messText = this.get18().getText("headerFlujosController.FlujoCreado", [this.headerData.id]);
           MessageBox.success(messText);
-          oEventBus.publish("flowCreated", "releaseFiles");
+          this.oEventBus.publish("flowCreated", "releaseFiles");
         }
       },
       onEndflow: function () {

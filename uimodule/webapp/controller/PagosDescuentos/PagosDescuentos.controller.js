@@ -39,22 +39,22 @@ sap.ui.define(
           }, this);
           console.log("finInit");
 
-          var oEventBus = sap.ui.getCore().getEventBus();
-          oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
-          oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
-          oEventBus.subscribe("flowResult", "dataError", this.showErrorTable, this);
-          oEventBus.subscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
-          oEventBus.subscribe("flowCreated", "finalFiles", this.finalFiles, this);
-          oEventBus.subscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
+          this.oEventBus = this.getOwnerComponent().getEventBus();
+          this.oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
+          this.oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
+          this.oEventBus.subscribe("flowResult", "dataError", this.showErrorTable, this);
+          this.oEventBus.subscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
+          this.oEventBus.subscribe("flowCreated", "finalFiles", this.finalFiles, this);
+          this.oEventBus.subscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
         },
         onExit: function () {
-          var oEventBus = sap.ui.getCore().getEventBus();
-          oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
-          oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
-          oEventBus.unsubscribe("flowResult", "dataError", this.showErrorTable, this);
-          oEventBus.unsubscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
-          oEventBus.unsubscribe("flowCreated", "finalFiles", this.finalFiles, this);
-          oEventBus.unsubscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
+          
+          this.oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
+          this.oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
+          this.oEventBus.unsubscribe("flowResult", "dataError", this.showErrorTable, this);
+          this.oEventBus.unsubscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
+          this.oEventBus.unsubscribe("flowCreated", "finalFiles", this.finalFiles, this);
+          this.oEventBus.unsubscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
           this.destroyIds();
         },
 
@@ -110,9 +110,9 @@ sap.ui.define(
         },
         onRemoveLines: function (oEvent) {
           var itemTab = this._oTab.getItems();
-          var oEventBus = sap.ui.getCore().getEventBus();
+          
           this._oTab.getSelectedItems().forEach(element => {
-            oEventBus.publish("flowReq", "delItem", {
+            this.oEventBus.publish("flowReq", "delItem", {
               itemId: element.getBindingContext(this.viewConfig.tabModelName).getObject().vis1
             });
           }, this);
@@ -181,8 +181,8 @@ sap.ui.define(
               fileData: fileData,
               size: readerEvt.total
             });
-            var oEventBus = sap.ui.getCore().getEventBus();
-            oEventBus.publish("flowRes", "filesLoaded", {
+            
+            this.oEventBus.publish("flowRes", "filesLoaded", {
               itemId: lineItem.getObject().vis1,
               itemOwner: lineItem.getObject().vis2,
               fileId: this.fileId,
@@ -223,8 +223,8 @@ sap.ui.define(
           this.getOwnerComponent().openErrorFrag(fragRes, res.res.to_pesal.results, this.getOwnerComponent().flowData.id + ": " + res.res.PeMsj);
         },
         releaseFiles: function () {
-          var oEventBus = sap.ui.getCore().getEventBus();
-          oEventBus.publish("flowCreated", "fileReleaseStart");
+          
+          this.oEventBus.publish("flowCreated", "fileReleaseStart");
         },
         finalFiles: function (sChannel, oEvent, res) {
           var uploadFiles = this.loadedFiles.filter(loaded => {
@@ -235,8 +235,8 @@ sap.ui.define(
           this.getOwnerComponent().oOneDrive.UploadFiles(uploadFiles);
         },
         releaseFilesEnded: function () {
-          var oEventBus = sap.ui.getCore().getEventBus();
-          oEventBus.publish("flowCreated", "EndFlow");
+          
+          this.oEventBus.publish("flowCreated", "EndFlow");
         },
         /* =========================================================== */
         /* EXCEL                                                       */
@@ -442,28 +442,28 @@ sap.ui.define(
           return this._tabModel.getData();
         },
         getData: function () {
-          var oEventBus = sap.ui.getCore().getEventBus();
+          
           var result = this.getFlowData();
           result.forEach(element => {
             element.head1 = this.headerData.sociedad;
             element.head2 = this.headerData.division;
             element.head3 = this.headerData.tipo;
           })
-          oEventBus.publish("flowResults", "flowData", {
+          this.oEventBus.publish("flowResults", "flowData", {
             res: result,
             typeArr: true
           });
         },
 
         getValInputs: function () {
-          var oEventBus = sap.ui.getCore().getEventBus();
+          
           var errorMsg = this.valInputs();
           if (errorMsg !== "") {
-            oEventBus.publish("flowResults", "flowValid", {
+            this.oEventBus.publish("flowResults", "flowValid", {
               res: false
             });
           } else {
-            oEventBus.publish("flowResults", "flowValid", {
+            this.oEventBus.publish("flowResults", "flowValid", {
               res: true
             });
           }

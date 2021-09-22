@@ -4,7 +4,9 @@ sap.ui.define(
     "use strict";
 
     return ManagedObject.extend("bafar.flujos.flujos.utils.SendData", {
-      constructor: function () {
+      constructor: function (oComponent) {
+        this.oComponent = oComponent;
+        this.oEventBus = oComponent.getEventBus();
         var sServiceUrl = "/sap/opu/odata/sap/ZOD_FLUJOS_IN_SRV";
         this.createModel = new sap.ui.model.odata.v2.ODataModel(sServiceUrl, true);
       },
@@ -35,11 +37,10 @@ sap.ui.define(
         });
       },
       creationBackFail: function (error) {
-        oEventBus.publish("flowCreation", "flowBackResult");
+        this.oEventBus.publish("flowCreation", "flowBackResult");
       },
-      creationBackAccepted: function (res) {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.publish("flowCreation", "flowBackResult", res);
+      creationBackAccepted: function (res) {        
+        this.oEventBus.publish("flowCreation", "flowBackResult", res);
       },
       NOM001001: function (flowInfo, arrData) {
         var oPayload = {

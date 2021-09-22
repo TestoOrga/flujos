@@ -48,25 +48,25 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         this._tabModel = this.getModel("files");
         this._oTab = this.byId("lineItemsList");
 
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.subscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
-        oEventBus.subscribe("flowCreated", "fileReleaseStart", this.releaseFilesFinal, this);
-        oEventBus.subscribe("flowReq", "delItem", this.deleteItemFiles, this);
+        this.oEventBus = this.getOwnerComponent().getEventBus();
+        this.oEventBus.subscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
+        this.oEventBus.subscribe("flowCreated", "fileReleaseStart", this.releaseFilesFinal, this);
+        this.oEventBus.subscribe("flowReq", "delItem", this.deleteItemFiles, this);
 
-        oEventBus.subscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
-        oEventBus.subscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
+        this.oEventBus.subscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
+        this.oEventBus.subscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
       },
       /**
        * @override
        */
       onExit: function () {
-        var oEventBus = sap.ui.getCore().getEventBus();
-        oEventBus.unsubscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
-        oEventBus.subscribe("flowCreated", "fileReleaseStart", this.releaseFilesFinal, this);
-        oEventBus.unsubscribe("flowReq", "delItem", this.deleteItemFiles, this);
+        
+        this.oEventBus.unsubscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
+        this.oEventBus.unsubscribe("flowCreated", "fileReleaseStart", this.releaseFilesFinal, this);
+        this.oEventBus.unsubscribe("flowReq", "delItem", this.deleteItemFiles, this);
 
-        oEventBus.unsubscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
-        oEventBus.unsubscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
+        this.oEventBus.unsubscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
+        this.oEventBus.unsubscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
       },
 
       receiveFilesLoaded: function (sChannel, oEvent, data) {
@@ -91,8 +91,8 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         if (this.itemsLoading === 0) {
           this.endUpload(true);
         } else {
-          var oEventBus = sap.ui.getCore().getEventBus();
-          oEventBus.publish("flowCreated", "finalFiles", {
+          
+          this.oEventBus.publish("flowCreated", "finalFiles", {
             filesTab: items
           });
           // this.getOwnerComponent().oOneDrive.UploadFiles(items);
@@ -126,17 +126,17 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
       },
       endUpload: function (nofile) {
         if (nofile) {
-          oEventBus.publish("flowCreated", "releaseFilesEnded");
+          this.oEventBus.publish("flowCreated", "releaseFilesEnded");
           console.log("noFile");
         } else {
           console.log(this.itemsLoading);
           if (this.itemsLoading === 0) {
             this._oTab.setBusy(false);
-            var oEventBus = sap.ui.getCore().getEventBus();
+            var that = this;
             console.log("EndUpload");
             MessageBox.warning("Todos los archivos fueron procesados",{
               onClose: function (sAction) {
-                oEventBus.publish("flowCreated", "releaseFilesEnded");                
+                that.oEventBus.publish("flowCreated", "releaseFilesEnded");                
               }
             });
             // setTimeout(() => {
