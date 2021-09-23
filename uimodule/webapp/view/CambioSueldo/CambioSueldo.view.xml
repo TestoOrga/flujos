@@ -3,14 +3,27 @@
     xmlns="sap.m"
     xmlns:c="sap.ui.core"
     xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
     xmlns:unified="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
     <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Cambios de Sueldo" height="auto" width="auto" class="sapUiResponsiveMargin">
         <content>
-        </content>
-    </Panel>
-</mvc:View>
-
-                <!-- <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" blocked="{= !${viewGeneral>/release}}">
+        <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
+                <form:content>
+                    <Label required="true" text="Sociedad"/>
+                    <Select maxWidth="100%" width ="auto" items="{sociedad>/}" change="onSelect($event, 'sociedad')" forceSelection="false">
+                        <c:Item key="{sociedad>C1}" text="{sociedad>C1} {sociedad>C2}"/>
+                    </Select>
+                    <Label required="true" text="Division" />
+                    <Select id="titleSelDivision" enabled="false" maxWidth="100%" width ="auto" items="{division>/}" change="onSelect($event, 'division')" forceSelection="false">
+                        <c:Item key="{division>C1}" text="{division>C1} {division>C2}"/>
+                    </Select>
+                    <Label required="true" text="Area Nomina"/>
+                    <Select maxWidth="100%" width ="auto" items="{tipo>/}" change="onSelect($event, 'areaNomina')" selectedKey="" forceSelection="false">
+                        <c:Item key="{areaNomina>C1}" text="{areaNomina>C1} {areaNomina>C2}"/>
+                    </Select>
+                </form:content>
+            </form:SimpleForm>
+                 <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" blocked="{= !${viewGeneral>/release}}">
                     <columns>
                         <Column>
                             <Text text="Item" width="100px"/>
@@ -25,31 +38,19 @@
                             <Text text="Sueldo" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Fec. Ingreso" width="100px"/>
-                        </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="CC nom." width="100px"/>
-                        </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Texto CC" width="100px"/>
+                            <Text text="Fecha" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Motivo" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Importe" width="100px"/>
+                            <Text text="Justificacion" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Periodo Inicio" width="100px"/>
+                            <Text text="Sueldo Actual" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Periodo Fin" width="100px"/>
-                        </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Fecha Inicio" width="100px"/>
-                        </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Fecha Fin" width="100px"/>
+                            <Text text="Minimo" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Maximo" width="100px"/>
@@ -99,4 +100,7 @@
                             </dependents>
                         </ColumnListItem>
                     </items>
-                </Table> -->
+                </Table> 
+                </content>
+    </Panel>
+</mvc:View>
