@@ -5,7 +5,7 @@
     xmlns:c="sap.ui.core" displayBlock="true" height="100%" busyIndicatorDelay="0">
     <semantic:SemanticPage floatingFooter="true">
         <semantic:content>
-            <Panel id="panelId"></Panel>
+            <Panel id="panelId" ></Panel>
         </semantic:content>
         <semantic:customFooterContent>
             <OverflowToolbar id="footer" design="Solid" style="Clear">

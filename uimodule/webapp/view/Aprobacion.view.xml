@@ -83,8 +83,8 @@
                             <FlexBox width="100%">
                                 <items>
                                     <layout:HorizontalLayout>
-                                        <layout:content>
-                                            <f:Avatar src="{path: 'lazyModel>tipo',formatter: '.formatter.getIconMaster'}" displaySize="S" displayShape="Square"></f:Avatar>
+                                        <layout:content>                                   
+                                            <f:Avatar src="{path: 'lazyModel>tipo',formatter: '.formatter.getIconMaster'}" backgroundColor="Random" displaySize="S" displayShape="Square"></f:Avatar>
                                             <ObjectIdentifier class="sapUiSmallMarginBegin sapUiSmallMarginTop" title="{lazyModel>Name}" text="{lazyModel>Role}" titleActive="false"></ObjectIdentifier>
                                         </layout:content>
                                     </layout:HorizontalLayout>
