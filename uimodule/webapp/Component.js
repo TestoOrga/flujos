@@ -35,6 +35,10 @@ sap.ui.define(
        */
       init: function () {
         // call the base component's init function
+        // get the path to the JSON file              
+        this.getModel("flowDescMap").attachRequestCompleted(function () {
+          this.flowDescMap = this.getModel("flowDescMap").getData();
+        }, this);
         this.oSendData = new SendData(this);
         UIComponent.prototype.init.apply(this, arguments);
 

@@ -1,0 +1,44 @@
+[
+    {
+        "NOM": {
+            "txt": "Nóminas",
+            "icon": "sap-icon://batch-payments",
+            "act": [
+                {
+                    "001": {
+                        "txt": "Flujo de Nómina",
+                        "pro": [
+                            {
+                                "001": "Pensiones Alimenticias"
+                            },
+                            {
+                                "002": "Pagos y Descuentos"
+                            },
+                            {
+                                "003": "Indemnizaciones"
+                            },
+                            {
+                                "004": "Cambios de Sueldo"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "DM": {
+            "txt": "Datos Maestros"
+        }
+    },
+    {
+        "CON": {
+            "txt": "Contabilidad"
+        }
+    },
+    {
+        "AF": {
+            "txt": "Activo Fijo"
+        }
+    }
+]

@@ -29,6 +29,10 @@
       "flowConfig": {
         "uri": "localData/flowConfig.json",
         "type": "JSON"
+      },
+      "flowDescMap": {
+        "uri": "localData/flowDescMap.json",
+        "type": "JSON"
       }
     }
   },
@@ -85,6 +89,10 @@
       },
       "flowConfig": {
         "dataSource": "flowConfig",
+        "preload": true
+      },
+      "flowDescMap": {
+        "dataSource": "flowDescMap",
         "preload": true
       }
     },
