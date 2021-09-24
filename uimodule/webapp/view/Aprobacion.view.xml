@@ -7,14 +7,18 @@
     xmlns:mc="sap.suite.ui.microchart"
     xmlns:fb="sap.ui.comp.filterbar"
     xmlns:f="sap.f">
-
     <semantic:SemanticPage id="masterPage" preserveHeaderStateOnScroll="false" toggleHeaderOnTitleClick="true" headerPinnable="true" titleAreaShrinkRatio="1:1.6:1.6">
         <semantic:titleHeading>
-            <Title id="masterPageTitle" text="{masterView>/title}" level="H2"/>
+            <VBox >
+                <Title id="masterPageTitle" text="Aprobacion" level="H1"/>
+                <Text text="Usuario: 09834598475"/>
+            </VBox>
         </semantic:titleHeading>
-        <semantic:titleSnappedOnMobile>
-            <Title id="masterPageTitlePhone" text="{masterView>/title}" level="H2"/>
-        </semantic:titleSnappedOnMobile>
+        <semantic:titleExpandedHeading>
+        </semantic:titleExpandedHeading>
+        <!-- <semantic:titleSnappedOnMobile>
+            <Title id="masterPageTitlePhone" text="Aprobacion Usuario: 0983459847594832" level="H2"/>
+        </semantic:titleSnappedOnMobile> -->
         <semantic:headerContent>
             <fb:FilterBar id="filterbar" reset="onRefresh" search=".onSearch" useToolbar="false" showRestoreOnFB="true" filterBarExpanded="false" showRestoreButton="true">
                 <fb:filterGroupItems>
@@ -56,7 +60,7 @@
             </fb:FilterBar>
         </semantic:headerContent>
         <semantic:content >
-        <!-- <Text text="testo"></Text> -->
+            <!-- <Text text="testo"></Text> -->
             <List id="list" width="auto" class="sapUiContentPadding" items="{
 					path: 'lazyModel>/IniSet',
 					sorter: {
@@ -78,23 +82,21 @@
                     </OverflowToolbar>
                 </headerToolbar>
                 <items>
-                    <CustomListItem id="listItem" type="Navigation" press=".onSelectionChange" class="claseitem FlexContentList">
+                    <CustomListItem id="listItem" type="Navigation" press=".onSelectionChange" class="claseitem FlexContentList" >
                         <content>
-                            <FlexBox width="100%">
+                            <FlexBox width="100%" alignItems="Center" alignContent="Center" wrap="Wrap" class="sapUiTinyMarginBegin">
                                 <items>
-                                    <layout:HorizontalLayout>
-                                        <layout:content>                                   
-                                            <f:Avatar src="{path: 'lazyModel>tipo',formatter: '.formatter.getIconMaster'}" backgroundColor="Random" displaySize="S" displayShape="Square"></f:Avatar>
-                                            <ObjectIdentifier class="sapUiSmallMarginBegin sapUiSmallMarginTop" title="{lazyModel>Name}" text="{lazyModel>Role}" titleActive="false"></ObjectIdentifier>
-                                        </layout:content>
-                                    </layout:HorizontalLayout>
-                                    <layout:HorizontalLayout>
-
+                                    <HBox width="auto" alignItems="Center" class="sapUiTinyMargin approvalAvatar">
+                                        <core:Icon size="2rem" src="{path: 'lazyModel>tipo',formatter: '.formatter.getIconMaster'}" color="#427CAC"/>
+                                        <!-- <f:Avatar id="aprovalAvatar" src="{path: 'lazyModel>tipo',formatter: '.formatter.getIconMaster'}" customDisplaySize="10rem" customFontSize="5rem" displayShape="Square"></f:Avatar> -->
+                                        <ObjectIdentifier class="sapUiMediumMarginBegin" title="{lazyModel>Name}" text="{lazyModel>Role}"></ObjectIdentifier>
+                                    </HBox>
+                                    <HBox width="50%" alignItems="Center" class="sapUiTinyMargin">
                                         <layout:VerticalLayout>
-                                            <ObjectAttribute title="División" text="{lazyModel>Werks}"/>
+                                            <ObjectAttribute title="División" text="{lazyModel>Werks}" class="sapUiTinyMarginBottom"/>
                                             <ObjectAttribute title="Subdivisión" text="{lazyModel>Btrtl}"/>
                                         </layout:VerticalLayout>
-                                    </layout:HorizontalLayout>
+                                    </HBox>
                                 </items>
                             </FlexBox>
                         </content>

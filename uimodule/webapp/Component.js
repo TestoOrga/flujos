@@ -5,9 +5,16 @@ sap.ui.define(
     "bafar/flujos/flujos/model/models",
     "./utils/SendData",
     "./utils/ErrorFrag",
-    "./libs/OneDrive"
+    "./libs/OneDrive",
+    "sap/ui/model/json/JSONModel"
   ],
-  function (UIComponent, Device, models, SendData, ErrorFrag, OneDrive) {
+  function (UIComponent,
+    Device,
+    models,
+    SendData,
+    ErrorFrag,
+    OneDrive,
+    JSONModel) {
     "use strict";
 
     return UIComponent.extend("bafar.flujos.flujos.Component", {
@@ -60,6 +67,13 @@ sap.ui.define(
             }
           });
         })
+      },
+      getAprovalModel: function () {
+        if (!this.oApprovalModel) {
+          this.setModel(new JSONModel({}), "approvalView");
+          this.oApprovalModel = this.getModel("approvalView");
+        }
+        return this.oApprovalModel;
       }
     });
   }

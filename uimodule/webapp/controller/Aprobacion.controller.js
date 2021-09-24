@@ -21,10 +21,16 @@ sap.ui.define(
             IniSet: [{
                 Name: "asdsad",
                 tipo: "NOM",
+                color: "Accent1",
+                state: "Error",
+                Role: "asdfffasdfasfdasddfasfaasdfasdfasdfasdfs"
               },
               {
                 Name: "xxxxxx",
                 tipo: "FI",
+                color: "Accent2",
+                state: "Success",
+                Role: "asdfffasdfasfdasddfasdfasdfasdfasdfasfas"
               },
             ],
           };
@@ -37,6 +43,9 @@ sap.ui.define(
           .getParameter("listItem")
           .getBindingContext("lazyModel")
           .getObject();
+        oObject.icon = this.byId("list").getSelectedItem().getAggregation('content')[0].getAggregation('items')[0].getAggregation("items").find(x=>x.sId.includes("Avatar")).getSrc();
+        var approvalModel = this.getOwnerComponent().getAprovalModel();
+        approvalModel.setProperty("/", oObject);
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         // oRouter.navTo("userDetailRoute",{code: oObject.Code});
         oRouter.navTo("RouteApprovalFlowView", {
