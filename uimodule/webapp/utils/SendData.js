@@ -86,24 +86,25 @@ sap.ui.define(
         arrData.forEach(element => {
           to_pesal.push({
             C1: "REG",
-            C5: element.in3,
+            C5: element.in3, //motivo
             C6: flowInfo.departamento,
             C7: flowInfo.actividad,
             C8: flowInfo.proceso,
             C9: flowInfo.id,
-            C11: element.head1,
-            C12: element.head2,
-            C13: element.head3,
-            C14: element.vis1,
-            C15: element.in1,
-            C16: element.vis2,
-            C17: element.vis3,
-            C18: element.vis4,
-            C19: element.in2,
-            C20: element.vis5,
-            C21: element.in3,
-            C22: element.in4,
-            C23: element.in5,
+            C10: element.vis1, //item
+            C11: element.head1, //sociedad
+            C12: element.head2, //division
+            C13: element.head3, //tipo 
+            C14: element.in1,
+            C15: element.vis2,
+            C16: element.vis3,
+            C17: element.vis4,
+            C18: element.in2,
+            C19: element.vis5,
+            C20: element.in3,
+            C21: element.in4,
+            C22: element.in5,
+            C23: element.in6,
             C24: element.vis6,
             C25: element.vis7
           })
