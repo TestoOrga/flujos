@@ -96,7 +96,7 @@ sap.ui.define(
           var flowKey = this.oUserCode.includes("x") ? "NOM001002" : "NOM001001";
           var flowViews = flowConfig.find((x) => x[flowKey]);
           if (flowViews) {
-            this.addSpecFlow(flowViews[flowKey]);
+            this.addSpecFlow(flowViews[flowKey]).then(this.getFlowData());
             // this.byId("headerFlujosButNuevo").setEnabled(false);
           } else {
             MessageBox.error(
@@ -104,6 +104,11 @@ sap.ui.define(
             );
           }
         },
+
+		getFlowData: function() {
+			console.log('tesooooooooooo');
+		},
+        
         addSpecFlow: async function (flowConfig) {
           console.log("Event Handler: onAddFlow");
           this.views = flowConfig;

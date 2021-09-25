@@ -29,7 +29,7 @@ sap.ui.define(
           this.getListData();
         }, this);
         this._oList = this.byId("list");
-        this._oGroupFunctions = {         
+        this._oGroupFunctions = {
           C6: function (oContext) {
             return {
               text: this.get18().getText(
@@ -92,19 +92,19 @@ sap.ui.define(
           .getParameter("listItem")
           .getBindingContext("lazyModel")
           .getObject();
-        oObject.icon = this.byId("list").getSelectedItem().getAggregation('content')[0].getAggregation('items')[0].getAggregation("items").find(x => x.sId.includes("Avatar")).getSrc();
+        oObject.icon = this.byId("list").getSelectedItem().getAggregation('content')[0].getAggregation('items')[0].getAggregation("items").find(x => x.sId.includes("aprovalIcon")).getSrc();
         var approvalModel = this.getOwnerComponent().getAprovalModel();
         approvalModel.setProperty("/", oObject);
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         // oRouter.navTo("userDetailRoute",{code: oObject.Code});
         oRouter.navTo("RouteApprovalFlowView", {
-          flow: oObject.Name,
+          flow: oObject.C6,
         });
       },
 
       onSearch: function (oEvent) {
         console.log('Event Handler: onSearch');
-        this.getListData();
+        this.getListData();        
       },
 
       onLocalSearch: function (oEvent) {
@@ -177,7 +177,10 @@ sap.ui.define(
         aSorters.push(new Sorter(sPath, bDescending));
         this._oList.getBinding("items").sort(aSorters);
       },
-      getListData: function() {
+      setHeaderTitle: function (user){
+        this.byId("titleText").setText(this.get18().getText("AprobacionController.Usuario", [user]));
+      },
+      getListData: function () {
         console.log("loaded");
         this.createModel = this.getModel("createModel");
         var oPayload = {
@@ -193,6 +196,7 @@ sap.ui.define(
             that.addDescrp(res.data.to_pesal.results);
             that.setModel(new JSONModel(res.data.to_pesal.results), "lazyModel");
             that.tabModel = that.getModel("lazyModel");
+            that.setHeaderTitle(res.data.P2);
           },
           error: function (error) {
             MessageBox.error(error.responseText);
