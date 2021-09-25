@@ -64,14 +64,14 @@
             <List id="list" width="auto" class="sapUiContentPadding" items="{
 					path: 'lazyModel>/',
 					sorter: {
-						path: 'Pernr',
+						path: 'C6',
 						descending: false
 					},
 					groupHeaderFactory: '.createGroupHeader'
 				}" busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true" updateFinished=".onUpdateFinished" selectionChange=".onSelectionChange">
                 <headerToolbar>
                     <OverflowToolbar >
-                        <SearchField liveChange="onSfToUpperCase" id="searchField1" showRefreshButton="true" search=".onSearchLocal" width="100%" placeholder="{i18n>masterLocalSearchPlaceHolder}">
+                        <SearchField liveChange="onLocalSearch" id="searchField1" showRefreshButton="true" search=".onSearchLocal" width="100%" placeholder="{i18n>AprobacionView.NoDeFlujoDepartamentActividadProceso}">
                             <layoutData>
                                 <OverflowToolbarLayoutData minWidth="150px" shrinkable="true" priority="NeverOverflow"/>
                             </layoutData>
@@ -82,11 +82,11 @@
                     </OverflowToolbar>
                 </headerToolbar>
                 <items>
-                    <CustomListItem id="listItem" type="Navigation" press=".onSelectionChange" class="claseitem FlexContentList" >
+                    <CustomListItem id="listItem" type="Navigation" press=".onSelectionChange" class="claseitem FlexContentList">
                         <content>
                             <FlexBox width="100%" alignItems="Center" alignContent="Center" wrap="Wrap" class="sapUiTinyMarginBegin">
                                 <items>
-                                    <HBox  alignItems="Center" class="sapUiTinyMargin approvalAvatar">
+                                    <HBox alignItems="Center" class="sapUiTinyMargin approvalAvatar">
                                         <core:Icon size="2rem" src="{path: 'lazyModel>C2',formatter: '.formatter.getIconMaster'}" color="#085caf"/>
                                         <!-- <f:Avatar id="aprovalAvatar" src="{path: 'lazyModel>tipo',formatter: '.formatter.getIconMaster'}" customDisplaySize="10rem" customFontSize="5rem" displayShape="Square"></f:Avatar> -->
                                         <ObjectIdentifier class="sapUiSmallMarginBegin" title="{lazyModel>C6}" text="{path: 'lazyModel>C5',formatter: '.formatter.fooErdat1'}"></ObjectIdentifier>

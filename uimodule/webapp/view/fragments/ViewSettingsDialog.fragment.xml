@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <ViewSettingsDialog id="viewSettingsDialog" confirm=".onConfirmViewSettingsDialog" title="Configuración">
+        <sortItems>
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.NoDeFlujo}" key="C6" selected="true"/>
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.Departamento}" key="block"/>
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.Actividad}" key="act"/>
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.Proceso}" key="pro"/>
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.FechaDeCreacin}" key="C5"/>
+        </sortItems>
+        <!-- <filterItems> -->
+            <!-- <ViewSettingsFilterItem id="filterItems" text="{i18n>masterFilterName}" multiSelect="false">
+                <items> -->
+                    <!-- <ViewSettingsCustomItem id="viewFilter1" text="{i18n>masterFilter1}" key="Filter1">
+                        <customControl>
+                      					<Slider
+						step="10"
+						change="handleSliderChange" />                
+                        </customControl>                                                
+                    </ViewSettingsCustomItem> -->
+                    <!-- <ViewSettingsItem id="viewFilter1" text="{i18n>masterFilter1}" key="Filter1"/> -->
+                    <!-- <ViewSettingsItem id="viewFilter2" text="{i18n>masterFilter2}" key="Filter2"/> -->
+                <!-- </items>
+            </ViewSettingsFilterItem> -->
+            <!-- <ViewSettingsFilterItem id="filterItems1" text="{i18n>masterFilterName}" multiSelect="false">
+                <items>
+                    <ViewSettingsItem id="viewFilter11" text="{i18n>masterFilter1}" key="Filter1"/>
+                    <ViewSettingsItem id="viewFilter21" text="{i18n>masterFilter2}" key="Filter2"/>
+                </items>
+            </ViewSettingsFilterItem> -->
+        <!-- </filterItems> -->
+        <groupItems>
+            <!-- <ViewSettingsItem text="{i18n>masterGroup1}" key="Ename"/> -->
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.NoDeFlujo}" key="C6"/>
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.Departamento}" key="block"/>
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.Actividad}" key="act"/>
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.Proceso}" key="pro"/>
+            <ViewSettingsItem text="{i18n>ViewSettingsDialogFragment.FechaDeCreacin}" key="C5"/>
+        </groupItems>
+        <!-- key="ReportsTo"/> -->
+    </ViewSettingsDialog>
+</core:FragmentDefinition>

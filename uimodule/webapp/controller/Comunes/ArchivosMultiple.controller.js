@@ -3,7 +3,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
   "sap/ui/model/Filter",
   "sap/ui/model/FilterOperator",
   "sap/m/GroupHeaderListItem",
-  "sap/m/MessageBox"
+  "sap/m/MessageBox",
 ], function (BaseController,
   JSONModel,
   Filter,
