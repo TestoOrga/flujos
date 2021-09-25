@@ -105,8 +105,30 @@ sap.ui.define(
           }
         },
 
-		getFlowData: function() {
-			console.log('tesooooooooooo');
+		getFlowData: function() {			
+      this.createModel = this.getModel("createModel");
+        var oPayload = {
+          P1: "APPDET",
+          // P2: "SY-UNAME",
+          P2: "E",
+          to_pesal: [{
+            C2: this.lastHash
+          }]
+        };
+        var that = this;
+        this.createModel.create("/BaseSet", oPayload, {
+          async: true,
+          success: function (req, res) {
+            that.addDescrp(res.data.to_pesal.results);
+            that.setModel(new JSONModel(res.data.to_pesal.results), "lazyModel");
+            that.tabModel = that.getModel("lazyModel");
+            that.setHeaderTitle(res.data.P2);
+          },
+          error: function (error) {
+            MessageBox.error(error.responseText);
+          }
+        });
+      console.log('tesooooooooooo');
 		},
         
         addSpecFlow: async function (flowConfig) {

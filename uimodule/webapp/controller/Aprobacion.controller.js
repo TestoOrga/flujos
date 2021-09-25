@@ -98,7 +98,7 @@ sap.ui.define(
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         // oRouter.navTo("userDetailRoute",{code: oObject.Code});
         oRouter.navTo("RouteApprovalFlowView", {
-          flow: oObject.C6,
+          flow: oObject.C7,
         });
       },
 
