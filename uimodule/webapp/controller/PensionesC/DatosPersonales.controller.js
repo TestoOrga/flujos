@@ -168,6 +168,8 @@ sap.ui.define(
             datosPersonalesData[backId] = this.getView().byId(datosPersonalesFields[i]).getValue();
             firstC++;
           }
+          //Ajustes especificos
+          datosPersonalesData.C40 = datosPersonalesData.C22;
           return datosPersonalesData;
           //console.log(datosPersonalesData);
         },

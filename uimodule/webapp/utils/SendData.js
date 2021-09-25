@@ -77,6 +77,7 @@ sap.ui.define(
             C32: arrData.C32,
             C33: arrData.C33,
             C34: arrData.C34,
+            C40: arrData.C40
           }, ],
         };
         this.submitCall(oPayload);

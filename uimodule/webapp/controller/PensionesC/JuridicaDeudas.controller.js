@@ -5,11 +5,12 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/mvc/XMLView",
     "sap/m/MessageBox",
+    "bafar/flujos/flujos/model/formatter"
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, MessageToast, JSONModel, XMLView) {
+  function (Controller, MessageToast, JSONModel, XMLView, MessageBox, formatter) {
     "use strict";
     var oModel,
       oODataJSONModel,
@@ -33,6 +34,7 @@ sap.ui.define(
     // }
 
     return Controller.extend("namespace.name.project3.controller.View1", {
+      formatter: formatter,
       onInit: function () {
 
         oDataResults = [];
@@ -329,7 +331,7 @@ sap.ui.define(
         if (this.getView().byId("_viaPagoSelect")) {
           var juridicaData = {
             C22: this.getView().byId("numeroOrdenInput").getValue(),
-            C23: this.getView().byId("numeroOrdenDate").getValue(),
+            C23: this.formatter.dateToAbap(this.getView().byId("numeroOrdenDate").getValue(), "."),
             C24: this.getView().byId("receptor").getValue(),
             C25: this.byId("cveBancoSelect").getSelectedKey(),
             C26: this.byId("_claveBancoInput").getValue(),
