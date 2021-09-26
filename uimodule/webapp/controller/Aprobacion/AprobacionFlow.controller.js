@@ -5,8 +5,16 @@ sap.ui.define(
     "sap/m/Dialog",
     "sap/m/DialogType",
     "sap/m/Button",
+    "sap/m/MessageBox",
+    "sap/ui/model/json/JSONModel",
   ],
-  function (BaseController, XMLView, Dialog, DialogType, Button) {
+  function (BaseController,
+    XMLView,
+    Dialog,
+    DialogType,
+    Button,
+    MessageBox,
+    JSONModel) {
     "use strict";
 
     return BaseController.extend(
@@ -21,7 +29,9 @@ sap.ui.define(
             .attachPatternMatched((oEvent) => {
               var createFlow = false;
               if (this.lastHash) {
-                console.log('Event Handler: attachPatternMatched ' + this.lastHash);
+                console.log(
+                  "Event Handler: attachPatternMatched " + this.lastHash
+                );
                 if (oEvent.getParameter("arguments").flow !== this.lastHash) {
                   this.resetFlow();
                   createFlow = true;
@@ -31,10 +41,12 @@ sap.ui.define(
               }
               if (createFlow) {
                 this.lastHash = oEvent.getParameter("arguments").flow;
-                console.log('Event Handler: attachPatternMatched ' + this.lastHash);
+                console.log(
+                  "Event Handler: attachPatternMatched " + this.lastHash
+                );
                 this.onPageLoaded(oEvent);
                 this.mainModel = this.getModel();
-                this.onAddFlow();
+                this.displayFlow();
               }
             }, this);
           this.headerData = {};
@@ -54,20 +66,60 @@ sap.ui.define(
 
           //eventlisteners
           this.oEventBus = this.getOwnerComponent().getEventBus();
-          this.oEventBus.subscribe("flowResults", "flowValid", this.onFlowValid, this);
-          this.oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
-          this.oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
-          this.oEventBus.subscribe("flowCreated", "EndFlow", this.onEndflow, this);
+          this.oEventBus.subscribe(
+            "flowResults",
+            "flowValid",
+            this.onFlowValid,
+            this
+          );
+          this.oEventBus.subscribe(
+            "flowResults",
+            "flowData",
+            this.onFlowData,
+            this
+          );
+          this.oEventBus.subscribe(
+            "flowCreation",
+            "flowBackResult",
+            this.onFlowBackResult,
+            this
+          );
+          this.oEventBus.subscribe(
+            "flowCreated",
+            "EndFlow",
+            this.onEndflow,
+            this
+          );
         },
         /**
          * @override
          */
         onExit: function () {
           this.getView().destroy();
-          this.oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
-          this.oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
-          this.oEventBus.unsubscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
-          this.oEventBus.unsubscribe("flowCreated", "EndFlow", this.onEndflow, this);
+          this.oEventBus.unsubscribe(
+            "flowResults",
+            "flowValid",
+            this.onFlowValid,
+            this
+          );
+          this.oEventBus.unsubscribe(
+            "flowResults",
+            "flowData",
+            this.onFlowData,
+            this
+          );
+          this.oEventBus.unsubscribe(
+            "flowCreation",
+            "flowBackResult",
+            this.onFlowBackResult,
+            this
+          );
+          this.oEventBus.unsubscribe(
+            "flowCreated",
+            "EndFlow",
+            this.onEndflow,
+            this
+          );
         },
         /**
          * @override
@@ -86,51 +138,92 @@ sap.ui.define(
           this.setView();
         },
         setView: function () {
-          // this.byId("panelId").setHeaderText(this.oUserCode);          
-          this.setModel(this.getOwnerComponent().getAprovalModel(), "viewModel");
+          // this.byId("panelId").setHeaderText(this.oUserCode);
+          this.setModel(
+            this.getOwnerComponent().getAprovalModel(),
+            "viewModel"
+          );
         },
-        onAddFlow: function (oEvent) {
+        displayFlow: function () {
+          this.getFlowData()
+            .then((response) => this.distributeData(response))
+            .then(()=>this.onAddFlow())
+            .then(()=>
+              console.log('send data to view controllers')
+            )
+            .catch((error) => {
+              MessageBox.error(error.responseText || error.message);
+            });
+        },
+        onAddFlow: function () {
           console.log("Event handler: onAddFlow");
           var flowConfig = this.getModel("flowConfig").getData();
-          // var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
-          var flowKey = this.oUserCode.includes("x") ? "NOM001002" : "NOM001001";
+          var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
+          // var flowKey = this.oUserCode.includes("x") ?
+          //   "NOM001002" :
+          //   "NOM001001";
           var flowViews = flowConfig.find((x) => x[flowKey]);
           if (flowViews) {
-            this.addSpecFlow(flowViews[flowKey]).then(this.getFlowData());
+                return this.addSpecFlow(flowViews[flowKey])
             // this.byId("headerFlujosButNuevo").setEnabled(false);
           } else {
-            MessageBox.error(
+            return MessageBox.error(
               this.get18().getText("headerFlujosController.FlujoNoConfigurado")
             );
           }
         },
 
-		getFlowData: function() {			
-      this.createModel = this.getModel("createModel");
-        var oPayload = {
-          P1: "APPDET",
-          // P2: "SY-UNAME",
-          P2: "E",
-          to_pesal: [{
-            C2: this.lastHash
-          }]
-        };
-        var that = this;
-        this.createModel.create("/BaseSet", oPayload, {
-          async: true,
-          success: function (req, res) {
-            that.addDescrp(res.data.to_pesal.results);
-            that.setModel(new JSONModel(res.data.to_pesal.results), "lazyModel");
-            that.tabModel = that.getModel("lazyModel");
-            that.setHeaderTitle(res.data.P2);
-          },
-          error: function (error) {
-            MessageBox.error(error.responseText);
-          }
-        });
-      console.log('tesooooooooooo');
-		},
-        
+        getFlowData: function () {
+          this.createModel = this.getModel("createModel");
+          var oPayload = {
+            P1: "APPDET",
+            // P2: "SY-UNAME",
+            P2: "E",
+            to_pesal: [{
+              C2: this.lastHash,
+            }, ],
+          };
+          return new Promise((resolve, reject) => {
+            this.createModel.create("/BaseSet", oPayload, {
+              async: true,
+              success: function (req, res) {
+                var res = res.data.to_pesal.results[0];
+                resolve(res);
+              },
+              error: function (error) {
+                reject(error);
+              },
+            });
+          });
+        },
+
+        distributeData: function (oResults) {
+          this.setModel(new JSONModel(oResults), "viewBackModel");
+          this.mapFlowConfig(oResults);
+          this.mapHeader(oResults);
+          // this.setModel(new JSONModel(res.data.to_pesal.results), "lazyModel");
+          // this.tabModel = that.getModel("lazyModel");
+          // this.setHeaderTitle(res.data.P2);
+        },
+
+        mapFlowConfig: function (oFlowConfig) {
+          this.headerData.departamento = oFlowConfig.C1;
+          this.headerData.actividad = oFlowConfig.C2;
+          this.headerData.proceso = oFlowConfig.C3;
+        },
+        mapHeader: function (oFlowData) {
+          var headerData = {
+            title: oFlowData.C5,
+            intro: oFlowData.C4,
+            icon: oFlowData.C1,
+            stateText: "Por Aprobar",
+            state: "Warning",
+            name: oFlowData.C24,
+            subName: oFlowData.C25,
+            subName1: oFlowData.C26
+          };
+          this.getModel("viewModel").setProperty("/", headerData);
+        },
         addSpecFlow: async function (flowConfig) {
           console.log("Event Handler: onAddFlow");
           this.views = flowConfig;
@@ -153,6 +246,7 @@ sap.ui.define(
               .addStyleClass("headerPanel")
               .addStyleClass("FlexContent");
           });
+          return console.log('VIEWS LOADED!');
         },
 
         onReset: function (oEvent, fn, text) {
@@ -220,18 +314,17 @@ sap.ui.define(
           var oController = sap.ui.core.mvc.Controller.create({
             name: controllerName,
           });
-          const fn = () => XMLView.create({
-            id: this.createId(viewId),
-            viewName: viewName
-          });
+          const fn = () =>
+            XMLView.create({
+              id: this.createId(viewId),
+              viewName: viewName,
+            });
           const oView = await this.getOwnerComponent().runAsOwner(fn);
           return {
             oView: oView,
             oRef: oRef,
           };
         },
-
-
 
         clearHeader: function () {
           this.byId("headerFLujosIdFlujo").setText(
@@ -248,8 +341,6 @@ sap.ui.define(
           this.oEventBus.publish("flowRequest", "flowData");
         },
 
-
-
         /* ===========================================================
          Internal Main Actions
         ============================================================= */
@@ -260,7 +351,6 @@ sap.ui.define(
         onCancelar: function () {
           this.onBack();
         },
-
 
         /* ===========================================================
          External Event Handlers
@@ -367,9 +457,6 @@ sap.ui.define(
         //   );
         // },
 
-
-
-
         /* ===========================================================
          BORRAR
         ============================================================= */
@@ -433,4 +520,5 @@ sap.ui.define(
         // }
       }
     );
-  });
+  }
+);
