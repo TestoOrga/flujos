@@ -64,6 +64,10 @@ sap.ui.define(
             this
           );
 
+          //model
+          this.setModel(new JSONModel({}), "viewBackModel");
+          this.backModel = this.getModel("viewBackModel");
+
           //eventlisteners
           this.oEventBus = this.getOwnerComponent().getEventBus();
           this.oEventBus.subscribe(
@@ -147,10 +151,13 @@ sap.ui.define(
         displayFlow: function () {
           this.getFlowData()
             .then((response) => this.distributeData(response))
-            .then(()=>this.onAddFlow())
-            .then(()=>
-              console.log('send data to view controllers')
-            )
+            .then(() => this.onAddFlow())
+            .then(() => {
+              console.log('send data to view controllers');
+              this.oEventBus.publish("flowApproval", "loadFlowData", {
+                res: this.backModel.getData()
+              });
+            })
             .catch((error) => {
               MessageBox.error(error.responseText || error.message);
             });
@@ -164,7 +171,7 @@ sap.ui.define(
           //   "NOM001001";
           var flowViews = flowConfig.find((x) => x[flowKey]);
           if (flowViews) {
-                return this.addSpecFlow(flowViews[flowKey])
+            return this.addSpecFlow(flowViews[flowKey])
             // this.byId("headerFlujosButNuevo").setEnabled(false);
           } else {
             return MessageBox.error(
@@ -198,7 +205,8 @@ sap.ui.define(
         },
 
         distributeData: function (oResults) {
-          this.setModel(new JSONModel(oResults), "viewBackModel");
+          this.backModel.setProperty("/", oResults);
+          // this.setModel(new JSONModel(oResults), "viewBackModel");
           this.mapFlowConfig(oResults);
           this.mapHeader(oResults);
           // this.setModel(new JSONModel(res.data.to_pesal.results), "lazyModel");
@@ -447,6 +455,15 @@ sap.ui.define(
           this.clearHeader();
           var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
           oRouter.navTo("RouteAccionView", null);
+        },
+
+        approveEdit: function (oEvent) {
+          if (oEvent.getParameter("pressed")) {
+            this.flowModified = true;
+          }
+          this.oEventBus.publish("flowApproval", "editMode", {
+            edit: oEvent.getParameter("pressed")
+          });
         },
 
         // onBack: function (oEvent) {

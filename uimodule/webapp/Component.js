@@ -35,7 +35,8 @@ sap.ui.define(
        */
       init: function () {
         // call the base component's init function
-        // get the path to the JSON file              
+        // get the path to the JSON file     
+        this.currentMode = 0;
         this.getModel("flowDescMap").attachRequestCompleted(function () {
           this.flowDescMap = this.getModel("flowDescMap").getData();
         }, this);
@@ -78,6 +79,15 @@ sap.ui.define(
           this.oApprovalModel = this.getModel("approvalView");
         }
         return this.oApprovalModel;
+      },
+      getMode: function (currHash) {
+        if (currHash.includes("aprobacion")) {
+          return 3;
+        } else if (currHash.includes("seguimiento")) {
+          return 2;
+        } else {
+          return 1;
+        }
       }
     });
   }

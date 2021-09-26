@@ -10,6 +10,17 @@ sap.ui.define([
        * @override
        */
       onInit: function () {
+        //Aprobacion
+        if (this.getOwnerComponent().currentMode === 3 || this.getCurrentRouteName() === 3) {
+          this.getView().setModel(new JSONModel({
+            noEditField: false,
+            creation: false,
+            enabled: false
+          }), "afterCreation");
+        } else {
+          this.getView().setModel(new JSONModel({noEditField: true, creation: true}), "afterCreation");
+        };
+        
         this.viewConfig = {
           tabModelName: "files",
           tabControlId: "lineItemsList",
@@ -27,6 +38,9 @@ sap.ui.define([
         this.oEventBus.subscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
 
         this.oEventBus.subscribe("flowCreated", "fileReleaseStart", this.fileReleaseStart, this);
+
+        // Aprobacion
+        this.oEventBus.subscribe("flowApproval", "editMode", this.editMode, this);
       },
       /**
        * @override
@@ -36,8 +50,13 @@ sap.ui.define([
         this.oEventBus.unsubscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
         this.oEventBus.unsubscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
         this.oEventBus.unsubscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
-
         this.oEventBus.unsubscribe("flowCreated", "fileReleaseStart", this.fileReleaseStart, this);
+        this.oEventBus.unsubscribe("flowApproval", "editMode", this.editMode, this);
+      },
+
+      getCurrentRouteName: function (router = this.getOwnerComponent().getRouter()) {
+        const currentHash = router.getHashChanger().getHash();
+        return this.getOwnerComponent().getMode(currentHash); // since 1.75
       },
 
       // receiveFilesLoaded: function (sChannel, oEvent, data) {
@@ -214,7 +233,10 @@ sap.ui.define([
         }
 
 
-      }
+      },
+      editMode: function (sChannel, oEvent, res) {
+        this.getView().getModel("afterCreation").setProperty("/enabled", res.edit);
+      },
       // testo: function () {
       //   this.getOwnerComponent().oOneDrive.UploadFiles(this.sendFilesFinal());
       // }

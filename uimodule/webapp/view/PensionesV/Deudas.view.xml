@@ -11,17 +11,17 @@
 			<f:SimpleForm id="SimpleForm1" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
 				<f:content>					
 					<Label required="true" text="Tipo Descuento"/>
-					<Select id="_tipoDescuento" maxWidth="100%" width ="auto" items="{/tipoDescuento}" change="onSelectDescuento" forceSelection="false">
+					<Select id="_tipoDescuento" maxWidth="100%" width ="auto" items="{/tipoDescuento}" change="onSelectDescuento" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : true}">
 						<core:Item key="{C1}" text="{C1} {C2}"/>
 					</Select>
 					<Input id="_tipoDescuentoInput"  fieldWidth="100%" editable="false"/>
 					<Label required="true" id="_unidadIntervaloLabel" text="Unidad Intervalo (Selecciona tipo descuento)"/>
-					<Select enabled="false" maxWidth="100%" width ="auto" id="_unidadIntervalo"  items="{/unidadIntervalo}" forceSelection="false" change="onSelectUnidadIntervalo">
+					<Select maxWidth="100%" width ="auto" id="_unidadIntervalo"  items="{/unidadIntervalo}" forceSelection="false" change="onSelectUnidadIntervalo" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : false}">
 						<core:Item key="{C1}" text="{C1} {C2}"/>
 					</Select>
 					<Input id="_unidadIntervaloInput" editable="false" fieldWidth="100%"></Input>		
 					<Label id="descuentoCurrLabel" visible="false"/>
-					<Input id ="descuentoCurr" liveChange="cantLiveChange" change="formatCurrency" visible ="false" width="35%"/>			
+					<Input id ="descuentoCurr" liveChange="cantLiveChange" change="formatCurrency" visible ="false" width="35%" editable="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : true}"/>			
 				</f:content>
 			</f:SimpleForm>
 		</content>

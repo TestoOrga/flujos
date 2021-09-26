@@ -1,10 +1,18 @@
 /* eslint-disable no-console */
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "bafar/flujos/flujos/libs/filesaver", "bafar/flujos/flujos/libs/xlsx.full.min"],
+  ["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "bafar/flujos/flujos/libs/filesaver", "bafar/flujos/flujos/libs/xlsx.full.min",
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/core/routing/HashChanger"
+  ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, MessageToast, filesaver, xlsx) {
+  function (Controller,
+    MessageToast,
+    filesaver,
+    XlsxFullmin,
+    JSONModel,
+    HashChanger) {
     "use strict";
 
     var noPersonalIn;
@@ -13,6 +21,17 @@ sap.ui.define(
     return Controller.extend(
       "bafar.flujos.flujos.controller.PensionesC.DatosPersonales", {
         onInit: function () {
+          // Modo Aprobacion          
+          if (this.getOwnerComponent().currentMode === 3 || this.getCurrentRouteName() === 3) {
+            this.getView().setModel(new JSONModel({
+              noEditField: false,
+              creation: false,
+              enabled: false
+            }), "afterCreation");
+          } else {
+            this.getView().setModel(new JSONModel({noEditField: true, creation: true}), "afterCreation");
+          };
+
           window.console.log("Se inicia onInit");
           //eventlisteners
           this.oEventBus = this.getOwnerComponent().getEventBus();
@@ -22,6 +41,10 @@ sap.ui.define(
 
           this.oEventBus.subscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
           this.oEventBus.subscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
+
+          // Aprobacion
+          this.oEventBus.subscribe("flowApproval", "loadFlowData", this.applyData, this);
+          this.oEventBus.subscribe("flowApproval", "editMode", this.editMode, this);
         },
         onExit: function () {
 
@@ -30,7 +53,15 @@ sap.ui.define(
           this.oEventBus.unsubscribe("flowResult", "dataError", this.showErrorTable, this);
 
           this.oEventBus.unsubscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
-          this.oEventBus.subscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
+          this.oEventBus.unsubscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
+
+          // Aprobacion
+          this.oEventBus.unsubscribe("flowApproval", "loadFlowData", this.applyData, this);
+          this.oEventBus.unsubscribe("flowApproval", "editMode", this.editMode, this);
+        },
+        getCurrentRouteName: function (router = this.getOwnerComponent().getRouter()) {
+          const currentHash = router.getHashChanger().getHash();
+          return this.getOwnerComponent().getMode(currentHash); // since 1.75
         },
         onEnterInputNoPersonal: function (oEvent) {
           noPersonalIn = this.getView().byId("noPeronsal_Input").getValue();
@@ -255,7 +286,7 @@ sap.ui.define(
           this.oEventBus.publish("flowCreated", "fileReleaseStart");
         },
 
-        releaseFilesEnded: function (){
+        releaseFilesEnded: function () {
           this.oEventBus.publish("flowCreated", "EndFlow");
         },
         periodoInput: function (oEvent) {
@@ -270,6 +301,73 @@ sap.ui.define(
           };
           this.getOwnerComponent().openErrorFrag(fragRes, res.res.to_pesal.results, this.getOwnerComponent().flowData.id + ": " + res.res.PeMsj);
         },
+
+        // APROBACION
+        applyData: function (sChannel, oEvent, res) {
+          // console.log(res.res);
+          this.mapToView("PERSONALES", res.res);
+          this.oEventBus.publish("flowApproval", "loadViewData", {
+            data: this.mapToView("JURIDICA", res.res),
+            view: "JURIDICA"
+          });
+          this.oEventBus.publish("flowApproval", "loadViewData", {
+            data: this.mapToView("DEUDAS", res.res),
+            view: "DEUDAS"
+          });
+        },
+
+        mapToView: function (view, oData) {
+          switch (view) {
+            case "PERSONALES":
+              this.mapPersonales(oData);
+              break;
+            case "JURIDICA":
+              return this.mapJuridicas(oData);
+              // break;
+            case "DEUDAS":
+              return this.mapDeudas(oData);
+              // break;
+            default:
+              break;
+          }
+        },
+        mapPersonales: function (oData) {
+          this.byId("noPeronsal_Input").setValue(oData.C27);
+          this.byId("noPeronsal_Input1").setValue(oData.C28);
+          this.byId("sociedad_Input").setValue(oData.C29);
+          this.byId("sociedad_Input1").setValue(oData.C30);
+          this.byId("division_Input").setValue(oData.C31);
+          this.byId("division_Input1").setValue(oData.C32);
+          this.byId("funcion_Input").setValue(oData.C33);
+          this.byId("funcion_Input1").setValue(oData.C34);
+          this.byId("areaNomina_Input").setValue(oData.C35);
+          this.byId("periodoRet_Input").setValue(oData.C36);
+          this.byId("periodoRet_Input1").setValue(oData.C37);
+          this.onEnterFechaRet();
+        },
+        mapJuridicas: function (oData) {
+          return {
+            C38: oData.C38,
+            C39: oData.C39,
+            C40: oData.C40,
+            C41: oData.C41,
+            C42: oData.C42,
+            C43: oData.C43,
+            C44: oData.C44,
+            C45: oData.C45
+          };
+        },
+        mapDeudas: function (oData) {
+          return {
+            C46: oData.C46,
+            C48: oData.C48,
+            C49: oData.C49,
+            C50: oData.C50,
+          };
+        },
+        editMode: function (sChannel, oEvent, res) {
+          this.getView().getModel("afterCreation").setProperty("/enabled", res.edit);
+        }
       }
     );
   }

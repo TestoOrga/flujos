@@ -6,7 +6,7 @@
     xmlns:c="sap.ui.core" displayBlock="true" height="100%" busyIndicatorDelay="0">
     <semantic:SemanticPage floatingFooter="true" showSubHeader="false" showNavButton="false" title="Aprobacion"  >
         <semantic:customHeaderContent>
-            <ToggleButton pressed="false" icon="sap-icon://user-edit"/>            
+            <ToggleButton pressed="false" icon="sap-icon://user-edit" press="approveEdit"/>            
             <!-- <Button text="edit"/> -->
         </semantic:customHeaderContent>
         <semantic:content>

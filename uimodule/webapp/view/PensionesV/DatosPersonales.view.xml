@@ -10,8 +10,9 @@
 						<f:formElements>
 							<f:FormElement label="No Personal" id="noPersonal_Label">
 								<f:fields>
-									<Input width="100%" id="noPeronsal_Input" submit="onEnterInputNoPersonal" maxLength="8" type="Number"/>
+									<Input width="100%" id="noPeronsal_Input" submit="onEnterInputNoPersonal" maxLength="8" type="Number" enabled="true" editable="{afterCreation>/noEditField}"/>
 									<Input width="100%" id="noPeronsal_Input1" enabled="false"/>
+									<!-- <Text text="{afterCreation>/noEditField}"/> -->
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Sociedad" id="sociedad_Label">
@@ -39,8 +40,8 @@
 							</f:FormElement>
 							<f:FormElement label="Periodo Retención" id="periodoRet_Label">
 								<f:fields>
-									<Input width="100%" id="periodoRet_Input" maxLength="2" enabled="false" liveChange="periodoInput"/>
-									<Input width="100%" id="periodoRet_Input1" maxLength="4" submit="onEnterFechaRet" enabled="false" liveChange="periodoInput"/>
+									<Input width="100%" id="periodoRet_Input" maxLength="2" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : false}" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}" liveChange="periodoInput"/>
+									<Input width="100%" id="periodoRet_Input1" maxLength="4" submit="onEnterFechaRet" enabled="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : false}" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}" liveChange="periodoInput"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Fecha Inicio Ret." id="fechaIniRet_Label">
