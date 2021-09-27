@@ -18,6 +18,21 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
        * @override
        */
       onInit: function () {
+        //Aprobacion
+        if (this.getOwnerComponent().currentMode === 3 || this.getCurrentRouteName() === 3) {
+          this.getView().setModel(new JSONModel({
+            noEditField: false,
+            creation: false,
+            enabled: false
+          }), "afterCreation");
+        } else {
+          this.getView().setModel(new JSONModel({
+            noEditField: true,
+            creation: true
+          }), "afterCreation");
+        };
+
+
         // var testo = this.getOwnerComponent().oOneDrive.testo();
         // console.log(testo);
         this.viewConfig = {
@@ -60,13 +75,18 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
        * @override
        */
       onExit: function () {
-        
+
         this.oEventBus.unsubscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
         this.oEventBus.unsubscribe("flowCreated", "fileReleaseStart", this.releaseFilesFinal, this);
         this.oEventBus.unsubscribe("flowReq", "delItem", this.deleteItemFiles, this);
 
         this.oEventBus.unsubscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
         this.oEventBus.unsubscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
+      },
+
+      getCurrentRouteName: function (router = this.getOwnerComponent().getRouter()) {
+        const currentHash = router.getHashChanger().getHash();
+        return this.getOwnerComponent().getMode(currentHash); // since 1.75
       },
 
       receiveFilesLoaded: function (sChannel, oEvent, data) {
@@ -91,7 +111,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         if (this.itemsLoading === 0) {
           this.endUpload(true);
         } else {
-          
+
           this.oEventBus.publish("flowCreated", "finalFiles", {
             filesTab: items
           });
@@ -136,9 +156,9 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
             this._oTab.setBusy(false);
             var that = this;
             console.log("EndUpload");
-            MessageBox.warning("Todos los archivos fueron procesados",{
+            MessageBox.warning("Todos los archivos fueron procesados", {
               onClose: function (sAction) {
-                that.oEventBus.publish("flowCreated", "releaseFilesEnded");                
+                that.oEventBus.publish("flowCreated", "releaseFilesEnded");
               }
             });
             // setTimeout(() => {

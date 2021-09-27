@@ -43,7 +43,7 @@ sap.ui.define(
             tipo: ""
           };
           this.setModel(new JSONModel({
-            release: true //false
+            release: false
           }), "viewGeneral");
           this.initTab();
           this._tabModel = this.getModel(this.viewConfig.tabModelName);
@@ -231,8 +231,8 @@ sap.ui.define(
           }).forEach(element => {
             this._tabModel.setProperty(element.getBindingContext("tablaFlujo").sPath + "/template", false);
             // element.getAggregation("cells").find(x=>x.sId.includes("in2")).setSelectedKey(element.getBindingContext("tablaFlujo").getObject().in2);
-            this.setCC(undefined, element.getAggregation("cells").find(x => x.sId.includes("in2")));
             this.getPernr(undefined, element);
+            this.setCC(undefined, element.getAggregation("cells").find(x => x.sId.includes("in2")));
           });
           if (this._oTab.getSelectedItems().length === 0) {
             this.byId("toolbarDel").setEnabled(false);
@@ -316,9 +316,9 @@ sap.ui.define(
             IN2: "dato2",
             IN3: "dato3",
             IN4: "dato4",
-            IN4: "dato5",
-            IN4: "dato6",
-            IN4: "dato7"
+            IN5: "dato5",
+            IN6: "dato6"
+            // IN7: "dato7"
           }];
 
           const worksheet = XLSX.utils.json_to_sheet(data);
@@ -657,10 +657,10 @@ sap.ui.define(
         applyData: function (sChannel, oEvent, res) {
           // console.log(res.res);
           this.onBeforeRendering(true)
-            .then(() =>this.mapToView("HEADER", res.res[0]))
+            .then(() => this.mapToView("HEADER", res.res[0]))
             .then(() =>
-            this.mapToView("ITEMS", res.res))
-            
+              this.mapToView("ITEMS", res.res))
+
         },
 
         mapToView: function (block, oData) {
@@ -669,13 +669,13 @@ sap.ui.define(
               this.byId("titleSelSociedad").setSelectedKey(oData.C27);
               return new Promise((resolve, reject) => {
                 this.onSelect(undefined, "sociedad", oData.C27)
-                .then(() => {
-                  this.onSelect(undefined, "tipo", oData.C29).then((res) => {
-                    this.byId("titleSelDivision").setSelectedKey(oData.C28)
-                    this.byId("titleSelTipo").setSelectedKey(oData.C29)
-                    resolve(oData.C29);
+                  .then(() => {
+                    this.onSelect(undefined, "tipo", oData.C29).then((res) => {
+                      this.byId("titleSelDivision").setSelectedKey(oData.C28)
+                      this.byId("titleSelTipo").setSelectedKey(oData.C29)
+                      resolve(oData.C29);
+                    });
                   });
-                });
               })
 
               // this.getCC();
