@@ -15,7 +15,7 @@ sap.ui.define([
           this.getView().setModel(new JSONModel({
             noEditField: false,
             creation: false,
-            enabled: false
+            enabled: false            
           }), "afterCreation");
         } else {
           this.getView().setModel(new JSONModel({
@@ -36,7 +36,7 @@ sap.ui.define([
         this.fileId = 0;
 
         this.oEventBus = this.getOwnerComponent().getEventBus();
-        this.oEventBus.subscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
+        // this.oEventBus.subscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
         this.oEventBus.subscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
         this.oEventBus.subscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
 
@@ -51,7 +51,7 @@ sap.ui.define([
        */
       onExit: function () {
 
-        this.oEventBus.unsubscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
+        // this.oEventBus.unsubscribe("flowReq", "filesFinal", this.sendFilesFinal, this);
         this.oEventBus.unsubscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
         this.oEventBus.unsubscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
         this.oEventBus.unsubscribe("flowCreated", "fileReleaseStart", this.fileReleaseStart, this);
@@ -256,7 +256,19 @@ sap.ui.define([
           });
         });
         this._tabModel.setProperty("/", this.loadedFiles);
-      }
+      },
+
+		onDownFile: function(oEvent) {
+      var file = this._tabModel.getProperty(
+        oEvent.getSource().getBindingContext( this.viewConfig.tabModelName).sPath
+      );
+      // var drivePath = this.getFilePath(oEvent.getSource());
+      this.getOwnerComponent().oOneDrive.downloadFile(
+        file.fileODiD
+        // file.Ruta + drivePath,
+        // file.Archivo + "." + file.Ext
+      );
+		}
       // testo: function () {
       //   this.getOwnerComponent().oOneDrive.UploadFiles(this.sendFilesFinal());
       // }
