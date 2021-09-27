@@ -67,6 +67,8 @@ sap.ui.define(
           //model
           this.setModel(new JSONModel({}), "viewBackModel");
           this.backModel = this.getModel("viewBackModel");
+          this.setModel(new JSONModel({}), "viewBackModelFiles");
+          this.backModelFiles = this.getModel("viewBackModelFiles");
 
           //eventlisteners
           this.oEventBus = this.getOwnerComponent().getEventBus();
@@ -157,6 +159,9 @@ sap.ui.define(
               this.oEventBus.publish("flowApproval", "loadFlowData", {
                 res: this.backModel.getData()
               });
+              this.oEventBus.publish("flowApproval", "loadFlowFiles", {
+                res: this.backModelFiles.getData()
+              });
             })
             .catch((error) => {
               MessageBox.error(error.responseText || error.message);
@@ -194,7 +199,7 @@ sap.ui.define(
             this.createModel.create("/BaseSet", oPayload, {
               async: true,
               success: function (req, res) {
-                var res = res.data.to_pesal.results[0];
+                var res = res.data.to_pesal.results;
                 resolve(res);
               },
               error: function (error) {
@@ -205,10 +210,13 @@ sap.ui.define(
         },
 
         distributeData: function (oResults) {
-          this.backModel.setProperty("/", oResults);
+          var flows = oResults.filter(x=>isNaN(x.C1));
+          var files = oResults.filter(x=>!isNaN(Number(x.C1)));
+          this.backModel.setProperty("/", flows);
+          this.backModelFiles.setProperty("/", files);
           // this.setModel(new JSONModel(oResults), "viewBackModel");
-          this.mapFlowConfig(oResults);
-          this.mapHeader(oResults);
+          this.mapFlowConfig(flows[0]);
+          this.mapHeader(flows[0]);
           // this.setModel(new JSONModel(res.data.to_pesal.results), "lazyModel");
           // this.tabModel = that.getModel("lazyModel");
           // this.setHeaderTitle(res.data.P2);

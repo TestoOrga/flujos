@@ -2,7 +2,8 @@
 sap.ui.define(
   ["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "bafar/flujos/flujos/libs/filesaver", "bafar/flujos/flujos/libs/xlsx.full.min",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/routing/HashChanger"
+    "sap/ui/core/routing/HashChanger",
+    "sap/m/MessageBox"
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -12,7 +13,8 @@ sap.ui.define(
     filesaver,
     XlsxFullmin,
     JSONModel,
-    HashChanger) {
+    HashChanger,
+    MessageBox) {
     "use strict";
 
     var noPersonalIn;
@@ -29,7 +31,10 @@ sap.ui.define(
               enabled: false
             }), "afterCreation");
           } else {
-            this.getView().setModel(new JSONModel({noEditField: true, creation: true}), "afterCreation");
+            this.getView().setModel(new JSONModel({
+              noEditField: true,
+              creation: true
+            }), "afterCreation");
           };
 
           window.console.log("Se inicia onInit");
@@ -305,13 +310,13 @@ sap.ui.define(
         // APROBACION
         applyData: function (sChannel, oEvent, res) {
           // console.log(res.res);
-          this.mapToView("PERSONALES", res.res);
+          this.mapToView("PERSONALES", res.res[0]);
           this.oEventBus.publish("flowApproval", "loadViewData", {
-            data: this.mapToView("JURIDICA", res.res),
+            data: this.mapToView("JURIDICA", res.res[0]),
             view: "JURIDICA"
           });
           this.oEventBus.publish("flowApproval", "loadViewData", {
-            data: this.mapToView("DEUDAS", res.res),
+            data: this.mapToView("DEUDAS", res.res[0]),
             view: "DEUDAS"
           });
         },

@@ -6,7 +6,7 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:form="sap.ui.layout.form"
 	xmlns:layout="sap.ui.layout">
-	<Panel expandable="true" headerText="{i18n>Pensiones.Deudas.panel}" width="auto" class="sapUiResponsiveMargin" expanded="true">
+	<Panel expandable="true" headerText="{i18n>Pensiones.Deudas.panel}" width="auto" class="sapUiResponsiveMargin" >
 		<content>
 			<f:SimpleForm id="SimpleForm1" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
 				<f:content>					
