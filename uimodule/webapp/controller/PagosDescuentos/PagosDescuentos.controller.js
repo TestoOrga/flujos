@@ -16,6 +16,20 @@ sap.ui.define(
          * @override
          */
         onInit: function () {
+          // Modo Aprobacion          
+          if (this.getOwnerComponent().currentMode === 3 || this.getCurrentRouteName() === 3) {
+            this.getView().setModel(new JSONModel({
+              noEditField: false,
+              creation: false,
+              enabled: false
+            }), "afterCreation");
+          } else {
+            this.getView().setModel(new JSONModel({
+              noEditField: true,
+              creation: true
+            }), "afterCreation");
+          };
+
           this.loadedFiles = [];
           this.fileId = 0;
           this.itemId = 0;
@@ -29,7 +43,7 @@ sap.ui.define(
             tipo: ""
           };
           this.setModel(new JSONModel({
-            release: false
+            release: true //false
           }), "viewGeneral");
           this.initTab();
           this._tabModel = this.getModel(this.viewConfig.tabModelName);
@@ -46,15 +60,22 @@ sap.ui.define(
           this.oEventBus.subscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
           this.oEventBus.subscribe("flowCreated", "finalFiles", this.finalFiles, this);
           this.oEventBus.subscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
+
+          // Aprobacion
+          this.oEventBus.subscribe("flowApproval", "loadFlowData", this.applyData, this);
+          this.oEventBus.subscribe("flowApproval", "editMode", this.editMode, this);
         },
         onExit: function () {
-          
+
           this.oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
           this.oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
           this.oEventBus.unsubscribe("flowResult", "dataError", this.showErrorTable, this);
           this.oEventBus.unsubscribe("flowCreated", "releaseFiles", this.releaseFiles, this);
           this.oEventBus.unsubscribe("flowCreated", "finalFiles", this.finalFiles, this);
           this.oEventBus.unsubscribe("flowCreated", "releaseFilesEnded", this.releaseFilesEnded, this);
+          // Aprobacion
+          this.oEventBus.unsubscribe("flowApproval", "loadFlowData", this.applyData, this);
+          this.oEventBus.unsubscribe("flowApproval", "editMode", this.editMode, this);
           this.destroyIds();
         },
 
@@ -62,6 +83,10 @@ sap.ui.define(
         destroyIds: function () {
           this.byId("attachPopover").destroy();
           this.byId("popover").destroy();
+        },
+        getCurrentRouteName: function (router = this.getOwnerComponent().getRouter()) {
+          const currentHash = router.getHashChanger().getHash();
+          return this.getOwnerComponent().getMode(currentHash); // since 1.75
         },
         initTab: function () {
           this.getView().setModel(new JSONModel([{
@@ -110,7 +135,7 @@ sap.ui.define(
         },
         onRemoveLines: function (oEvent) {
           var itemTab = this._oTab.getItems();
-          
+
           this._oTab.getSelectedItems().forEach(element => {
             this.oEventBus.publish("flowReq", "delItem", {
               itemId: element.getBindingContext(this.viewConfig.tabModelName).getObject().vis1
@@ -181,7 +206,7 @@ sap.ui.define(
               fileData: fileData,
               size: readerEvt.total
             });
-            
+
             this.oEventBus.publish("flowRes", "filesLoaded", {
               itemId: lineItem.getObject().vis1,
               itemOwner: lineItem.getObject().vis2,
@@ -223,19 +248,20 @@ sap.ui.define(
           this.getOwnerComponent().openErrorFrag(fragRes, res.res.to_pesal.results, this.getOwnerComponent().flowData.id + ": " + res.res.PeMsj);
         },
         releaseFiles: function () {
-          
+
           this.oEventBus.publish("flowCreated", "fileReleaseStart");
         },
         finalFiles: function (sChannel, oEvent, res) {
           var uploadFiles = this.loadedFiles.filter(loaded => {
             var testo = res.filesTab.find(final => {
-              return final.fileId === loaded.fileId });
-            return testo; 
+              return final.fileId === loaded.fileId
+            });
+            return testo;
           });
           this.getOwnerComponent().oOneDrive.UploadFiles(uploadFiles);
         },
         releaseFilesEnded: function () {
-          
+
           this.oEventBus.publish("flowCreated", "EndFlow");
         },
         /* =========================================================== */
@@ -348,23 +374,27 @@ sap.ui.define(
         /* =========================================================== */
         /* Especifico de Flujo                                         */
         /* =========================================================== */
-        onBeforeRendering() {
-          var oPayload = {
-            P1: "CAT",
-            P2: "BUKRS",
-            to_pesal: []
-          };
-          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
-            this.setModel(new JSONModel(res), "sociedad");
-          });
-          oPayload = {
-            P1: "CAT",
-            P2: "PAGOS",
-            to_pesal: []
-          };
-          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
-            this.setModel(new JSONModel(res), "tipo");
-          })
+        onBeforeRendering: async function (approvalMode) {
+          if (approvalMode || this.getOwnerComponent().currentMode === 1) {
+            var oPayload = {
+              P1: "CAT",
+              P2: "BUKRS",
+              to_pesal: []
+            };
+            var bukrs = this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
+              this.setModel(new JSONModel(res), "sociedad");
+            });
+            oPayload = {
+              P1: "CAT",
+              P2: "PAGOS",
+              to_pesal: []
+            };
+            var pagos = this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
+              this.setModel(new JSONModel(res), "tipo");
+            });
+            var end = await Promise.all([bukrs, pagos]);
+            return end;
+          }
         },
         onInputChange: function (oEvent, param) {
           switch (param) {
@@ -442,7 +472,7 @@ sap.ui.define(
           return this._tabModel.getData();
         },
         getData: function () {
-          
+
           var result = this.getFlowData();
           result.forEach(element => {
             element.head1 = this.headerData.sociedad;
@@ -456,7 +486,7 @@ sap.ui.define(
         },
 
         getValInputs: function () {
-          
+
           var errorMsg = this.valInputs();
           if (errorMsg !== "") {
             this.oEventBus.publish("flowResults", "flowValid", {
@@ -468,7 +498,7 @@ sap.ui.define(
             });
           }
         },
-        onSelect: function (oEvent, param) {
+        onSelect: function (oEvent, param, outKey) {
           const afterSelect = () => {
             if (this.headerData.sociedad !== "" &&
               this.headerData.division !== "" &&
@@ -478,7 +508,7 @@ sap.ui.define(
               this.getModel("viewGeneral").setProperty("/release", false);
             }
           };
-          var selKey = oEvent.oSource.getSelectedKey();
+          var selKey = outKey || oEvent.oSource.getSelectedKey();
           switch (param) {
             case "sociedad":
               this.headerData.sociedad = selKey;
@@ -488,20 +518,20 @@ sap.ui.define(
                 P3: selKey,
                 to_pesal: []
               };
-              this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
+              return this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
                 if (this.getModel("division")) {
                   this.getModel("division").setProperty("/", []);
                 }
                 if (res.length > 0) {
                   this.setModel(new JSONModel(res), "division");
-                  this.byId("titleSelDivision").setEnabled(true);
+                  this.byId("titleSelDivision").setEnabled(outKey ? false : true);
                   this.headerData.division = this.byId("titleSelDivision").getSelectedKey();
                 } else {
                   this.headerData.division = "";
                 }
                 afterSelect();
               });
-              break;
+              // break;
             case "division":
               this.headerData.division = selKey;
               break;
@@ -516,8 +546,9 @@ sap.ui.define(
               break;
             case "tipo":
               this.headerData.tipo = selKey;
-              this.getCC(oEvent);
-              break;
+              afterSelect();
+              return this.getCC(oEvent);
+              // break;
             default:
               break;
           }
@@ -564,7 +595,7 @@ sap.ui.define(
             P3: this.headerData.tipo,
             to_pesal: [],
           };
-          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
+          return this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
             if (this.getModel("in2")) {
               this.getModel("in2").setProperty("/", []);
             }
@@ -621,6 +652,66 @@ sap.ui.define(
             this._oTab.removeSelections(true);
             this._tabModel.refresh(true);
           }
+        },
+        // APROBACION
+        applyData: function (sChannel, oEvent, res) {
+          // console.log(res.res);
+          this.onBeforeRendering(true)
+            .then(() =>this.mapToView("HEADER", res.res[0]))
+            .then(() =>
+            this.mapToView("ITEMS", res.res))
+            
+        },
+
+        mapToView: function (block, oData) {
+          switch (block) {
+            case "HEADER":
+              this.byId("titleSelSociedad").setSelectedKey(oData.C27);
+              return new Promise((resolve, reject) => {
+                this.onSelect(undefined, "sociedad", oData.C27)
+                .then(() => {
+                  this.onSelect(undefined, "tipo", oData.C29).then((res) => {
+                    this.byId("titleSelDivision").setSelectedKey(oData.C28)
+                    this.byId("titleSelTipo").setSelectedKey(oData.C29)
+                    resolve(oData.C29);
+                  });
+                });
+              })
+
+              // this.getCC();
+              // break;
+            default:
+              // var tabData = this._tabModel.getProperty("/");
+              var mappedData = [];
+              oData.forEach(element => {
+                mappedData.push({
+                  template: true,
+                  vis1: element.C30,
+                  in1: element.C31,
+                  vis2: element.C32,
+                  vis3: element.C33,
+                  vis4: element.C34,
+                  in2: element.C35,
+                  vis5: element.C36,
+                  in3: element.C37,
+                  in4: element.C38,
+                  in5: element.C39,
+                  in6Temp: element.C39,
+                  vis6: element.C40,
+                  vis7: element.C41
+                });
+              });
+              this._tabModel.setProperty("/", mappedData);
+              this._oTab.removeSelections(true);
+              this._tabModel.refresh(true);
+              // break;
+          }
+          // }
+
+        },
+
+        editMode: function (sChannel, oEvent, res) {
+          this.getView().getModel("afterCreation").setProperty("/enabled", res.edit);
         }
       }
     );

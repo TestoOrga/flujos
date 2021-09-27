@@ -9,15 +9,15 @@
             <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
                 <form:content>
                     <Label required="true" text="{i18n>PagosDescuentosView.Sociedad}"/>
-                    <Select maxWidth="100%" width ="auto" items="{sociedad>/}" change="onSelect($event, 'sociedad')" forceSelection="false">
+                    <Select id="titleSelSociedad" maxWidth="100%" width ="auto" items="{sociedad>/}" change="onSelect($event, 'sociedad')" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : true}">
                         <c:Item key="{sociedad>C1}" text="{sociedad>C1} {sociedad>C2}"/>
                     </Select>
                     <Label required="true" text="{i18n>PagosDescuentosView.DivisionPersonal}" />
-                    <Select id="titleSelDivision" enabled="false" maxWidth="100%" width ="auto" items="{division>/}" change="onSelect($event, 'division')" forceSelection="false">
+                    <Select id="titleSelDivision" maxWidth="100%" width ="auto" items="{division>/}" change="onSelect($event, 'division')" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : false}">
                         <c:Item key="{division>C1}" text="{division>C1} {division>C2}"/>
                     </Select>
                     <Label required="true" text="{i18n>PagosDescuentosView.Tipo}"/>
-                    <Select maxWidth="100%" width ="auto" items="{tipo>/}" change="onSelect($event, 'tipo')" selectedKey="" forceSelection="false">
+                    <Select id="titleSelTipo" maxWidth="100%" width ="auto" items="{tipo>/}" change="onSelect($event, 'tipo')" selectedKey="" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : true}">
                         <c:Item key="{tipo>C1}" text="{tipo>C1} {tipo>C2}"/>
                     </Select>
                 </form:content>
@@ -39,7 +39,8 @@
                 </content>
             </Toolbar>
             <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
-                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" blocked="{= !${viewGeneral>/release}}">
+                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" >
+                <!-- blocked="{= !${viewGeneral>/release}}" -->
                     <columns>
                         <Column>
                             <Text text="Item" width="100px"/>
