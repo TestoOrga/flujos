@@ -90,7 +90,7 @@
                         <ColumnListItem class="lineItemSucc" highlight="Success">
                             <cells>
                                 <Text id="attachPopover" text="{tablaFlujo>vis1}"/>
-                                <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive"/>
+                                <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive" editable="{afterCreation>/noEditField}"/>
                                 <Text text="{tablaFlujo>vis2}"/>
                                 <Text text="{tablaFlujo>vis3}"/>
                                 <Text text="{path: 'tablaFlujo>vis4',formatter: '.formatter.fooErdat1'}"/>
