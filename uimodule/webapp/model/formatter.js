@@ -14,6 +14,10 @@ sap.ui.define([], function () {
         return arrDate[2] + arrDate[1] + arrDate[0];
       }
     },
+    getIconMaster: function(val){      
+      var icon = this.getOwnerComponent().flowDescMap.find(x=>x[val]);
+      return icon ? icon[val].icon : "sap-icon://approvals";
+    },
     date: function (dat) {
       if (dat) {
         return new Date(dat.substr(0, 4), dat.substr(4, 2), dat.substr(6, 2)).toLocaleDateString('es-US', {

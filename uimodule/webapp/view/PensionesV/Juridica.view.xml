@@ -6,24 +6,24 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:form="sap.ui.layout.form"
 	xmlns:layout="sap.ui.layout">
-	<Panel expandable="true" headerText="{i18n>Pensiones.Juridico.panel}" width="auto" class="sapUiResponsiveMargin" expanded="true">
+	<Panel expandable="true" headerText="{i18n>Pensiones.Juridico.panel}" width="auto" class="sapUiResponsiveMargin" >
 		<content>
 			<f:SimpleForm id="SimpleForm1" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false">
 				<f:content>					
 					<Label text="Número de órden" required="true"/>
-					<Input id="numeroOrdenInput" value="" liveChange="numOrdenLiveChange"></Input>
+					<Input id="numeroOrdenInput" value="" liveChange="numOrdenLiveChange" editable="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : true}"></Input>
 					<DatePicker xmlns="sap.m" id="numeroOrdenDate" editable="false"/>
 					<Label text="Receptor" required="true"/>
-					<Input id="receptor" value=""/>
+					<Input id="receptor" value="" editable="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : true}"/>
 					<Label text="Cve. Banco" required="true"/>
-					<Select id="cveBancoSelect" maxWidth="100%" width ="auto" items="{ path: '/claveBanco', sorter: { path: 'C2', descending: false }}" change="onSelectClaveBanco" forceSelection="false">
+					<Select id="cveBancoSelect" maxWidth="100%" width ="auto" items="{ path: '/claveBanco', sorter: { path: 'C2', descending: false }}" change="onSelectClaveBanco" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : true}">
 						<core:Item key="{C1}" text="{C1} {C2}"/>
 					</Select>
-					<Input id="_claveBancoInput" fieldWidth="100%" editable="false" maxLength="18" />
+					<Input id="_claveBancoInput" fieldWidth="100%" maxLength="18"  editable="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : false}"/>
 					<Label required="true" text="Cuenta Bancaria"/>
-					<Input value="" id="cuentaBancariaInput" maxLength="18" liveChange="claveInput"/>
+					<Input value="" id="cuentaBancariaInput" maxLength="18" liveChange="claveInput" editable="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : true }"/>
 					<Label required="true" text="Via Pago"/>
-					<Select id="_viaPagoSelect" maxWidth="100%" width ="auto" items="{/viaPago}" change="onSelectViaPago" forceSelection="false">
+					<Select id="_viaPagoSelect" maxWidth="100%" width ="auto" items="{/viaPago}" change="onSelectViaPago" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/enabled} : true}">
 						<core:Item key="{C1}" text="{C2}"/>
 					</Select>
 					<Input required="true" id="_viaPagoInput" fieldWidth="100%" editable="false"/>				

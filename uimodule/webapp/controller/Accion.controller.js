@@ -58,16 +58,21 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
     },
     onPress: function (oEvent, param) {
       console.log("onPress: param");
-      if ( oEvent.getSource().data("enabled") === "true") {
+      if (oEvent.getSource().data("enabled") === "true") {
         switch (param) {
           case "C":
+            this.getOwnerComponent().currentMode = 1;
             this.navTo("RouteHeaderFlujosView");
             break;
           case "S":
+            this.getOwnerComponent().currentMode = 2;
+
             MessageBox.error(this.get18().getText("sinAutorizacion"));
             break;
           case "A":
-            MessageBox.error(this.get18().getText("sinAutorizacion"));
+            this.getOwnerComponent().currentMode = 3;
+            this.navTo("RouteApprovalView");
+            // MessageBox.error(this.get18().getText("sinAutorizacion"));
             break;
           default:
             break;

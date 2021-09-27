@@ -10,7 +10,7 @@
                 <SearchField liveChange="onSearch" width="98%" showRefreshButton="true" />
             </OverflowToolbar>
             <!-- mode="MultiSelect"  -->
-            <Table id="lineItemsList" width="auto" items="{path:'files>/', sorter: { path: 'itemOwner' , group: '.getGroup' }, groupHeaderFactory: '.getGroupHeader', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" selectionChange="detailTabSelect">
+            <Table id="lineItemsList" width="auto" items="{path:'files>/', sorter: { path: 'itemOwner' , group: '.getGroup' }, groupHeaderFactory: '.getGroupHeader', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" selectionChange="detailTabSelect" blocked="{= !${afterCreation>/creation} ? false : true}">
 
                 <!-- <Table id="lineItemsList" width="auto" items="{path:'archivos>Seccion_Details/', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect"> -->
                 <headerToolbar>
@@ -18,10 +18,11 @@
                         <Title id="lineItemsTitle" text="{detailView>/lineItemListTitle}" titleStyle="H5" level="H5"/>
                         <ToolbarSpacer/>
                         <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>                        
-                        <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownSelection" enabled="false" id="tabInPanelButtDown" visible="false"/>
+                        <!-- <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton" press="onDownSelection" enabled="false" id="tabInPanelButtDown" visible="{= !${afterCreation>/creation} ? true : false}"/> -->
                         <Button icon="sap-icon://add-photo" press="onAddPhoto" visible="false"/>                       
-                        <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete" uploadOnChange="true" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment"  uploadStart="onHandleUploadStart" change="onHandleUploadStart" />
+                        <u:FileUploader name="myFileUpload" uploadUrl="upload/" tooltip="Upload your file to the local server" uploadComplete="handleUploadComplete" uploadOnChange="true" iconOnly="true" buttonOnly="true" icon="sap-icon://attachment"  uploadStart="onHandleUploadStart" change="onHandleUploadStart" visible="{= !${afterCreation>/creation} ? false : true}"/>
                         <Button icon="sap-icon://delete" press="onTabDelete" id="tabInPanelButtDel" enabled="false" visible="false"/>
+                        <!-- <Text text="{= !${afterCreation>/creation}}"/> -->
                     </Toolbar>
                 </headerToolbar>
                 <columns>
@@ -41,8 +42,8 @@
                             <ObjectIdentifier title="{files>fileName}.{files>fileExt}" text="{files>itemId}" class="sapUiTinyMarginTopBottom"/>
                             <ObjectStatus id="fileStatus" inverted="true" state="{files>state}" text="{files>status}" textDirection="Inherit" title="{i18n>archivosMultipleView.estado}"/>
                             <HBox justifyContent="End" alignContent="Center">
-                                <!-- <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton sapUiTinyMarginEnd" press="onDownFile" /> -->
-                                <Button icon="sap-icon://delete" press="onItemDelete"/>
+                                <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton sapUiTinyMarginEnd" press="onDownFile" visible="{= !${afterCreation>/creation} ? true : false}"/>
+                                <Button icon="sap-icon://delete" press="onItemDelete" visible="{= !${afterCreation>/creation} ? false : true}"/>
                             </HBox>
                         </cells>
                     </ColumnListItem>

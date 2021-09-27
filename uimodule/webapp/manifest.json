@@ -18,7 +18,7 @@
           "localUri": "localService/metadata.xml"
         }
       },
-      "createService":{
+      "createService": {
         "uri": "/sap/opu/odata/sap/ZOD_FLUJOS_IN_SRV/",
         "type": "OData",
         "settings": {
@@ -28,6 +28,10 @@
       },
       "flowConfig": {
         "uri": "localData/flowConfig.json",
+        "type": "JSON"
+      },
+      "flowDescMap": {
+        "uri": "localData/flowDescMap.json",
         "type": "JSON"
       }
     }
@@ -56,9 +60,6 @@
       "async": true,
       "id": "idAppControl"
     },
-    "resourceRoots": {
-      "flujos.zonedrive": "../../zonedrive/flujos/zonedrive"
-    },
     "dependencies": {
       "minUI5Version": "1.87.0",
       "libs": {
@@ -82,12 +83,16 @@
         "dataSource": "mainService",
         "preload": true
       },
-      "createModel":{
+      "createModel": {
         "dataSource": "createService",
         "preload": true
       },
       "flowConfig": {
         "dataSource": "flowConfig",
+        "preload": true
+      },
+      "flowDescMap": {
+        "dataSource": "flowDescMap",
         "preload": true
       }
     },
@@ -134,6 +139,20 @@
           "target": [
             "TargetHeaderFlujos"
           ]
+        },
+        {
+          "name": "RouteApprovalView",
+          "pattern": "aprobacion",
+          "target": [
+            "TargetAprobacionFlujos"
+          ]
+        },
+        {
+          "name": "RouteApprovalFlowView",
+          "pattern": "aprobacion/{flow}",
+          "target": [
+            "TargetAprobacionFlowNum"
+          ]
         }
       ],
       "targets": {
@@ -144,17 +163,35 @@
           "viewName": "MainView",
           "transition": "slide"
         },
+        "TargetAccion": {
+          "viewId": "idAccion",
+          "viewType": "XML",
+          "viewLevel": 1,
+          "viewName": "Accion",
+          "clearControlAggregation": false,
+          "transition": "slide"
+        },
         "TargetHeaderFlujos": {
+          "viewId": "idHeaderFlujos",
           "viewType": "XML",
           "viewLevel": 1,
           "viewName": "HeaderFlujos",
           "clearControlAggregation": false,
           "transition": "slide"
         },
-        "TargetAccion": {
+        "TargetAprobacionFlujos": {
+          "viewId": "idAprobacion",
           "viewType": "XML",
           "viewLevel": 1,
-          "viewName": "Accion",
+          "viewName": "Aprobacion",
+          "clearControlAggregation": false,
+          "transition": "slide"
+        },
+        "TargetAprobacionFlowNum": {
+          "viewId": "idAprobacionFlow",
+          "viewType": "XML",
+          "viewLevel": 1,
+          "viewName": "Aprobacion.AprobacionFlow",
           "clearControlAggregation": false,
           "transition": "slide"
         }

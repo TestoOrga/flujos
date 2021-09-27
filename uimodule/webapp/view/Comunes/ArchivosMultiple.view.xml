@@ -30,8 +30,8 @@
                             <ObjectIdentifier title="{files>archivo}.{files>ext}" text="{files>itemId}" class="sapUiTinyMarginTopBottom"/>                            
                             <ObjectStatus id="fileStatus" inverted="true" state="{files>state}" text="{files>status}" textDirection="Inherit" title="{i18n>archivosMultipleView.estado}"/>                                                        
                             <HBox justifyContent="End" alignContent="Center">
-                                <!-- <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton sapUiTinyMarginEnd" press="onDownFile" /> -->
-                                <Button icon="sap-icon://delete" press="onItemDelete"/>
+                                <Button icon="sap-icon://download-from-cloud" class="myDetailTabButton sapUiTinyMarginEnd" press="onDownFile" visible="{= !${afterCreation>/creation} ? true : false}"/>
+                                <Button icon="sap-icon://delete" press="onItemDelete" visible="{= !${afterCreation>/creation} ? false : true}"/>
                             </HBox>
                         </cells>
                     </ColumnListItem>

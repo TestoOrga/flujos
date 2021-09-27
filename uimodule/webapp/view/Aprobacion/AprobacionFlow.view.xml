@@ -1,0 +1,35 @@
+<mvc:View xmlns:footerbar="sap.ushell.ui.footerbar"
+    xmlns:uxap="sap.uxap"
+    xmlns:semantic="sap.m.semantic" controllerName="bafar.flujos.flujos.controller.Aprobacion.AprobacionFlow"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core" displayBlock="true" height="100%" busyIndicatorDelay="0">
+    <semantic:SemanticPage floatingFooter="true" showSubHeader="false" showNavButton="false" title="Aprobacion"  >
+        <semantic:customHeaderContent>
+            <ToggleButton pressed="false" icon="sap-icon://user-edit" press="approveEdit"/>            
+            <!-- <Button text="edit"/> -->
+        </semantic:customHeaderContent>
+        <semantic:content>
+            <ObjectHeader title="{viewModel>/title}" icon="{path: 'viewModel>/icon',formatter: '.formatter.getIconMaster'}" imageShape="Square"  responsive="true" intro="{i18n>AprobacionFlowController.CreadoEl} {path: 'viewModel>/intro',formatter: '.formatter.fooErdat1'}" class="sapUiResponsivePadding--header">
+                <!-- <attributes>                 -->
+                    <ObjectAttribute title="{i18n>HeaderDepto}" text="{viewModel>/name}"></ObjectAttribute>
+                    <ObjectAttribute title="{i18n>HeaderActiv}" text="{viewModel>/subName}"></ObjectAttribute>
+                    <ObjectAttribute title="{i18n>HeaderProceso}" text="{viewModel>/subName1}"></ObjectAttribute>
+                <!-- </attributes> -->
+                <statuses>
+                <ObjectStatus text="{viewModel>/stateText}" state="{viewModel>/state}" inverted="true"></ObjectStatus>
+                </statuses>
+            </ObjectHeader>
+            <Panel id="panelId"></Panel>
+        </semantic:content>
+        <semantic:customFooterContent>
+            <OverflowToolbar id="footer" design="Solid" style="Clear" width="100%">
+                <content>
+                    <ToolbarSpacer id="spacer"/>
+                    <Button id="footerFlujosButAprobar" type="Accept" text="{i18n>AprobacionFlowView.Aprobar}" press="onAprobar"/>
+                    <Button id="footerFlujosButCancelar" type="Reject" text="{i18n>HeaderFlujosFooterButCancelar}" press="onCancelar"/>
+                </content>
+            </OverflowToolbar>
+        </semantic:customFooterContent>
+    </semantic:SemanticPage>
+</mvc:View>

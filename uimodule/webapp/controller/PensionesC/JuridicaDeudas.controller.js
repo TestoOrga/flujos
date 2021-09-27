@@ -36,6 +36,16 @@ sap.ui.define(
     return Controller.extend("namespace.name.project3.controller.View1", {
       formatter: formatter,
       onInit: function () {
+        // Modo Aprobacion          
+        if (this.getOwnerComponent().currentMode === 3 || this.getCurrentRouteName() === 3) {
+          this.getView().setModel(new JSONModel({
+            noEditField: false,
+            creation: false,
+            enabled: false
+          }), "afterCreation");
+        } else {
+          this.getView().setModel(new JSONModel({noEditField: true, creation: true}), "afterCreation");
+        };
 
         oDataResults = [];
         oODataJSONModel = new sap.ui.model.json.JSONModel();
@@ -159,25 +169,35 @@ sap.ui.define(
         this.oEventBus = this.getOwnerComponent().getEventBus();
         this.oEventBus.subscribe("flowRequest", "valFlow", this.getValInputs, this);
         this.oEventBus.subscribe("flowRequest", "flowData", this.getData, this);
+
+        //Aprobacion
+        this.oEventBus.subscribe("flowApproval", "loadViewData", this.loadData, this);
+        this.oEventBus.subscribe("flowApproval", "editMode", this.editMode, this);
+
       },
       onExit: function () {
-        
         this.oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
         this.oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
+        this.oEventBus.unsubscribe("flowApproval", "loadViewData", this.loadData, this);
+        this.oEventBus.unsubscribe("flowApproval", "editMode", this.editMode, this);
+      },
+      getCurrentRouteName: function (router = this.getOwnerComponent().getRouter()) {
+        const currentHash = router.getHashChanger().getHash();
+        return this.getOwnerComponent().getMode(currentHash); // since 1.75
       },
 
       onButAction: function (oEvent, param) {
         MessageToast.show(param);
       },
-      onSelectDescuento: function (oEvent) {
-        var selectedItem = oEvent.getParameter("selectedItem");
+      onSelectDescuento: function (oEvent, oSelectedItem) {
+        var selectedItem = oEvent ? oEvent.getParameter("selectedItem") : oSelectedItem;
         var oSelectUnidadIntervalo = this.getView().byId("_unidadIntervalo");
         if (selectedItem) {
           var descuentoKey = selectedItem.getKey();
           var descuentoText = selectedItem.getBindingContext().getObject().C2;
           this.getView().byId("_tipoDescuentoInput").setValue(descuentoText);
           oEntityUnidadIntervalo.P3 = descuentoKey;
-          this.getView().byId("_unidadIntervalo").setEnabled(true);
+          this.getView().byId("_unidadIntervalo").setEnabled(oSelectedItem ? false : true);
           this.getView().byId("_unidadIntervaloLabel").setText("Unidad Intervalo");
         } else {
           this.getView().byId("_unidadIntervalo").setEnabled(false);
@@ -198,7 +218,7 @@ sap.ui.define(
             // Error
             sap.m.MessageToast.show(" Creation failed");
           },
-        });
+        })
         oSelectUnidadIntervalo.setModel(oODataJSONModel);
 
         // var descuentoSplit = descuentoText.split(" ")[1];
@@ -403,14 +423,14 @@ sap.ui.define(
         this.validateFieldsJuridicaDeudas();
       },
       getValInputs: function () {
-        
+
         var result = this.validateFieldsJuridicaDeudas();
         this.oEventBus.publish("flowResults", "flowValid", {
           res: result
         });
       },
       getData: function () {
-        
+
         var result = this.saveJuridicaDeudasData();
         this.oEventBus.publish("flowResults", "flowData", {
           res: result
@@ -427,6 +447,47 @@ sap.ui.define(
 
       cantLiveChange: function (oEvent) {
         // oEvent.oSource.setValue(oEvent.getParameter("newValue").replace(/\D/g, ""));
+      },
+      loadData: function (sChannel, oEvent, res) {
+        switch (res.view) {
+          case "JURIDICA":
+            this.backDataJuridica = res.data;
+            // Map separado por si async
+            this.mapJuridica();
+            break;
+          case "DEUDAS":
+            this.backDataDeudas = res.data;
+            // Map separado por si async
+            this.mapDeudas();
+            break;
+          default:
+            break;
+        }
+      },
+      mapDeudas: function () {
+        if (this.byId("_tipoDescuento")) {
+          this.byId("_tipoDescuento").setSelectedKey(this.backDataDeudas.C46);
+          this.onSelectDescuento(undefined, this.byId("_tipoDescuento").getSelectedItem());
+          this.byId("_unidadIntervalo").setSelectedKey(this.backDataDeudas.C48);
+          this.byId("_unidadIntervaloInput").setValue(this.backDataDeudas.C49);
+          this.byId("descuentoCurr").setValue(this.backDataDeudas.C50);
+          this.formatCurrency();
+        }
+      },
+      mapJuridica: function () {
+        if (this.byId("numeroOrdenInput")) {
+          this.byId("numeroOrdenInput").setValue(this.backDataJuridica.C38);
+          this.byId("numeroOrdenDate").setValue(this.backDataJuridica.C39);
+          this.byId("receptor").setValue(this.backDataJuridica.C40);
+          this.byId("cveBancoSelect").setSelectedKey(this.backDataJuridica.C41);
+          this.byId("_claveBancoInput").setValue(this.backDataJuridica.C42);
+          this.byId("cuentaBancariaInput").setValue(this.backDataJuridica.C43);
+          this.byId("_viaPagoSelect").setSelectedKey(this.backDataJuridica.C44);
+          this.byId("_viaPagoInput").setValue(this.backDataJuridica.C45);
+        }
+      },
+      editMode: function (sChannel, oEvent, res) {
+        this.getView().getModel("afterCreation").setProperty("/enabled", res.edit);
       }
     });
   });

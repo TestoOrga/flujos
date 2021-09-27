@@ -6,7 +6,7 @@
 	xmlns:core="sap.ui.core"
 	xmlns="sap.uxap">
 	<!-- showNavButton="true" navButtonPress="onBack"-->
-	<m:Page id="headerFlujosMasterPage" showHeader="false" navButtonPress=".onBack">
+	<m:Page id="headerFlujosMasterPage">
 		<ObjectPageLayout id="headerFlujosPageLayout" showFooter="true">
 			<headerTitle>
 				<ObjectPageHeader id="headerFlujosPageHeader" objectTitle="{i18n>HeaderTitulo}" objectSubtitle="{i18n>HeaderSubtitulo}" objectImageURI="sap-icon://combine" objectImageShape="Square" isObjectTitleAlwaysVisible="true" isObjectSubtitleAlwaysVisible="true" isActionAreaAlwaysVisible="true">

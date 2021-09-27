@@ -66,7 +66,7 @@ sap.ui.define(
         })
       },
       sendTokenError: function (error) {
-        
+
         this.oEventBus.publish("driveAnswer", "tokenError", {
           res: error
         });
@@ -130,17 +130,28 @@ sap.ui.define(
       /* Upload                                                      */
       /* =========================================================== */
       UploadFiles: function (aFiles) {
-        aFiles.forEach(file => {
-          this.fetchToken()
-            .then(() => this.getRoutesFromBack(file))
-            .then((routes) => this.processInputFile(file, routes[0]))
-            .catch(error => this.sendError(error, file));
+        var uploadStack = [];
+        aFiles.forEach(async (file) => {
+          uploadStack.push(() => {
+            return Promise.resolve(
+              this.fetchToken()
+              .then(() => this.getRoutesFromBack(file))
+              .then((routes) => this.processInputFile(file, routes[0]))
+              .catch(error => this.sendError(error, file))
+            )
+          });
         }, this);
+        var uploadFiles = function (files) {
+          return files.reduce((p, file) => {
+            return p.then(() => file());
+          }, Promise.resolve()); // initial
+        };
+        uploadFiles(uploadStack);
       },
       //turns file uploaded into blob and calls upload routines
       processInputFile: function (oInFile, oRoutes) {
         if (oInFile.size > 4000000) {
-          this.uploadLargeFile({
+          return this.uploadLargeFile({
                 fileName: oInFile.fileName + "." + oInFile.fileExt,
                 fileData: oInFile.fileData,
               },
@@ -155,7 +166,7 @@ sap.ui.define(
             }.bind(this));
         } else {
           // small files
-          this.uploadToDrive(
+          return this.uploadToDrive(
               oInFile.fileData,
               oInFile.fileName + "." + oInFile.fileExt,
               oRoutes.C2 + oRoutes.C3)
@@ -190,14 +201,14 @@ sap.ui.define(
       /* =========================================================== */
       //sends result via events
       sendResults: function (oRes, fileId) {
-        
+
         this.oEventBus.publish("driveAnswer", "fileUploaded", {
           result: oRes,
           fileId: fileId
         });
       },
       sendError: function (oRes, fileId) {
-        
+
         this.oEventBus.publish("driveAnswer", "fileUploadError", {
           result: oRes,
           fileId: fileId
@@ -315,34 +326,47 @@ sap.ui.define(
         });
       },
 
+
+
       /* =========================================================== */
       /* Download                                                    */
       /* =========================================================== */
       // first try to use file id, if fail then try to get file info via name and path, the download via id 
-      downloadFile: function (id, path, fileName) {
-        this.loginDrive().then(
-          function (resolve) {
-            if (id) {
-              var oParam = {
-                id: id,
-                ctx: undefined,
-                oFile: {
-                  id: undefined,
-                  path: path,
-                  fileName: fileName
-                },
-              };
-              this.fetchToken(this.downloadSingleFile.bind(this), oParam);
-            } else {
-              oParam = {
-                path: path,
-                fileName: fileName,
-                callback: this.downloadSingleFile,
-              };
-              this.fetchToken(this.getFileInfo.bind(this), oParam);
-            }
-          }.bind(this)
-        );
+      downloadFile: function (id) {
+        // downloadFile: function (id, path, fileName) {
+        this.fetchToken()
+          .then(() => {
+            this.downloadSingleFile(id);
+          })
+          .catch((error) => {
+            MessageBox.error(error.responseText || error.message);
+          });
+
+
+
+        // this.loginDrive().then(
+        //   function (resolve) {
+        //     if (id) {
+        //       var oParam = {
+        //         id: id,
+        //         ctx: undefined,
+        //         oFile: {
+        //           id: undefined,
+        //           path: path,
+        //           fileName: fileName
+        //         },
+        //       };
+        //       this.fetchToken(this.downloadSingleFile.bind(this), oParam);
+        //     } else {
+        //       oParam = {
+        //         path: path,
+        //         fileName: fileName,
+        //         callback: this.downloadSingleFile,
+        //       };
+        //       this.fetchToken(this.getFileInfo.bind(this), oParam);
+        //     }
+        //   }.bind(this)
+        // );
       },
       getFileInfo: function ({
         path,
@@ -376,39 +400,42 @@ sap.ui.define(
           }.bind(that),
           error: function (odata) {
             console.log(odata);
-            
+
             odata.fileName = fileName;
             odata.panelTab = panelTab;
             this.oEventBus.publish("driveAnswer", "errorDataInfo", odata);
           },
         });
       },
-      downloadSingleFile: function ({
-        id,
-        ctx,
-        oFile
-      }) {
+      downloadSingleFile: function (id
+        // { id, ctx, oFile }
+      ) {
         var driveURL = "https://graph.microsoft.com/v1.0/3e67a7ed-0ddf-4afa-ba03-f204fad6d749/users/d9b62329-106b-4b3d-83f6-919c6f76b457/drive/items/" + id;
-        var that = !ctx ? this : ctx;
-        $.ajax({
-          type: "GET",
-          headers: {
-            Authorization: that.tokenType + " " + that.token,
-          },
-          url: driveURL,
-          processData: false,
-          success: function (odata) {
-            var sURL = odata["@microsoft.graph.downloadUrl"];
-            // this.urls.push(sURL);
-            // sap.m.URLHelper.redirect(odata['@microsoft.graph.downloadUrl']);
-            window.open(sURL, "_blank");
-            console.log(odata.name);
-            console.log(sURL);
-          }.bind(that),
-          error: function (odata) {
-            that.downloadFile(oFile.id, oFile.path, oFile.fileName, that);
-          },
-        });
+        // var that = !ctx ? this : ctx;
+        var that = this;
+        return new Promise((resolve, reject) => {
+          $.ajax({
+            type: "GET",
+            headers: {
+              Authorization: that.tokenType + " " + that.token,
+            },
+            url: driveURL,
+            processData: false,
+            success: function (odata) {
+              var sURL = odata["@microsoft.graph.downloadUrl"];
+              // this.urls.push(sURL);
+              // sap.m.URLHelper.redirect(odata['@microsoft.graph.downloadUrl']);
+              window.open(sURL, "_blank");
+              console.log(odata.name);
+              console.log(sURL);
+              resolve();
+            }.bind(that),
+            error: function (error) {
+              reject(error);
+              // that.downloadFile(oFile.id, oFile.path, oFile.fileName, that);
+            },
+          });
+        })
       },
       /* =========================================================== */
       /* Delete                                                      */
@@ -464,7 +491,7 @@ sap.ui.define(
           url: driveURL,
           processData: false,
           success: function (odata) {
-            
+
             if (!odata) {
               var odata = {};
             }
@@ -483,7 +510,7 @@ sap.ui.define(
               );
             } else {
               odata.panelTab = panelTab;
-              
+
               this.oEventBus.publish("driveAnswer", "deletedError", odata);
               console.log(odata);
             }
@@ -491,5 +518,4 @@ sap.ui.define(
         });
       },
     });
-  }
-);
+  });

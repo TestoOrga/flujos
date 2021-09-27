@@ -5,9 +5,16 @@ sap.ui.define(
     "bafar/flujos/flujos/model/models",
     "./utils/SendData",
     "./utils/ErrorFrag",
-    "./libs/OneDrive"
+    "./libs/OneDrive",
+    "sap/ui/model/json/JSONModel"
   ],
-  function (UIComponent, Device, models, SendData, ErrorFrag, OneDrive) {
+  function (UIComponent,
+    Device,
+    models,
+    SendData,
+    ErrorFrag,
+    OneDrive,
+    JSONModel) {
     "use strict";
 
     return UIComponent.extend("bafar.flujos.flujos.Component", {
@@ -28,6 +35,11 @@ sap.ui.define(
        */
       init: function () {
         // call the base component's init function
+        // get the path to the JSON file     
+        this.currentMode = 0;
+        this.getModel("flowDescMap").attachRequestCompleted(function () {
+          this.flowDescMap = this.getModel("flowDescMap").getData();
+        }, this);
         this.oSendData = new SendData(this);
         UIComponent.prototype.init.apply(this, arguments);
 
@@ -60,6 +72,22 @@ sap.ui.define(
             }
           });
         })
+      },
+      getAprovalModel: function () {
+        if (!this.oApprovalModel) {
+          this.setModel(new JSONModel({}), "approvalView");
+          this.oApprovalModel = this.getModel("approvalView");
+        }
+        return this.oApprovalModel;
+      },
+      getMode: function (currHash) {
+        if (currHash.includes("aprobacion")) {
+          return 3;
+        } else if (currHash.includes("seguimiento")) {
+          return 2;
+        } else {
+          return 1;
+        }
       }
     });
   }
