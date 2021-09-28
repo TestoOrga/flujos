@@ -212,6 +212,11 @@ sap.ui.define(
         distributeData: function (oResults) {
           var flows = oResults.filter(x=>isNaN(x.C1));
           var files = oResults.filter(x=>!isNaN(Number(x.C1)));
+          files.forEach((element)=>{
+            var owner = flows.find(x=>
+              x.C6 === element.C1);
+              element.itemOwner = owner.C22;
+          });
           this.backModel.setProperty("/", flows);
           this.backModelFiles.setProperty("/", files);
           // this.setModel(new JSONModel(oResults), "viewBackModel");

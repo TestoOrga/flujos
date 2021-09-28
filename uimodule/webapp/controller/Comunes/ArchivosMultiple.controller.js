@@ -178,10 +178,19 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         var sQuery = oEvent.getParameter("newValue");
         var aFilter = [];
         if (sQuery) {
-          aFilter = [new Filter("itemId", FilterOperator.Contains, sQuery)];
-          aFilter = [new Filter("itemOwner", FilterOperator.Contains, sQuery)];
+          aFilter = [new Filter("itemId", FilterOperator.Contains, sQuery),
+            new Filter("itemOwner", FilterOperator.Contains, sQuery)
+          ];
+          this._oTab.getBinding("items").filter(
+            new Filter({
+              filters: aFilter,
+              and: false
+            })
+            // aFilter
+            , "Application");
+        } else {
+          this._oTab.getBinding("items").filter(null);
         }
-        this._oTab.getBinding("items").filter(aFilter, "Application");
       },
 
       onItemDelete: function (oEvent) {
@@ -217,13 +226,14 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
       loadFlowFiles: function (sChannel, oEvent, res) {
         res.res.forEach(element => {
           this.backFiles.push({
-            fileId: element.C1,
-            itemId: element.C2,
+            fileId: element.C2,
+            itemId: element.C1,
             archivo: element.C5,
             ext: element.C6,
             fileODiD: element.C7,
             size: element.C10,
             state: "Success",
+            itemOwner: element.itemOwner,
             status: this.get18().getText("archivosMultipleController.Grabado")
           });
         });

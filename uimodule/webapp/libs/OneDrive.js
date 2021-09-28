@@ -115,16 +115,22 @@ sap.ui.define(
             C13: oRes.id
           }, ],
         };
-        var that = this;
-        this._oModelCreate.create("/BaseSet", oPayload, {
-          async: true,
-          success: function (req, res) {
-            console.log("BackEnd Accepted: " + oPayload.to_pesal[0].C11);
-          },
-          error: function (error) {
-            MessageBox.error("BackEnd Rejected: " + oPayload.to_pesal[0].C11 + "; " + error.responseText);
-          },
-        });
+        // var that = this;
+        return new Promise((resolve, reject)=>{
+          this._oModelCreate.create("/BaseSet", oPayload, {
+            async: true,
+            success: function (req, res) {
+              console.log("BackEnd Accepted: " + oPayload.to_pesal[0].C11 
+              + " " +  oPayload.to_pesal[0].C7
+              + " " +  oPayload.to_pesal[0].C8);
+              resolve();
+            },
+            error: function (error) {
+              MessageBox.error("BackEnd Rejected: " + oPayload.to_pesal[0].C11 + "; " + error.responseText);
+              reject();
+            },
+          });
+        })
       },
       /* =========================================================== */
       /* Upload                                                      */
@@ -137,6 +143,7 @@ sap.ui.define(
               this.fetchToken()
               .then(() => this.getRoutesFromBack(file))
               .then((routes) => this.processInputFile(file, routes[0]))
+              // .then(setTimeout(()=>{console.log('timeout');},2000))
               .catch(error => this.sendError(error, file))
             )
           });
@@ -172,8 +179,8 @@ sap.ui.define(
               oRoutes.C2 + oRoutes.C3)
             .then(
               function (res) {
-                this.submitToBack(res, oInFile, oRoutes);
                 this.sendResults(res, oInFile.fileId);
+                return this.submitToBack(res, oInFile, oRoutes);
               }.bind(this))
             .catch(function (error) {
               this.sendError(error, oInFile.fileId)
