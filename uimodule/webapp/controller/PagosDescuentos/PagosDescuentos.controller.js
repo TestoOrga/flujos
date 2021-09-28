@@ -68,6 +68,8 @@ sap.ui.define(
           // Aprobacion
           this.oEventBus.subscribe("flowApproval", "loadFlowData", this.applyData, this);
           this.oEventBus.subscribe("flowApproval", "editMode", this.editMode, this);
+          this.oEventBus.subscribe("flowRequest", "flowDataApprove", this.getDataForApproval, this);
+
         },
         onExit: function () {
 
@@ -80,6 +82,7 @@ sap.ui.define(
           // Aprobacion
           this.oEventBus.unsubscribe("flowApproval", "loadFlowData", this.applyData, this);
           this.oEventBus.unsubscribe("flowApproval", "editMode", this.editMode, this);
+          this.oEventBus.unsubscribe("flowRequest", "flowDataApprove", this.getDataForApproval, this);
           this.destroyIds();
         },
 
@@ -724,6 +727,32 @@ sap.ui.define(
           }
           // }
 
+        },
+        getDataForApproval: function () {
+          var result = this.getFlowData();
+          var mappedData = [];
+          result.forEach(element => {
+            mappedData.push({
+              C6: element.vis1,
+              C30: element.in1,
+              C31: element.vis2,
+              C32: element.vis3,
+              C33: element.vis4,
+              C34: element.in2,
+              C35: element.vis5,
+              C36: element.in3,
+              C37: element.in4Num,
+              C38: element.in5,
+              C39: element.in6Temp,
+              C40: element.vis6,
+              C41: element.vis7,
+              C17: element.rejectText,
+            });
+          });
+          this.oEventBus.publish("flowResults", "flowData", {
+            res: mappedData,
+            typeArr: true
+          });
         },
 
         editMode: function (sChannel, oEvent, res) {

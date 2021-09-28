@@ -10,15 +10,15 @@ sap.ui.define(
         var sServiceUrl = "/sap/opu/odata/sap/ZOD_FLUJOS_IN_SRV";
         this.createModel = new sap.ui.model.odata.v2.ODataModel(sServiceUrl, true);
       },
-      mapData: function (inData) {
+      mapData: function (inData, approveCode) {
         var flowInfo = inData.flowInfo;
         var arrData = inData.flowData;
-        switch (flowInfo.departamento + flowInfo.actividad + flowInfo.proceso) {
+        switch (approveCode || flowInfo.departamento + flowInfo.actividad + flowInfo.proceso) {
           case "NOM001001":
-            this.NOM001001(flowInfo, arrData);
+            this.NOM001001(flowInfo, arrData, approveCode ? true : false);
             break;
           case "NOM001002":
-            this.NOM001002(flowInfo, arrData);
+            this.NOM001002(flowInfo, arrData, approveCode ? true : false);
             break;
           default:
             break;
@@ -39,10 +39,10 @@ sap.ui.define(
       creationBackFail: function (error) {
         this.oEventBus.publish("flowCreation", "flowBackResult");
       },
-      creationBackAccepted: function (res) {        
+      creationBackAccepted: function (res) {
         this.oEventBus.publish("flowCreation", "flowBackResult", res);
       },
-      NOM001001: function (flowInfo, arrData) {
+      NOM001001: function (flowInfo, arrData, approve) {
         var oPayload = {
           P1: "SEND",
           to_pesal: [{
@@ -82,62 +82,71 @@ sap.ui.define(
         };
         this.submitCall(oPayload);
       },
-      NOM001002: function (flowInfo, arrData) {
+      NOM001002: function (flowInfo, arrData, approve) {
         var to_pesal = [];
-        arrData.forEach(element => {
-          to_pesal.push({
-            C1: "REG",
-            C5: element.in3, //motivo
-            C6: flowInfo.departamento,
-            C7: flowInfo.actividad,
-            C8: flowInfo.proceso,
-            C9: flowInfo.id,
-            C10: element.vis1, //item
-            C11: element.head1, //sociedad
-            C12: element.head2, //division
-            C13: element.head3, //tipo 
-            C14: element.in1,
-            C15: element.vis2,
-            C16: element.vis3,
-            C17: element.vis4,
-            C18: element.in2,
-            C19: element.vis5,
-            C20: element.in3,
-            C21: element.in4,
-            C22: element.in5,
-            C23: element.in6,
-            C24: element.vis6,
-            C25: element.vis7
-          })
-          // to_pesal.push({
-          //   C1: "REG",
-          //   C5: element.in3,
-          //   C6: flowInfo.departamento,
-          //   C7: flowInfo.actividad,
-          //   C8: flowInfo.proceso,
-          //   C9: flowInfo.id,
-          //   // C10: element.head1,
-          //   C11: "1002",
-          //   C12: "1030",
-          //   C13: "001",
-          //   C14: element.vis1,
-          //   C15: element.in1,
-          //   C16: element.vis2,
-          //   C17: element.vis3,
-          //   C18: element.vis4,
-          //   C19: element.in2,
-          //   C20: element.vis5,
-          //   C21: element.in3,
-          //   C22: element.in4,
-          //   C23: element.in5,
-          //   C24: element.vis6,
-          //   C25: element.vis7
-          // })
-        });
-        var oPayload = {
-          P1: "SEND",
-          to_pesal: to_pesal
-        };
+        if (!approve) {
+          arrData.forEach(element => {
+            to_pesal.push({
+              C1: "REG",
+              C5: element.in3, //motivo
+              C6: flowInfo.departamento,
+              C7: flowInfo.actividad,
+              C8: flowInfo.proceso,
+              C9: flowInfo.id,
+              C10: element.vis1, //item
+              C11: element.head1, //sociedad
+              C12: element.head2, //division
+              C13: element.head3, //tipo 
+              C14: element.in1,
+              C15: element.vis2,
+              C16: element.vis3,
+              C17: element.vis4,
+              C18: element.in2,
+              C19: element.vis5,
+              C20: element.in3,
+              C21: element.in4,
+              C22: element.in5,
+              C23: element.in6,
+              C24: element.vis6,
+              C25: element.vis7
+            })
+          });
+          var oPayload = {
+            P1: "SEND",
+            to_pesal: to_pesal
+          };
+        } else {
+          arrData.forEach(element => {
+            to_pesal.push({
+              C1: "APP",
+              C5: element.in3, //motivo
+              C6: flowInfo.departamento,
+              C7: flowInfo.actividad,
+              C8: flowInfo.proceso,
+              C9: flowInfo.id,
+              C10: element.vis1, //item
+              C11: element.head1, //sociedad
+              C12: element.head2, //division
+              C13: element.head3, //tipo 
+              C14: element.in1,
+              C15: element.vis2,
+              C16: element.vis3,
+              C17: element.vis4,
+              C18: element.in2,
+              C19: element.vis5,
+              C20: element.in3,
+              C21: element.in4,
+              C22: element.in5,
+              C23: element.in6,
+              C24: element.vis6,
+              C25: element.vis7
+            })
+          });
+          var oPayload = {
+            P1: "APP",
+            to_pesal: to_pesal
+          };
+        }
         this.submitCall(oPayload);
       }
     });

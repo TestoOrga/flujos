@@ -7,6 +7,7 @@ sap.ui.define(
     "sap/m/Button",
     "sap/m/MessageBox",
     "sap/ui/model/json/JSONModel",
+    "sap/m/Text",
   ],
   function (BaseController,
     XMLView,
@@ -14,7 +15,8 @@ sap.ui.define(
     DialogType,
     Button,
     MessageBox,
-    JSONModel) {
+    JSONModel,
+    Text) {
     "use strict";
 
     return BaseController.extend(
@@ -210,12 +212,12 @@ sap.ui.define(
         },
 
         distributeData: function (oResults) {
-          var flows = oResults.filter(x=>isNaN(x.C1));
-          var files = oResults.filter(x=>!isNaN(Number(x.C1)));
-          files.forEach((element)=>{
-            var owner = flows.find(x=>
+          var flows = oResults.filter(x => isNaN(x.C1));
+          var files = oResults.filter(x => !isNaN(Number(x.C1)));
+          files.forEach((element) => {
+            var owner = flows.find(x =>
               x.C6 === element.C1);
-              element.itemOwner = owner.C31;
+            element.itemOwner = owner.C31;
           });
           this.backModel.setProperty("/", flows);
           this.backModelFiles.setProperty("/", files);
@@ -359,7 +361,7 @@ sap.ui.define(
         },
 
         submitFlow: function () {
-          this.oEventBus.publish("flowRequest", "flowData");
+          this.oEventBus.publish("flowRequest", "flowDataApprove");
         },
 
         /* ===========================================================
@@ -395,7 +397,7 @@ sap.ui.define(
             if (okFlow) {
               this.onConfirmDialogPress(
                 this.submitFlow.bind(this),
-                this.get18().getText("submitConfirmationQuestion"),
+                this.get18().getText("AprobacionFlowController.DeseaProcesarElFlujo"),
                 true
               );
             } else {
@@ -426,20 +428,35 @@ sap.ui.define(
           }
           if (this.getFlowDataStart === 0) {
             console.log("eventEnded");
-            this.byId("headerFlujosMasterPage").setBusy(true);
-            this.getOwnerComponent().oSendData.mapData({
-              flowInfo: {
-                departamento: this.headerData.departamento,
-                actividad: this.headerData.actividad,
-                proceso: this.headerData.proceso,
-                id: this.headerData.id,
-              },
-              flowData: this.getFlowDataRes,
-            });
+            this.byId("approvePage").setBusy(true);
+            this.getOwnerComponent().oSendData.mapData(
+              // { flowInfo: {
+              //   departamento: this.headerData.departamento,
+              //   actividad: this.headerData.actividad,
+              //   proceso: this.headerData.proceso,
+              //   id: this.headerData.id,
+              // },
+              // flowData: this.getFlowDataRes }
+              this.addModification(), this.getFlowCode());
           }
         },
+        getFlowCode: function () {
+          var backData = this.backModel.getData();
+          return backData[0].C1 + backData[0].C2 + backData[0].C3;
+        },
+        addModification: function () {
+          var backData = this.backModel.getData();
+          backData.forEach(backItem => {
+            var modData = this.getFlowDataRes.find(x => x.C30 === backItem.C30);
+            for (const key in modData) {
+              backItem[key] = modData[key];
+            }
+          });
+          console.log('');
+          return backData;
+        },
         onFlowBackResult: function (sChannel, oEvent, res) {
-          this.byId("headerFlujosMasterPage").setBusy(false);
+          this.byId("approvePage").setBusy(false);
           if (!res) {
             MessageBox.error(error.responseText);
           }
