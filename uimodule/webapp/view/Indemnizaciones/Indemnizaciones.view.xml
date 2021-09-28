@@ -76,6 +76,9 @@
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Motivo" width="100px"/>
                         </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                            <Text text="Documentacion" width="100px"/>
+                        </Column>
                     </columns>
                     <items>
                         <ColumnListItem class="lineItemSucc" highlight="Success">
