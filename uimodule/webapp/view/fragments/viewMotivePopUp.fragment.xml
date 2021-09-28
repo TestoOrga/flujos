@@ -1,6 +1,6 @@
 <c:FragmentDefinition xmlns="sap.m"
     xmlns:c="sap.ui.core">
-    <Dialog id="motiveDialog" type="Message" contentWidth="{= ${device>/system/phone}?'100%':'50%'}" afterClose="afterRejectClose">
+    <Dialog id="motiveDialog" type="Message" contentWidth="{= ${device>/system/phone}?'100%':'50%'}" afterClose="afterRejectClose" icon="sap-icon://employee-rejections">
         <TextArea  width="100%" value="{fragMotive>/rejectText}" placeholder="{i18n>viewMotivePopUpFragment.MotivoDeRechazo}"/>
         <beginButton>
         <Button icon="sap-icon://accept" press="acceptRejectComment"/>
