@@ -82,10 +82,10 @@ sap.ui.define(
             }, ],
           };
         } else {
-          arrData.C1 = "APP";
+            // arrData.C1 = "APP";
           var oPayload = {
             P1: "APP",
-            to_pesal: [arrData, ],
+            to_pesal: arrData
           };
         }
         this.submitCall(oPayload);
@@ -125,9 +125,9 @@ sap.ui.define(
           };
         } else {
           to_pesal = arrData;
-          to_pesal.forEach(element => {
-            element.C1 = "APP";
-          });
+          // to_pesal.forEach(element => {
+          //   element.C1 = "APP";
+          // });
           var oPayload = {
             P1: "APP",
             to_pesal: to_pesal

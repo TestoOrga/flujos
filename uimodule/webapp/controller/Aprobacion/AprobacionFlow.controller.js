@@ -458,15 +458,18 @@ sap.ui.define(
                 backItem[key] = modData[key];
               }
             } else {
-              for (const key in modData) {
-                backItem[key] = modData[key];
+              for (const key in this.getFlowDataRes) {
+                backItem[key] = this.getFlowDataRes[key];
               }
             }
+            backItem.C88 = this.lastHash;
           });
 
-          var localReject = this.getModel("viewModel").getProperty("/rejectText");
-          if (localReject !== "") {
-            backData[0].C17 = localReject;
+          var flowCode = this.getModel("viewModel").getProperty("/flowCode");
+          if (this.getOwnerComponent().noTabFlows.includes(flowCode)) {
+            var localReject = this.getModel("viewModel").getProperty("/rejectText");
+            backData[0].C16 = localReject === "" ? "X" : "";
+            backData[0].C20 = localReject;
           }
           return backData;
         },
@@ -533,6 +536,8 @@ sap.ui.define(
             this.displayMotivePopOver(this.getModel("viewModel").getProperty("/title"));
           } else {
             this.getModel("viewModel").setProperty("/rejectText", "")
+            // this.getModel("viewModel").refresh(true);
+            this.byId("fragMotiveText").setValue("");
             // this.headerData.rejectText = "";
             // this._tabModel.setProperty(lineCxt.sPath + "/rejectText", "");
             // this.getModel("fragMotive").setProperty("/", "");

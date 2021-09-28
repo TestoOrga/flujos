@@ -193,3 +193,8 @@
 .approvalAvatar .sapFAvatarS {
   font-size: 1.7rem;
 }
+
+.version {
+  color: #6a6d70;
+  font-size: x-small;
+}

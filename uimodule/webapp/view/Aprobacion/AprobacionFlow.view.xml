@@ -24,7 +24,8 @@
         </semantic:content>
         <semantic:customFooterContent>
             <OverflowToolbar id="footer" design="Solid" style="Clear" width="100%">
-                <content>
+                <content>                                            
+                    <Text text="{i18n>version.AprobacionHeader}" class="version"/>
                     <ToolbarSpacer id="spacer0"/>
                     <HBox  visible="{path: 'viewModel>/flowCode',formatter: '.formatter.getSwitchVisible'}" class="sapUiLargeMarginEnd">
                         <Switch id="switchito" state="true" type="AcceptReject" change="switchChanged"/>

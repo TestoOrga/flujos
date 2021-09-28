@@ -746,7 +746,8 @@ sap.ui.define(
               C39: element.in6Temp,
               C40: element.vis6,
               C41: element.vis7,
-              C17: element.rejectText,
+              C16: element.rejectText === "" ? "X" : "",
+              C20: element.rejectText,
             });
           });
           this.oEventBus.publish("flowResults", "flowData", {
