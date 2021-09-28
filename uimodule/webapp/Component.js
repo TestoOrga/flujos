@@ -40,6 +40,10 @@ sap.ui.define(
         this.getModel("flowDescMap").attachRequestCompleted(function () {
           this.flowDescMap = this.getModel("flowDescMap").getData();
         }, this);
+        this.noTabFlows = [
+          "NOM001001"
+        ];
+
         this.oSendData = new SendData(this);
         UIComponent.prototype.init.apply(this, arguments);
 

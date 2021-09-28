@@ -8,6 +8,7 @@ sap.ui.define(
     "sap/m/MessageBox",
     "sap/ui/model/json/JSONModel",
     "sap/m/Text",
+    "sap/ui/core/Fragment",
   ],
   function (BaseController,
     XMLView,
@@ -16,7 +17,8 @@ sap.ui.define(
     Button,
     MessageBox,
     JSONModel,
-    Text) {
+    Text,
+    Fragment) {
     "use strict";
 
     return BaseController.extend(
@@ -236,6 +238,7 @@ sap.ui.define(
         },
         mapHeader: function (oFlowData) {
           var headerData = {
+            flowCode: oFlowData.C1 + oFlowData.C2 + oFlowData.C3,
             title: oFlowData.C5,
             intro: oFlowData.C4,
             icon: oFlowData.C1,
@@ -243,7 +246,9 @@ sap.ui.define(
             state: "Warning",
             name: oFlowData.C24,
             subName: oFlowData.C25,
-            subName1: oFlowData.C26
+            subName1: oFlowData.C26,
+
+            rejectText: ""
           };
           this.getModel("viewModel").setProperty("/", headerData);
         },
@@ -447,12 +452,22 @@ sap.ui.define(
         addModification: function () {
           var backData = this.backModel.getData();
           backData.forEach(backItem => {
-            var modData = this.getFlowDataRes.find(x => x.C30 === backItem.C30);
-            for (const key in modData) {
-              backItem[key] = modData[key];
+            if (Array.isArray(this.getFlowDataRes)) {
+              var modData = this.getFlowDataRes.find(x => x.C30 === backItem.C30);
+              for (const key in modData) {
+                backItem[key] = modData[key];
+              }
+            } else {
+              for (const key in modData) {
+                backItem[key] = modData[key];
+              }
             }
           });
-          console.log('');
+
+          var localReject = this.getModel("viewModel").getProperty("/rejectText");
+          if (localReject !== "") {
+            backData[0].C17 = localReject;
+          }
           return backData;
         },
         onFlowBackResult: function (sChannel, oEvent, res) {
@@ -466,7 +481,7 @@ sap.ui.define(
               res: res,
             });
           } else {
-            var modelData = this.getModel("viewModel").getData();            
+            var modelData = this.getModel("viewModel").getData();
             var messText = this.get18().getText(
               "AprobacionFlowController.FlujoAprobado",
               [modelData.title]
@@ -507,6 +522,68 @@ sap.ui.define(
             this.get18().getText("AprobacionFlowController.ConfirmaCancelarTratamientoDeFlujo")
           );
         },
+        switchChanged: function (oEvent) {
+          // var lineCxt = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
+          if (!oEvent.oSource.getState()) {
+            // this.setModel(new JSONModel({
+            //   // tabLine: oEvent.getSource().getParent().getParent(),
+            //   // line: lineCxt,
+            //   rejectText: ""
+            // }), "fragMotive");
+            this.displayMotivePopOver(this.getModel("viewModel").getProperty("/title"));
+          } else {
+            this.getModel("viewModel").setProperty("/rejectText", "")
+            // this.headerData.rejectText = "";
+            // this._tabModel.setProperty(lineCxt.sPath + "/rejectText", "");
+            // this.getModel("fragMotive").setProperty("/", "");
+          }
+          // {vis1: "000001", in1: "211020", vis2: "URQUIDI CHAVEZ JUAN …", vis3: "B2", vis4: "20050316", …}
+
+        },
+        displayMotivePopOver: function (itemId) {
+          var oView = this.getView();
+          if (!this.byId("motiveDialog")) {
+            Fragment.load({
+              id: oView.getId(),
+              name: "bafar.flujos.flujos.view.fragments.viewMotivePopUp",
+              controller: this,
+            }).then(
+              function (oDialog) {
+                // connect dialog to the root view of this component (models, lifecycle)
+                oView.addDependent(oDialog);
+                oView.byId("motiveDialog").setTitle("Item No: " + itemId);
+                console.log("Frag Loaded");
+                oDialog.open();
+              }.bind(this)
+            );
+          } else {
+            oView.byId("motiveDialog").setTitle("Item No: " + itemId);
+            oView.byId("motiveDialog").open();
+          }
+        },
+        acceptRejectComment: function (oEvent) {
+          // var line = this.getModel("fragMotive").getData();
+          // this._tabModel.setProperty(line.line.sPath + "/rejectText", line.rejectText);
+          this.getModel("viewModel").setProperty("/rejectText", this.byId("fragMotiveText").getValue());
+          this.byId("motiveDialog").close();
+        },
+
+        _showMotivo: function (oEvent) {
+          // var lineCxt = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
+          // this.setModel(new JSONModel({
+          //   line: lineCxt,
+          //   rejectText: lineCxt.getObject().rejectText
+          // }), "fragMotive");
+          this.byId("fragMotiveText").setValue(this.getModel("viewModel").getProperty("/rejectText"));
+          this.displayMotivePopOver(this.getModel("viewModel").getProperty("/title"));
+        },
+
+        afterRejectClose: function (oEvent) {
+          if (this.byId("fragMotiveText").getValue() === "") {
+            this.byId("switchito").setState(true);
+            this.getModel("viewModel").setProperty("/rejectText", "");
+          }
+        }
 
         /* ===========================================================
          BORRAR

@@ -50,6 +50,7 @@ sap.ui.define(
           // Aprobacion
           this.oEventBus.subscribe("flowApproval", "loadFlowData", this.applyData, this);
           this.oEventBus.subscribe("flowApproval", "editMode", this.editMode, this);
+          this.oEventBus.subscribe("flowRequest", "flowDataApprove", this.getDataForApproval, this);
         },
         onExit: function () {
 
@@ -63,6 +64,7 @@ sap.ui.define(
           // Aprobacion
           this.oEventBus.unsubscribe("flowApproval", "loadFlowData", this.applyData, this);
           this.oEventBus.unsubscribe("flowApproval", "editMode", this.editMode, this);
+          this.oEventBus.unsubscribe("flowRequest", "flowDataApprove", this.getDataForApproval, this);
         },
         getCurrentRouteName: function (router = this.getOwnerComponent().getRouter()) {
           const currentHash = router.getHashChanger().getHash();
@@ -371,6 +373,38 @@ sap.ui.define(
             C49: oData.C49,
             C50: oData.C50,
           };
+        },
+        getDataForApproval: function () {
+          // this.byId("noPeronsal_Input").setValue(oData.C27);
+          // this.byId("noPeronsal_Input1").setValue(oData.C28);
+          // this.byId("sociedad_Input").setValue(oData.C29);
+          // this.byId("sociedad_Input1").setValue(oData.C30);
+          // this.byId("division_Input").setValue(oData.C31);
+          // this.byId("division_Input1").setValue(oData.C32);
+          // this.byId("funcion_Input").setValue(oData.C33);
+          // this.byId("funcion_Input1").setValue(oData.C34);
+          // this.byId("areaNomina_Input").setValue(oData.C35);
+          // this.byId("periodoRet_Input").setValue(oData.C36);
+          // this.byId("periodoRet_Input1").setValue(oData.C37);
+          // datosPersonalesData.C40 = datosPersonalesData.C22;
+
+          var result = this.onGetDataFromInput();
+          var toMod = {
+            C27: result.C11,
+            C28: result.C12,
+            C29: result.C13,
+            C30: result.C14,
+            C31: result.C15,
+            C32: result.C16,
+            C33: result.C17,
+            C34: result.C18,
+            C35: result.C19,
+            C36: result.C20,
+            C37: result.C21
+          };
+          this.oEventBus.publish("flowResults", "flowData", {
+            res: toMod
+          });
         },
         editMode: function (sChannel, oEvent, res) {
           this.getView().getModel("afterCreation").setProperty("/enabled", res.edit);

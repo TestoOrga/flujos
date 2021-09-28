@@ -44,7 +44,10 @@ sap.ui.define(
             enabled: false
           }), "afterCreation");
         } else {
-          this.getView().setModel(new JSONModel({noEditField: true, creation: true}), "afterCreation");
+          this.getView().setModel(new JSONModel({
+            noEditField: true,
+            creation: true
+          }), "afterCreation");
         };
 
         oDataResults = [];
@@ -173,13 +176,14 @@ sap.ui.define(
         //Aprobacion
         this.oEventBus.subscribe("flowApproval", "loadViewData", this.loadData, this);
         this.oEventBus.subscribe("flowApproval", "editMode", this.editMode, this);
-
+        this.oEventBus.subscribe("flowRequest", "flowDataApprove", this.getDataForApproval, this);
       },
       onExit: function () {
         this.oEventBus.unsubscribe("flowRequest", "valFlow", this.getValInputs, this);
         this.oEventBus.unsubscribe("flowRequest", "flowData", this.getData, this);
         this.oEventBus.unsubscribe("flowApproval", "loadViewData", this.loadData, this);
         this.oEventBus.unsubscribe("flowApproval", "editMode", this.editMode, this);
+        this.oEventBus.unsubscribe("flowRequest", "flowDataApprove", this.getDataForApproval, this);
       },
       getCurrentRouteName: function (router = this.getOwnerComponent().getRouter()) {
         const currentHash = router.getHashChanger().getHash();
@@ -485,6 +489,34 @@ sap.ui.define(
           this.byId("_viaPagoSelect").setSelectedKey(this.backDataJuridica.C44);
           this.byId("_viaPagoInput").setValue(this.backDataJuridica.C45);
         }
+      },
+      getDataForApproval: function () {
+        if (this.getView().byId("_tipoDescuento")) {
+          var result = {
+            C46: this.getView().byId("_tipoDescuento").getSelectedKey(),
+            C47: this.getView().byId("_tipoDescuentoInput").getValue(),
+            C48: this.getView().byId("_unidadIntervalo").getSelectedKey(),
+            C49: this.getView().byId("_unidadIntervaloInput").getValue(),
+            C50: this.currencyNum,
+          };
+          // return juridicaData;
+        } else {
+          var result = {
+            C38: this.getView().byId("numeroOrdenInput").getValue(),
+            C39: this.formatter.dateToAbap(this.getView().byId("numeroOrdenDate").getValue(), "."),
+            C40: this.getView().byId("receptor").getValue(),
+            C41: this.byId("cveBancoSelect").getSelectedKey(),
+            C42: this.byId("_claveBancoInput").getValue(),
+            C43: this.getView().byId("cuentaBancariaInput").getValue(),
+            C44: this.getView().byId("_viaPagoSelect").getSelectedKey(),
+            C45: this.getView().byId("_viaPagoInput").getValue()
+          };
+          // return deudasData;
+        }
+        // var result = this.saveJuridicaDeudasData();
+        this.oEventBus.publish("flowResults", "flowData", {
+          res: result
+        });
       },
       editMode: function (sChannel, oEvent, res) {
         this.getView().getModel("afterCreation").setProperty("/enabled", res.edit);

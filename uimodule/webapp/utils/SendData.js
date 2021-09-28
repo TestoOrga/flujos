@@ -15,7 +15,7 @@ sap.ui.define(
         var arrData = inData.flowData;
         switch (approveCode || flowInfo.departamento + flowInfo.actividad + flowInfo.proceso) {
           case "NOM001001":
-            this.NOM001001(flowInfo, arrData, approveCode ? true : false);
+            this.NOM001001(flowInfo, arrData || inData, approveCode ? true : false);
             break;
           case "NOM001002":
             this.NOM001002(flowInfo, arrData || inData, approveCode ? true : false);
@@ -43,43 +43,51 @@ sap.ui.define(
         this.oEventBus.publish("flowCreation", "flowBackResult", res);
       },
       NOM001001: function (flowInfo, arrData, approve) {
-        var oPayload = {
-          P1: "SEND",
-          to_pesal: [{
-            C1: "REG",
-            C5: "Flujo Pension",
-            C6: flowInfo.departamento,
-            C7: flowInfo.actividad,
-            C8: flowInfo.proceso,
-            C9: flowInfo.id,
-            C10: "000001",
-            C11: arrData.C11,
-            C12: arrData.C12,
-            C13: arrData.C13,
-            C14: arrData.C14,
-            C15: arrData.C15,
-            C16: arrData.C16,
-            C17: arrData.C17,
-            C18: arrData.C18,
-            C19: arrData.C19,
-            C20: arrData.C20,
-            C21: arrData.C21,
-            C22: arrData.C22,
-            C23: arrData.C23,
-            C24: arrData.C24,
-            C25: arrData.C25,
-            C26: arrData.C26,
-            C27: arrData.C27,
-            C28: arrData.C28,
-            C29: arrData.C29,
-            C30: arrData.C30,
-            C31: arrData.C31,
-            C32: arrData.C32,
-            C33: arrData.C33,
-            C34: arrData.C34,
-            C40: arrData.C40
-          }, ],
-        };
+        if (!approve) {
+          var oPayload = {
+            P1: "SEND",
+            to_pesal: [{
+              C1: "REG",
+              C5: "Flujo Pension",
+              C6: flowInfo.departamento,
+              C7: flowInfo.actividad,
+              C8: flowInfo.proceso,
+              C9: flowInfo.id,
+              C10: "000001",
+              C11: arrData.C11,
+              C12: arrData.C12,
+              C13: arrData.C13,
+              C14: arrData.C14,
+              C15: arrData.C15,
+              C16: arrData.C16,
+              C17: arrData.C17,
+              C18: arrData.C18,
+              C19: arrData.C19,
+              C20: arrData.C20,
+              C21: arrData.C21,
+              C22: arrData.C22,
+              C23: arrData.C23,
+              C24: arrData.C24,
+              C25: arrData.C25,
+              C26: arrData.C26,
+              C27: arrData.C27,
+              C28: arrData.C28,
+              C29: arrData.C29,
+              C30: arrData.C30,
+              C31: arrData.C31,
+              C32: arrData.C32,
+              C33: arrData.C33,
+              C34: arrData.C34,
+              C40: arrData.C40
+            }, ],
+          };
+        } else {
+          arrData.C1 = "APP";
+          var oPayload = {
+            P1: "APP",
+            to_pesal: [arrData, ],
+          };
+        }
         this.submitCall(oPayload);
       },
       NOM001002: function (flowInfo, arrData, approve) {

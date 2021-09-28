@@ -18,6 +18,10 @@ sap.ui.define([], function () {
       var icon = this.getOwnerComponent().flowDescMap.find(x=>x[val]);
       return icon ? icon[val].icon : "sap-icon://approvals";
     },
+    getSwitchVisible: function(val){
+      var noTabFLow = this.getOwnerComponent().noTabFlows;
+      return noTabFLow.includes(val);
+    },
     date: function (dat) {
       if (dat) {
         return new Date(dat.substr(0, 4), dat.substr(4, 2), dat.substr(6, 2)).toLocaleDateString('es-US', {
