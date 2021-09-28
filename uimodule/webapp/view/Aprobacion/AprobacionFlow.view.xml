@@ -26,7 +26,7 @@
             <OverflowToolbar id="footer" design="Solid" style="Clear" width="100%">
                 <content>
                     <ToolbarSpacer id="spacer"/>
-                    <Button id="footerFlujosButAprobar" type="Accept" text="{i18n>AprobacionFlowView.Aprobar}" press="onAprobar"/>
+                    <Button id="footerFlujosButAprobar" type="Accept" text="{i18n>AprobacionFlowView.Procesar}" press="onAprobar"/>
                     <Button id="footerFlujosButCancelar" type="Reject" text="{i18n>HeaderFlujosFooterButCancelar}" press="onCancelar"/>
                 </content>
             </OverflowToolbar>

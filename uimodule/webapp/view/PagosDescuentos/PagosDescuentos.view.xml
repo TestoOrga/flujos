@@ -33,16 +33,19 @@
                             <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine" visible="{= !${afterCreation>/creation} ? false : true}"/>
                             <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLines" enabled="false" visible="{= !${afterCreation>/creation} ? false : true}"/>
                             <!-- <Text text="{viewGeneral>/release}" /> -->
-                            <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://upload" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" enabled="{viewGeneral>/release}" fileType="xlsx"  visible="{= !${afterCreation>/creation} ? false : true}"/>
+                            <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://upload" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" enabled="{viewGeneral>/release}" fileType="xlsx" visible="{= !${afterCreation>/creation} ? false : true}"/>
                             <Button id="toolbarDown" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent" visible="{= !${afterCreation>/creation} ? false : true}"/>
                         </layout:content>
                     </layout:HorizontalLayout>
                 </content>
             </Toolbar>
             <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
-                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" >
-                <!-- blocked="{= !${viewGeneral>/release}}" -->
+                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="{= !${afterCreation>/creation} ? 'None' : 'MultiSelect'}" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished">
+                    <!-- blocked="{= !${viewGeneral>/release}}" -->
                     <columns>
+                        <Column visible="{= !${afterCreation>/creation} ?  true : false}">
+                            <Text text="Aprobar"/>
+                        </Column>
                         <Column>
                             <Text text="Item" width="100px"/>
                         </Column>
@@ -82,13 +85,17 @@
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Fecha Fin" width="100px"/>
                         </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" visible="{= !${afterCreation>/creation} ?  false : true}">
                             <Text text="Documentacion" width="100px"/>
                         </Column>
                     </columns>
                     <items>
                         <ColumnListItem class="lineItemSucc" highlight="Success">
                             <cells>
+                                <HBox id="switchitoBox">
+                                    <Switch id="switchito" state="true" type="AcceptReject" visible="{= !${afterCreation>/creation} ?  true : false}" change="switchChanged"/>
+                                    <c:Icon src="sap-icon://comment" press="_showMotivo" class="sapUiTinyMarginBeginEnd" visible="{= ${tablaFlujo>rejectText} !== '' ? true : false }"/>
+                                </HBox>
                                 <Text id="attachPopover" text="{tablaFlujo>vis1}"/>
                                 <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive" editable="{afterCreation>/noEditField}"/>
                                 <Text text="{tablaFlujo>vis2}"/>
@@ -103,7 +110,7 @@
                                 <Select id="in5" items="{path: 'tablaFlujo>din5/', templateShareable: false}" selectedKey="{tablaFlujo>in5}" change="onSelect($event, 'in5')" forceSelection="false" class="valInput resSelect" enabled="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}">
                                     <c:Item key="{tablaFlujo>C1}" text="{tablaFlujo>C1}"/>
                                 </Select>
-                                <Select id="in6" items="{path: 'tablaFlujo>din6/', templateShareable: false}" selectedKey="{tablaFlujo>in6}" change="onSelect($event, 'in6')" forceSelection="false" class="valInput resSelect"  enabled="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}">
+                                <Select id="in6" items="{path: 'tablaFlujo>din6/', templateShareable: false}" selectedKey="{tablaFlujo>in6}" change="onSelect($event, 'in6')" forceSelection="false" class="valInput resSelect" enabled="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}">
                                     <c:Item key="{tablaFlujo>C1}" text="{tablaFlujo>C1}"/>
                                 </Select>
                                 <Text text="{path: 'tablaFlujo>vis6',formatter: '.formatter.fooErdat1'}"/>

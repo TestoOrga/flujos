@@ -165,8 +165,8 @@ sap.ui.define(
               oRoutes.C2 + oRoutes.C3)
             .then(
               function (res) {
-                this.submitToBack(res, oInFile, oRoutes);
                 this.sendResults(res, oInFile.fileId);
+                return this.submitToBack(res, oInFile, oRoutes);
               }.bind(this))
             .catch(function (error) {
               this.sendError(error, oInFile.fileId);

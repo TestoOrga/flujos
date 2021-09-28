@@ -4,10 +4,14 @@ sap.ui.define(
   ["bafar/flujos/flujos/controller/BaseController",
     "sap/ui/model/json/JSONModel",
     "bafar/flujos/flujos/libs/filesaver",
-    "bafar/flujos/flujos/libs/xlsx.full.min"
+    "bafar/flujos/flujos/libs/xlsx.full.min",
+    "sap/ui/core/Fragment"
   ],
   function (BaseController,
-    JSONModel) {
+    JSONModel,
+    filesaver,
+    XlsxFullmin,
+    Fragment) {
     "use strict";
 
     return BaseController.extend(
@@ -618,13 +622,13 @@ sap.ui.define(
           oCells.find(x => x.sId.includes("in5")).setSelectedKey("");
           oCells.find(x => x.sId.includes("in6")).setSelectedKey("");
         },
-        formatCurrency: function (oEvent, extVal) {
+        formatCurrency: function (oEvent) {
           var options = {
             style: "currency",
             currency: "USD"
           };
           var formatter = new Intl.NumberFormat("en-us", options);
-          var currencyT = oEvent ? oEvent.oSource.getValue() : extVal;
+          var currencyT = oEvent.oSource.getValue();
           var currency = isNaN(Number(currencyT)) ? 0 : currencyT;
           var currencyFormated = formatter.format(currency);
           if (oEvent) {
@@ -633,13 +637,13 @@ sap.ui.define(
             lineData.in4 = currencyFormated;
             lineData.in4Num = currency;
             this._tabModel.setProperty(sPath, lineData);
-          } else {
-            return {
-              txt: currencyFormated,
-              num: currency
-            };
           }
-
+        },
+        formatFromCurrency: function (oExtVal) {
+          return {
+            txt: oExtVal,
+            num: oExtVal.replace("$", "").replaceAll(",", "")
+          };
         },
         setTempVals: function (oTab) {
           if (oTab.length > 0) {
@@ -692,7 +696,7 @@ sap.ui.define(
               // var tabData = this._tabModel.getProperty("/");
               var mappedData = [];
               oData.forEach(element => {
-                var formattedCurr = this.formatCurrency(undefined, element.C37);
+                var formattedCurr = this.formatFromCurrency(element.C37);
                 mappedData.push({
                   template: true,
                   vis1: element.C6,
@@ -709,6 +713,8 @@ sap.ui.define(
                   in6Temp: element.C39,
                   vis6: element.C40,
                   vis7: element.C41,
+
+                  rejectText: ""
                 });
               });
               this._tabModel.setProperty("/", mappedData);
@@ -722,6 +728,64 @@ sap.ui.define(
 
         editMode: function (sChannel, oEvent, res) {
           this.getView().getModel("afterCreation").setProperty("/enabled", res.edit);
+        },
+
+        switchChanged: function (oEvent) {
+          var lineCxt = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
+          if (!oEvent.oSource.getState()) {
+            this.setModel(new JSONModel({
+              tabLine: oEvent.getSource().getParent().getParent(),
+              line: lineCxt,
+              rejectText: ""
+            }), "fragMotive");
+            this.displayMotivePopOver(lineCxt.getObject().vis1);
+          } else {
+            this._tabModel.setProperty(lineCxt.sPath + "/rejectText", "");
+            this.getModel("fragMotive").setProperty("/", "");
+          }
+          // {vis1: "000001", in1: "211020", vis2: "URQUIDI CHAVEZ JUAN …", vis3: "B2", vis4: "20050316", …}
+
+        },
+        displayMotivePopOver: function (itemId) {
+          var oView = this.getView();
+          if (!this.byId("motiveDialog")) {
+            Fragment.load({
+              id: oView.getId(),
+              name: "bafar.flujos.flujos.view.fragments.viewMotivePopUp",
+              controller: this,
+            }).then(
+              function (oDialog) {
+                // connect dialog to the root view of this component (models, lifecycle)
+                oView.addDependent(oDialog);
+                oView.byId("motiveDialog").setTitle("Item No: " + itemId);
+                console.log("Frag Loaded");
+                oDialog.open();
+              }.bind(this)
+            );
+          } else {
+            oView.byId("motiveDialog").setTitle("Item No: " + itemId);
+            oView.byId("motiveDialog").open();
+          }
+        },
+        acceptRejectComment: function (oEvent) {
+          var line = this.getModel("fragMotive").getData();
+          this._tabModel.setProperty(line.line.sPath + "/rejectText", line.rejectText);
+          this.byId("motiveDialog").close();
+        },
+
+        _showMotivo: function (oEvent) {
+          var lineCxt = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
+          this.setModel(new JSONModel({
+            line: lineCxt,
+            rejectText: lineCxt.getObject().rejectText
+          }), "fragMotive");
+          this.displayMotivePopOver(lineCxt.getObject().vis1);
+        },
+
+        afterRejectClose: function (oEvent) {
+          if (this.getModel("fragMotive").getData().rejectText === "") {
+            this.getModel("fragMotive").getData().tabLine.getAggregation("cells").find(x => x.sId.includes("switchito")).getAggregation("items").find(x => x.sId.includes("switchito")).setState(true);
+          }
         }
       }
     );

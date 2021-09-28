@@ -215,7 +215,7 @@ sap.ui.define(
           files.forEach((element)=>{
             var owner = flows.find(x=>
               x.C6 === element.C1);
-              element.itemOwner = owner.C22;
+              element.itemOwner = owner.C31;
           });
           this.backModel.setProperty("/", flows);
           this.backModelFiles.setProperty("/", files);

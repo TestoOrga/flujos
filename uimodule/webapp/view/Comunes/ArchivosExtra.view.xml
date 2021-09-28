@@ -10,8 +10,8 @@
                 <SearchField liveChange="onSearch" width="98%" showRefreshButton="true" />
             </OverflowToolbar>
             <!-- mode="MultiSelect"  -->
-            <Table id="lineItemsList" width="auto" items="{path:'files>/', sorter: { path: 'itemOwner' , group: '.getGroup' }, groupHeaderFactory: '.getGroupHeader', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" selectionChange="detailTabSelect" blocked="{= !${afterCreation>/creation} ? false : true}">
-
+            <Table id="lineItemsList" width="auto" items="{path:'files>/', sorter: { path: 'itemOwner' , group: '.getGroup' }, groupHeaderFactory: '.getGroupHeader', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" selectionChange="detailTabSelect" >
+<!-- blocked="{= !${afterCreation>/creation} ? false : true}" -->
                 <!-- <Table id="lineItemsList" width="auto" items="{path:'archivos>Seccion_Details/', templateShareable:false}" noDataText="{i18n>archivosMultipleView.NoHayArchivosCargados}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="detailTabSelect"> -->
                 <headerToolbar>
                     <Toolbar >
