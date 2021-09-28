@@ -62,6 +62,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         ), "files");
         this._tabModel = this.getModel("files");
         this._oTab = this.byId("lineItemsList");
+        this.backFiles = [];
 
         this.oEventBus = this.getOwnerComponent().getEventBus();
         this.oEventBus.subscribe("flowRes", "filesLoaded", this.receiveFilesLoaded, this);
@@ -70,6 +71,10 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
 
         this.oEventBus.subscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
         this.oEventBus.subscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
+
+        // Aprobacion
+        this.oEventBus.subscribe("flowApproval", "loadFlowFiles", this.loadFlowFiles, this);
+        this.oEventBus.subscribe("flowApproval", "editMode", this.editMode, this);
       },
       /**
        * @override
@@ -82,6 +87,8 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
 
         this.oEventBus.unsubscribe("driveAnswer", "fileUploaded", this.fileUpladed, this);
         this.oEventBus.unsubscribe("driveAnswer", "fileUploadError", this.fileUpladedError, this);
+        this.oEventBus.unsubscribe("flowApproval", "loadFlowFiles", this.loadFlowFiles, this);
+        this.oEventBus.unsubscribe("flowApproval", "editMode", this.editMode, this);
       },
 
       getCurrentRouteName: function (router = this.getOwnerComponent().getRouter()) {
@@ -203,6 +210,32 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
         return new GroupHeaderListItem({
           title: oGroup.title
         });
+      },
+      editMode: function (sChannel, oEvent, res) {
+        this.getView().getModel("afterCreation").setProperty("/enabled", res.edit);
+      },
+      loadFlowFiles: function (sChannel, oEvent, res) {
+        res.res.forEach(element => {
+          this.backFiles.push({
+            fileId: element.C1,
+            itemId: element.C2,
+            archivo: element.C5,
+            ext: element.C6,
+            fileODiD: element.C7,
+            size: element.C10,
+            state: "Success",
+            status: this.get18().getText("archivosMultipleController.Grabado")
+          });
+        });
+        this._tabModel.setProperty("/", this.backFiles);
+      },
+      onDownFile: function (oEvent) {
+        var file = this._tabModel.getProperty(
+          oEvent.getSource().getBindingContext(this.viewConfig.tabModelName).sPath
+        );
+        this.getOwnerComponent().oOneDrive.downloadFile(
+          file.fileODiD
+        );
       }
     }
   );

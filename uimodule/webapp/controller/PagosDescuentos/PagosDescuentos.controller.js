@@ -618,20 +618,28 @@ sap.ui.define(
           oCells.find(x => x.sId.includes("in5")).setSelectedKey("");
           oCells.find(x => x.sId.includes("in6")).setSelectedKey("");
         },
-        formatCurrency: function (oEvent) {
+        formatCurrency: function (oEvent, extVal) {
           var options = {
             style: "currency",
             currency: "USD"
           };
           var formatter = new Intl.NumberFormat("en-us", options);
-          var currencyT = oEvent.oSource.getValue();
+          var currencyT = oEvent ? oEvent.oSource.getValue() : extVal;
           var currency = isNaN(Number(currencyT)) ? 0 : currencyT;
           var currencyFormated = formatter.format(currency);
-          var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
-          var lineData = lineContext.getObject();
-          lineData.in4 = currencyFormated;
-          lineData.in4Num = currency;
-          this._tabModel.setProperty(sPath, lineData);
+          if (oEvent) {
+            var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
+            var lineData = lineContext.getObject();
+            lineData.in4 = currencyFormated;
+            lineData.in4Num = currency;
+            this._tabModel.setProperty(sPath, lineData);
+          } else {
+            return {
+              txt: currencyFormated,
+              num: currency
+            };
+          }
+
         },
         setTempVals: function (oTab) {
           if (oTab.length > 0) {
@@ -684,21 +692,23 @@ sap.ui.define(
               // var tabData = this._tabModel.getProperty("/");
               var mappedData = [];
               oData.forEach(element => {
+                var formattedCurr = this.formatCurrency(undefined, element.C37);
                 mappedData.push({
                   template: true,
-                  vis1: element.C30,
-                  in1: element.C31,
-                  vis2: element.C32,
-                  vis3: element.C33,
-                  vis4: element.C34,
-                  in2: element.C35,
-                  vis5: element.C36,
-                  in3: element.C37,
-                  in4: element.C38,
-                  in5: element.C39,
+                  vis1: element.C6,
+                  in1: element.C30,
+                  vis2: element.C31,
+                  vis3: element.C32,
+                  vis4: element.C33,
+                  in2: element.C34,
+                  vis5: element.C35,
+                  in3: element.C36,
+                  in4: formattedCurr.txt,
+                  in4Num: formattedCurr.num,
+                  in5: element.C38,
                   in6Temp: element.C39,
                   vis6: element.C40,
-                  vis7: element.C41
+                  vis7: element.C41,
                 });
               });
               this._tabModel.setProperty("/", mappedData);
