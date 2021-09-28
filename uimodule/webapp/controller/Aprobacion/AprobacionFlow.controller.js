@@ -466,12 +466,16 @@ sap.ui.define(
               res: res,
             });
           } else {
+            var modelData = this.getModel("viewModel").getData();            
             var messText = this.get18().getText(
-              "headerFlujosController.FlujoCreado",
-              [this.headerData.id]
+              "AprobacionFlowController.FlujoAprobado",
+              [modelData.title]
             );
             MessageBox.success(messText);
-            this.oEventBus.publish("flowCreated", "releaseFiles");
+            modelData.stateText = "Aprobado";
+            modelData.state = "Success";
+            this.getModel("viewModel").setProperty("/", modelData);
+            // this.oEventBus.publish("flowCreated", "releaseFiles");
           }
         },
         onEndflow: function () {
@@ -482,9 +486,9 @@ sap.ui.define(
          Navigation
          ============================================================= */
         navBack: function () {
-          this.clearHeader();
+          // this.clearHeader();
           var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-          oRouter.navTo("RouteAccionView", null);
+          oRouter.navTo("RouteApprovalView", null);
         },
 
         approveEdit: function (oEvent) {
@@ -496,13 +500,13 @@ sap.ui.define(
           });
         },
 
-        // onBack: function (oEvent) {
-        //   this.onReset(
-        //     undefined,
-        //     this.navBack.bind(this),
-        //     this.get18().getText("headerFlujosController.ConfirmaCancelarFlujo")
-        //   );
-        // },
+        onBack: function (oEvent) {
+          this.onReset(
+            undefined,
+            this.navBack.bind(this),
+            this.get18().getText("AprobacionFlowController.ConfirmaCancelarTratamientoDeFlujo")
+          );
+        },
 
         /* ===========================================================
          BORRAR
