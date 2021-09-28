@@ -40,6 +40,7 @@ sap.ui.define(
         this.getModel("flowDescMap").attachRequestCompleted(function () {
           this.flowDescMap = this.getModel("flowDescMap").getData();
         }, this);
+        this.flowDescMap = this.getModel("flowDescMap").getData();
         this.noTabFlows = [
           "NOM001001"
         ];

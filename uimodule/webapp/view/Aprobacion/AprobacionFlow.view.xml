@@ -17,7 +17,7 @@
                 <ObjectAttribute title="{i18n>HeaderProceso}" text="{viewModel>/subName1}"></ObjectAttribute>
                 <!-- </attributes> -->
                 <statuses>
-                    <ObjectStatus text="{viewModel>/stateText}" state="{viewModel>/state}" inverted="true"></ObjectStatus>
+                    <ObjectStatus text="{viewModel>/stateText}" state="{viewModel>/state}" ></ObjectStatus>
                 </statuses>
             </ObjectHeader>
             <Panel id="panelId"></Panel>
