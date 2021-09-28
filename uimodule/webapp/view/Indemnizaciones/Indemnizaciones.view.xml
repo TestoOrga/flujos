@@ -3,90 +3,120 @@
     xmlns="sap.m"
     xmlns:c="sap.ui.core"
     xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
     xmlns:unified="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
     <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Indemnizaciones" height="auto" width="auto" class="sapUiResponsiveMargin">
         <content>
         <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
-                <form:content>
-                    <Label required="true" text="{i18n>Indemnizaciones.Sociedad}"/>
+                 <form:content>
+                    <Label required="true" text="Sociedad"/>
                     <Select maxWidth="100%" width ="auto" items="{sociedad>/}" change="onSelect($event, 'sociedad')" forceSelection="false">
                         <c:Item key="{sociedad>C1}" text="{sociedad>C1} {sociedad>C2}"/>
                     </Select>
-                    <Label required="true" text="{i18n>Indemnizaciones.DivisionPersonal}" />
+                    <Label required="true" text="Division" />
                     <Select id="titleSelDivision" enabled="false" maxWidth="100%" width ="auto" items="{division>/}" change="onSelect($event, 'division')" forceSelection="false">
                         <c:Item key="{division>C1}" text="{division>C1} {division>C2}"/>
                     </Select>
-                    <Label required="true" text="{i18n>Indemnizaciones.AreaNomina}"/>
+                    <Label required="true" text="Area Nomina"/>
                     <Select maxWidth="100%" width ="auto" items="{areaNomina>/}" change="onSelect($event, 'areaNomina')" selectedKey="" forceSelection="false">
-                        <c:Item key="{AreaNomina>C1}" text="{areaNomina>C1} {areaNomina>C2}"/>
+                        <c:Item key="{areaNomina>C1}" text="{areaNomina>C1} {areaNomina>C2}"/>
                     </Select>
                 </form:content>
             </form:SimpleForm>
-        </content>
-    </Panel>
-</mvc:View>
-     <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:true}" noDataText="{i18n>flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished">
+       <Toolbar height="4rem" enabled="{viewGeneral>/release}">
+                <content>
+                    <!--texto-->
+                    <Title id="listTitle" class="sapUiSmallMarginBegin" titleStyle="H4"/>
+                    <ToolbarSpacer id="space1"/>
+                    <layout:HorizontalLayout allowWrapping="false">
+                        <layout:content>
+                            <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
+                            <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine"></Button>
+                            <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLines" enabled="false"></Button>
+                            <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://upload" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" enabled="{viewGeneral>/release}" fileType="xlsx"/>
+                            <Button id="toolbarDown" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>
+                        </layout:content>
+                    </layout:HorizontalLayout>
+                </content>
+            </Toolbar>
+            <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
+
+     <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" blocked="{= !${viewGeneral>/release}}">
                     <columns>
                         <Column>
-                            <Text text="{i18n>Indemnizaciones.Item}" width="100px"/>
+                            <Text text="Item" width="100px"/>
                         </Column>
                         <Column hAlign="End">
-                            <Text text="No. {i18n>Indemnizaciones.NoPersonal}" width="100px"/>
+                            <Text text="No. Personal" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="{i18n>Indemnizaciones.Nombre}" width="100px"/>
+                            <Text text="Nombre" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Fecha {i18n>Indemnizaciones.FechaBaja}" width="100px"/>
+                            <Text text="Fecha Baja" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="{i18n>Indemnizaciones.Gpo}." width="100px"/>
+                            <Text text="Gpo." width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="{i18n>Indemnizaciones.SD}" width="100px"/>
+                            <Text text="SD" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="{i18n>Indemnizaciones.SPA}" width="100px"/>
+                            <Text text="SPA" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="{i18n>Indemnizaciones.ANT}" width="100px"/>
+                            <Text text="Ant." width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="{i18n>Indemnizaciones.Tipo}" width="100px"/>
+                            <Text text="Tipo" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="{i18n>Indemnizaciones.MontoDias}" width="100px"/>
+                            <Text text="Monto/Dias" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="{i18n>Indemnizaciones.Motivo}" width="100px"/>
+                            <Text text="Motivo" width="100px"/>
                         </Column>
                     </columns>
                     <items>
-                        <ColumnListItem class="lineItemSucc" highlight="Success" type="Navigation" press="onItemPress">
+                        <ColumnListItem class="lineItemSucc" highlight="Success">
                             <cells>
-                                <Text text="{tablaFlujo>vis1}" id="item"/>
-                                <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive" id="noPersonal"/>
-                                <Text text="{tablaFlujo>vis2}" id="nombre"/>
+                                <Text id="attachPopover" text="{tablaFlujo>vis1}"/>
+                                <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive"/>
+                                <Text text="{tablaFlujo>vis2}"/>
                                 <Text text="{path: 'tablaFlujo>vis3',formatter: '.formatter.fooErdat1'}"/>
-                                <Text text="{tablaFlujo>vis4}" id="gpo"/>
-                                <Text text="{tablaFlujo>vis5}" id="SD"/>
-                                <Input value="{tablaFlujo>in2}" change="onInputChange($event, 'in3')" class="valInput" liveChange="onInputLive" id="SPA"/>
-                                <Text text="{tablaFlujo>vis6}" id="ant"/>
-                                <Select id="in3" items="{path: 'tablaFlujo>din3/', templateShareable: false}" selectedKey="{tablaFlujo>in4}" change="onSelect($event, 'in4')" forceSelection="false" class="valInput resSelect">
-                                    <c:Item key="{tablaFlujo>C1}" text="{tablaFlujo>C1}"/>
+                                <Text text="{tablaFlujo>vis4}"/>
+                                <Text text="{tablaFlujo>vis5}"/>
+                                <Input value="{tablaFlujo>in2}" change="formatCurrency" class="valInput"/>
+                                <Text text="{path: 'tablaFlujo>vis6'}"/>
+                                 <Select id="in3" items="{path: 'in3>/', templateShareable: false}" selectedKey="{tablaFlujo>in3}" change="onSelect($event, 'in3')" forceSelection="false" class="valInput resSelect">
+                                    <c:Item key="{in3>C1}" text="{in3>C1} {in3>C2}"/>
                                 </Select>
-                                <Input value="{tablaFlujo>in4}" change="onInputChange($event, 'in4')" class="valInput" liveChange="onInputLive" id="montoDias"/>
-                                <Input value="{tablaFlujo>in5}" change="onInputChange($event, 'in5')" class="valInput" liveChange="onInputLive"  id="motivo"/>
+                                <Input value="{tablaFlujo>in4}" class="valInput"/>
+                                <Input value="{tablaFlujo>in5}" class="valInput"/>
+                                <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="onHandleUploadComplete" uploadOnChange="true" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" enabled="{= ${tablaFlujo>vis2} ? true : false}"/>
                             </cells>
                             <dependents>
                                 <ResponsivePopover id="popover" placement="PreferredTopOrFlip" resizable="true">
                                     <layout:VerticalLayout class="sapUiContentPadding" width="100%">
                                         <layout:content>
-                                            <Text ></Text>
+                                            <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
+                                                <form:content>
+                                                    <Label required="true" text="Division Personal"/>
+                                                    <Text text="{popLine>/visP1}"/>
+                                                    <Label required="true" text="Subdivision de Personal"/>
+                                                    <Text text="{popLine>/visP2}"/>
+                                                    <Label required="true" text="Fecha Solicitud"/>
+                                                    <Text text="{path: 'popLine>/visP3',formatter: '.formatter.fooErdat1'}"/>
+                                                </form:content>
+                                            </form:SimpleForm>
                                         </layout:content>
                                     </layout:VerticalLayout>
                                 </ResponsivePopover>
                             </dependents>
                         </ColumnListItem>
                     </items>
-                </Table>
+                </Table> 
+                </ScrollContainer>
+                 </content>
+    </Panel>
+</mvc:View>
