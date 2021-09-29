@@ -214,21 +214,25 @@ sap.ui.define(
         },
 
         distributeData: function (oResults) {
-          var flows = oResults.filter(x => isNaN(x.C1));
-          var files = oResults.filter(x => !isNaN(Number(x.C1)));
-          files.forEach((element) => {
-            var owner = flows.find(x =>
-              x.C6 === element.C1);
-            element.itemOwner = owner.C31;
-          });
-          this.backModel.setProperty("/", flows);
-          this.backModelFiles.setProperty("/", files);
-          // this.setModel(new JSONModel(oResults), "viewBackModel");
-          this.mapFlowConfig(flows[0]);
-          this.mapHeader(flows[0]);
-          // this.setModel(new JSONModel(res.data.to_pesal.results), "lazyModel");
-          // this.tabModel = that.getModel("lazyModel");
-          // this.setHeaderTitle(res.data.P2);
+          if (oResults.length !== 0) {
+            var flows = oResults.filter(x => isNaN(x.C1));
+            var files = oResults.filter(x => !isNaN(Number(x.C1)));
+            files.forEach((element) => {
+              var owner = flows.find(x =>
+                x.C6 === element.C1);
+              element.itemOwner = owner.C31;
+            });
+            this.backModel.setProperty("/", flows);
+            this.backModelFiles.setProperty("/", files);
+            // this.setModel(new JSONModel(oResults), "viewBackModel");
+            this.mapFlowConfig(flows[0]);
+            this.mapHeader(flows[0]);
+            // this.setModel(new JSONModel(res.data.to_pesal.results), "lazyModel");
+            // this.tabModel = that.getModel("lazyModel");
+            // this.setHeaderTitle(res.data.P2);
+          } else {
+            throw { message: this.get18().getText("AprobacionFlowController.NoHayInformacionDelFlujo") };
+          }
         },
 
         mapFlowConfig: function (oFlowConfig) {
