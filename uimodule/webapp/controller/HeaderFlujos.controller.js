@@ -179,6 +179,7 @@ sap.ui.define(
             this.getOwnerComponent().flowData.actividad = this.headerData.actividad;
             this.getOwnerComponent().flowData.proceso = this.headerData.proceso;
             this.getOwnerComponent().flowData.id = this.headerData.id;
+            this.getOwnerComponent().flowData.actTxt = this.byId("headerFlujosLabelActividad").getText();
           }
         });
         console.log("Event Handler: onAddFlow");
@@ -241,6 +242,7 @@ sap.ui.define(
         this.getOwnerComponent().flowData.actividad = "";
         this.getOwnerComponent().flowData.proceso = "";
         this.getOwnerComponent().flowData.id = "";
+        this.getOwnerComponent().flowData.actTxt = "";
         delete this.valFlowStart;
         delete this.getFlowDataStart;
         this.clearHeader();

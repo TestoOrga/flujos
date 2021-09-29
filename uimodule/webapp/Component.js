@@ -25,7 +25,8 @@ sap.ui.define(
         departamento: "",
         actividad: "",
         proceso: "",
-        id: ""
+        id: "",
+        actTxt: ""
       },
 
       /**

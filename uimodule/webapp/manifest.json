@@ -105,7 +105,8 @@
       "js": [
         {
           "uri": "libs/xlsx.full.min.js",
-          "uri2": "libs/filesaver.js"
+          "uri2": "libs/filesaver.js",
+          "uri3": "libs/accounting.min.js"
         }
       ]
     },

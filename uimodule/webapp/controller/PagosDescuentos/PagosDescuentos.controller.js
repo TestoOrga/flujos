@@ -10,7 +10,7 @@ sap.ui.define(
   function (BaseController,
     JSONModel,
     filesaver,
-    XlsxFullmin,
+    // XlsxFullmin,
     Fragment) {
     "use strict";
 

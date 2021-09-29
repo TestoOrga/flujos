@@ -20,9 +20,12 @@ sap.ui.define(
           case "NOM001002":
             this.NOM001002(flowInfo, arrData || inData, approveCode ? true : false);
             break;
-            case "NOM001003":
-              this.NOM001003(flowInfo, arrData);
-              break; 
+          case "NOM001003":
+            this.NOM001003(flowInfo, arrData || inData, approveCode ? true : false);
+            break;
+          case "NOM001004":
+            this.NOM001004(flowInfo, arrData || inData, approveCode ? true : false);
+            break;
           default:
             break;
         }
@@ -85,7 +88,7 @@ sap.ui.define(
             }, ],
           };
         } else {
-            // arrData.C1 = "APP";
+          // arrData.C1 = "APP";
           var oPayload = {
             P1: "APP",
             to_pesal: arrData
@@ -138,31 +141,72 @@ sap.ui.define(
         }
         this.submitCall(oPayload);
       },
-      NOM001003: function (flowInfo, arrData) {
+      NOM001003: function (flowInfo, arrData, approve) {
+        var to_pesal = [];
+        if (!approve) {
+          arrData.forEach(element => {
+            to_pesal.push({
+              C1: "REG",
+              C5: element.in5,
+              C6: flowInfo.departamento,
+              C7: flowInfo.actividad,
+              C8: flowInfo.proceso,
+              C9: flowInfo.id,
+              C10: element.vis1, //item
+              C11: element.head1,
+              C12: element.head2,
+              C13: element.head3,
+              C14: element.in1,
+              C15: element.vis2,
+              C16: element.vis3,
+              C17: element.vis4,
+              C18: element.vis5,
+              C19: element.in2Num,
+              C20: element.vis6,
+              C21: element.in3,
+              C22: element.in4Num,
+              C23: element.in5
+            })
+          });
+          var oPayload = {
+            P1: "SEND",
+            to_pesal: to_pesal
+          };
+        } else {
+          to_pesal = arrData;
+          // to_pesal.forEach(element => {
+          //   element.C1 = "APP";
+          // });
+          var oPayload = {
+            P1: "APP",
+            to_pesal: to_pesal
+          };
+        }
+        this.submitCall(oPayload);
+      },
+      NOM001004: function (flowInfo, arrData, approve) {
         var to_pesal = [];
         arrData.forEach(element => {
           to_pesal.push({
             C1: "REG",
-            C5: element.in3,
+            C5: element.in5,
             C6: flowInfo.departamento,
             C7: flowInfo.actividad,
             C8: flowInfo.proceso,
             C9: flowInfo.id,
+            C10: element.vis1, //item
             C11: element.head1,
             C12: element.head2,
             C13: element.head3,
-            C14: element.vis1,
-            C15: element.in1,
-            C16: element.vis2,
-            C17: element.vis3,
-            C18: element.vis4,
-            C19: element.vis5,
-            C20: element.in2,
-            C21: element.vis6,
-            C22: element.in3,
-            C23: element.in4,
-            C24: element.in5
-          })
+            C14: element.in1,
+            C15: element.vis2,
+            C16: element.in2Num,
+            C17: element.in4,
+            C18: element.in3,
+            C19: element.vis3,
+            C21: element.vis4,
+            C22: element.vis5
+          });
         });
         var oPayload = {
           P1: "SEND",

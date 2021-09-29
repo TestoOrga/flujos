@@ -7,23 +7,23 @@
     xmlns:unified="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
     <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Indemnizaciones" height="auto" width="auto" class="sapUiResponsiveMargin">
         <content>
-        <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
-                 <form:content>
+            <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
+                <form:content>
                     <Label required="true" text="Sociedad"/>
-                    <Select maxWidth="100%" width ="auto" items="{sociedad>/}" change="onSelect($event, 'sociedad')" forceSelection="false">
+                    <Select id="titleSelSociedad" maxWidth="100%" width ="auto" items="{sociedad>/}" change="onSelect($event, 'sociedad')" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : true}">
                         <c:Item key="{sociedad>C1}" text="{sociedad>C1} {sociedad>C2}"/>
                     </Select>
                     <Label required="true" text="Division" />
-                    <Select id="titleSelDivision" enabled="false" maxWidth="100%" width ="auto" items="{division>/}" change="onSelect($event, 'division')" forceSelection="false">
+                    <Select id="titleSelDivision" maxWidth="100%" width ="auto" items="{division>/}" change="onSelect($event, 'division')" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : false}">
                         <c:Item key="{division>C1}" text="{division>C1} {division>C2}"/>
                     </Select>
                     <Label required="true" text="Area Nomina"/>
-                    <Select maxWidth="100%" width ="auto" items="{areaNomina>/}" change="onSelect($event, 'areaNomina')" selectedKey="" forceSelection="false">
+                    <Select id="titleSelAreaNomina" maxWidth="100%" width ="auto" items="{areaNomina>/}" change="onSelect($event, 'areaNomina')" selectedKey="" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : true}">
                         <c:Item key="{areaNomina>C1}" text="{areaNomina>C1} {areaNomina>C2}"/>
                     </Select>
                 </form:content>
             </form:SimpleForm>
-       <Toolbar height="4rem" enabled="{viewGeneral>/release}">
+            <Toolbar height="4rem" enabled="{viewGeneral>/release}">
                 <content>
                     <!--texto-->
                     <Title id="listTitle" class="sapUiSmallMarginBegin" titleStyle="H4"/>
@@ -31,18 +31,21 @@
                     <layout:HorizontalLayout allowWrapping="false">
                         <layout:content>
                             <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
-                            <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine"></Button>
-                            <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLines" enabled="false"></Button>
-                            <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://upload" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" enabled="{viewGeneral>/release}" fileType="xlsx"/>
-                            <Button id="toolbarDown" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent"/>
+                            <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine" visible="{= !${afterCreation>/creation} ? false : true}"/>
+                            <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLines" enabled="false" visible="{= !${afterCreation>/creation} ? false : true}"/>
+                            <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://upload" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" enabled="{viewGeneral>/release}" fileType="xlsx" visible="{= !${afterCreation>/creation} ? false : true}"/>
+                            <Button id="toolbarDown" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent" visible="{= !${afterCreation>/creation} ? false : true}"/>
                         </layout:content>
                     </layout:HorizontalLayout>
                 </content>
             </Toolbar>
             <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
 
-     <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="MultiSelect" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" blocked="{= !${viewGeneral>/release}}">
+                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="{= !${afterCreation>/creation} ? 'None' : 'MultiSelect'}" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished">
                     <columns>
+                        <Column visible="{= !${afterCreation>/creation} ?  true : false}">
+                            <Text text="Aprobar"/>
+                        </Column>
                         <Column>
                             <Text text="Item" width="100px"/>
                         </Column>
@@ -76,27 +79,31 @@
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Motivo" width="100px"/>
                         </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" visible="{= !${afterCreation>/creation} ?  false : true}">
                             <Text text="Documentacion" width="100px"/>
                         </Column>
                     </columns>
                     <items>
                         <ColumnListItem class="lineItemSucc" highlight="Success">
                             <cells>
+                                <HBox id="switchitoBox">
+                                    <Switch id="switchito" state="true" type="AcceptReject" visible="{= !${afterCreation>/creation} ?  true : false}" change="switchChanged"/>
+                                    <c:Icon src="sap-icon://comment" press="_showMotivo" class="sapUiTinyMarginBeginEnd" visible="{= ${tablaFlujo>rejectText} !== '' ? true : false }"/>
+                                </HBox>
                                 <Text id="attachPopover" text="{tablaFlujo>vis1}"/>
-                                <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive"/>
+                                <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive" editable="{afterCreation>/noEditField}"/>
                                 <Text text="{tablaFlujo>vis2}"/>
                                 <Text text="{path: 'tablaFlujo>vis3',formatter: '.formatter.fooErdat1'}"/>
                                 <Text text="{tablaFlujo>vis4}"/>
-                                <Text text="{tablaFlujo>vis5}"/>
-                                <Input value="{tablaFlujo>in2}" change="formatCurrency" class="valInput"/>
+                                <Text text="{ path: 'tablaFlujo>vis5', formatter: '.formatter.toCurr'}"/>
+                                <Input value="{tablaFlujo>in2}" change="formatCurrency($event, 'in2')" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
                                 <Text text="{path: 'tablaFlujo>vis6'}"/>
-                                 <Select id="in3" items="{path: 'in3>/', templateShareable: false}" selectedKey="{tablaFlujo>in3}" change="onSelect($event, 'in3')" forceSelection="false" class="valInput resSelect">
+                                <Select id="in3" items="{path: 'in3>/', templateShareable: false}" selectedKey="{tablaFlujo>in3}" change="onSelect($event, 'in3')" forceSelection="false" class="valInput resSelect" enabled="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}">
                                     <c:Item key="{in3>C1}" text="{in3>C1} {in3>C2}"/>
                                 </Select>
-                                <Input value="{tablaFlujo>in4}" class="valInput"/>
-                                <Input value="{tablaFlujo>in5}" class="valInput"/>
-                                <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="onHandleUploadComplete" uploadOnChange="true" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" enabled="{= ${tablaFlujo>vis2} ? true : false}"/>
+                                <Input value="{tablaFlujo>in4}" change="formatCurrency($event, 'in4')" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
+                                <Input value="{tablaFlujo>in5}" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
+                                <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="onHandleUploadComplete" uploadOnChange="true" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" enabled="{= ${tablaFlujo>vis2} ? true : false}" visible="{= !${afterCreation>/creation} ?  false : true}" />
                             </cells>
                             <dependents>
                                 <ResponsivePopover id="popover" placement="PreferredTopOrFlip" resizable="true">
@@ -104,11 +111,11 @@
                                         <layout:content>
                                             <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
                                                 <form:content>
-                                                    <Label required="true" text="Division Personal"/>
+                                                    <Label required="true" text="{i18n>IndemnizacionesView.DivisionPersonal}"/>
                                                     <Text text="{popLine>/visP1}"/>
-                                                    <Label required="true" text="Subdivision de Personal"/>
+                                                    <Label required="true" text="{i18n>IndemnizacionesView.SubdivisionDePersonal}"/>
                                                     <Text text="{popLine>/visP2}"/>
-                                                    <Label required="true" text="Fecha Solicitud"/>
+                                                    <Label required="true" text="{i18n>IndemnizacionesView.FechaSolicitud}"/>
                                                     <Text text="{path: 'popLine>/visP3',formatter: '.formatter.fooErdat1'}"/>
                                                 </form:content>
                                             </form:SimpleForm>
@@ -118,8 +125,8 @@
                             </dependents>
                         </ColumnListItem>
                     </items>
-                </Table> 
-                </ScrollContainer>
-                 </content>
+                </Table>
+            </ScrollContainer>
+        </content>
     </Panel>
 </mvc:View>

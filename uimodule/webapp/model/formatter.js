@@ -22,6 +22,10 @@ sap.ui.define([], function () {
       var noTabFLow = this.getOwnerComponent().noTabFlows;
       return noTabFLow.includes(val);
     },
+    toCurr: function(val){
+      var testo = accounting.formatMoney(val);
+      return testo;
+    },
     date: function (dat) {
       if (dat) {
         return new Date(dat.substr(0, 4), dat.substr(4, 2), dat.substr(6, 2)).toLocaleDateString('es-US', {

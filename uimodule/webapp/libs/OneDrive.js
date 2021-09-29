@@ -116,13 +116,13 @@ sap.ui.define(
           }, ],
         };
         // var that = this;
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
           this._oModelCreate.create("/BaseSet", oPayload, {
             async: true,
             success: function (req, res) {
-              console.log("BackEnd Accepted: " + oPayload.to_pesal[0].C11 
-              + " " +  oPayload.to_pesal[0].C7
-              + " " +  oPayload.to_pesal[0].C8);
+              console.log("BackEnd Accepted: " + oPayload.to_pesal[0].C11 +
+                " " + oPayload.to_pesal[0].C7 +
+                " " + oPayload.to_pesal[0].C8);
               resolve();
             },
             error: function (error) {
@@ -157,34 +157,41 @@ sap.ui.define(
       },
       //turns file uploaded into blob and calls upload routines
       processInputFile: function (oInFile, oRoutes) {
-        if (oInFile.size > 4000000) {
-          return this.uploadLargeFile({
-                fileName: oInFile.fileName + "." + oInFile.fileExt,
-                fileData: oInFile.fileData,
-              },
-              oRoutes.C2 + oRoutes.C3)
-            .then(
-              function (res) {
-                this.sendResults(res, oInFile.fileId);
-                return this.submitToBack(res, oInFile, oRoutes);
-              }.bind(this))
-            .catch(function (error) {
-              this.sendError(error, oInFile.fileId);
-            }.bind(this));
+        if (oRoutes.length === 0) {
+          throw {
+            message: this.getModel("i18n").getResourceBundle().getText("OneDrive.NoExistenRutasParaOneDrive")
+          }
         } else {
-          // small files
-          return this.uploadToDrive(
-              oInFile.fileData,
-              oInFile.fileName + "." + oInFile.fileExt,
-              oRoutes.C2 + oRoutes.C3)
-            .then(
-              function (res) {
-                this.sendResults(res, oInFile.fileId);
-                return this.submitToBack(res, oInFile, oRoutes);
-              }.bind(this))
-            .catch(function (error) {
-              this.sendError(error, oInFile.fileId)
-            }.bind(this));
+
+          if (oInFile.size > 4000000) {
+            return this.uploadLargeFile({
+                  fileName: oInFile.fileName + "." + oInFile.fileExt,
+                  fileData: oInFile.fileData,
+                },
+                oRoutes.C2 + oRoutes.C3)
+              .then(
+                function (res) {
+                  this.sendResults(res, oInFile.fileId);
+                  return this.submitToBack(res, oInFile, oRoutes);
+                }.bind(this))
+              .catch(function (error) {
+                this.sendError(error, oInFile.fileId);
+              }.bind(this));
+          } else {
+            // small files
+            return this.uploadToDrive(
+                oInFile.fileData,
+                oInFile.fileName + "." + oInFile.fileExt,
+                oRoutes.C2 + oRoutes.C3)
+              .then(
+                function (res) {
+                  this.sendResults(res, oInFile.fileId);
+                  return this.submitToBack(res, oInFile, oRoutes);
+                }.bind(this))
+              .catch(function (error) {
+                this.sendError(error, oInFile.fileId)
+              }.bind(this));
+          }
         }
       },
       processPhoto: function (inPhoto) {
