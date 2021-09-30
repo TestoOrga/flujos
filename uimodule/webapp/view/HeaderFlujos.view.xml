@@ -82,6 +82,7 @@
 			<footer>
 				<m:OverflowToolbar id="footer">
 					<m:content>
+					    <m:Text text="{i18n>HeaderFlujosView.CreacionVersion}" class="version"/>
 						<m:ToolbarSpacer id="spacer"/>
 						<m:Button id="headerFlujosButGrabar" type="Accept" text="{i18n>HeaderFlujosFooterButGrabar}" press="onGrabar"/>
 						<m:Button id="headerFlujosButCancelar" type="Reject" text="{i18n>HeaderFlujosFooterButCancelar}" press="onCancelar"/>

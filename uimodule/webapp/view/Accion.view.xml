@@ -9,8 +9,10 @@
 		<content>
 			<l:BlockLayout id="_IDGenBlockLayout1">
 				<l:BlockLayoutRow id="_IDGenBlockLayoutRow1">
-					<l:BlockLayoutCell id="_IDGenBlockLayoutCell1" class="banner">
-						<Image id="_IDGenImage1" src="{= ${device>/system/phone} ? '../model/bannerMovil.png':'../model/banner.png' }" />												
+					<l:BlockLayoutCell id="_IDGenBlockLayoutCell1" class="banner">						
+						<HBox width="100%" backgroundDesign="Solid" class="bannerB">
+						<Image id="_IDGenImage1" src="{= ${device>/system/phone} ? ${banner>/movil} : ${banner>/desktop} }" />												
+						</HBox>
 					</l:BlockLayoutCell>
 				</l:BlockLayoutRow>
 			</l:BlockLayout>

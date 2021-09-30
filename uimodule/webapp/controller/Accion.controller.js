@@ -1,11 +1,19 @@
 sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
   "sap/m/MessageToast",
-  "sap/m/MessageBox"
-], function (BaseController, MessageToast, MessageBox) {
+  "sap/m/MessageBox",
+  "sap/ui/model/json/JSONModel"
+], function (BaseController,
+  MessageToast,
+  MessageBox,
+  JSONModel) {
   "use strict";
 
   return BaseController.extend("bafar.flujos.flujos.controller.Accion", {
     onInit: function () {
+      this.setModel(new JSONModel({
+        movil: "/sap/opu/odata/sap/ZOD_FLUJOS_SRV/ImageSet('MOVIL')/$value",
+        desktop: "/sap/opu/odata/sap/ZOD_FLUJOS_SRV/ImageSet('DESKTOP')/$value"
+      }), "banner");
       this.blockMap = Object.create(null);
       this.blockMap.creacion = "blockCreacion";
       this.blockMap.seguimiento = "blockSeguimiento";
