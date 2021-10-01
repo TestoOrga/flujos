@@ -59,7 +59,6 @@ sap.ui.define(
           this._tabModel.attachPropertyChange(function (oEvent, a, s, d) {
             console.log("")
           }, this);
-
           this.xlsxHeaders = [
             "No. Personal",
             "SPA",

@@ -5,7 +5,7 @@
     xmlns:layout="sap.ui.layout"
     xmlns:form="sap.ui.layout.form"
     xmlns:unified="sap.ui.unified" displayBlock="true" height="100%" busyIndicatorDelay="0">
-    <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Indemnizaciones" height="auto" width="auto" class="sapUiResponsiveMargin">
+    <Panel accessibleRole="Form" backgroundDesign="Translucent" expandAnimation="true" expandable="true" expanded="false" headerText="Cambios de Sueldo" height="auto" width="auto" class="sapUiResponsiveMargin">
         <content>
             <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
                 <form:content>
@@ -41,7 +41,7 @@
             </Toolbar>
             <ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
 
-                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="{= !${afterCreation>/creation} ? 'None' : 'MultiSelect'}" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished" blocked="{= !${viewGeneral>/release}}">
+                <Table id="mainTable" width="auto" items="{path:'tablaFlujo>/', templateShareable:false}" noDataText="{flujoTablaView.itemTableNoDataText}" busyIndicatorDelay="{detailView>/lineItemTableDelay}" mode="{= !${afterCreation>/creation} ? 'None' : 'MultiSelect'}" selectionChange="mainTabSelect" fixedLayout="false" updateFinished="onTableUpdateFinished">
                     <columns>
                         <Column visible="{= !${afterCreation>/creation} ?  true : false}">
                             <Text text="Aprobar"/>
@@ -50,16 +50,16 @@
                             <Text text="Item" width="100px"/>
                         </Column>
                         <Column hAlign="End">
-                            <Text text="No. Personal" width="100px"/>
+                            <Text text="No. Personal" width="60px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Nombre" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Sueldo" width="100px"/>
+                            <Text text="Sueldo" width="80px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="fecha" width="100px"/>
+                            <Text text="Fecha" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Motivo" width="100px"/>
@@ -76,10 +76,6 @@
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
                             <Text text="Maximo" width="100px"/>
                         </Column>
-
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Motivo" width="100px"/>
-                        </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" visible="{= !${afterCreation>/creation} ?  false : true}">
                             <Text text="Documentacion" width="100px"/>
                         </Column>
@@ -94,12 +90,12 @@
                                 <Text id="attachPopover" text="{tablaFlujo>vis1}"/>
                                 <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive" editable="{afterCreation>/noEditField}"/>
                                 <Text text="{tablaFlujo>vis2}"/>
-                                <Input value="{tablaFlujo>in2}" change="formatCurrency" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
-                                <DatePicker id="in3" displayFormat="yyyyMMdd" valueFormat="yyyyMMdd" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
+                                <Input value="{tablaFlujo>in2}" change="formatCurrency($event, 'in2')" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
+                                <DatePicker id="in3" valueFormat="yyyyMMdd" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}" value="{tablaFlujo>in3}"/>
                                 <Select id="in4" items="{path: 'in4>/', templateShareable: false}" selectedKey="{tablaFlujo>in4}" change="onSelect($event, 'in4')" forceSelection="false" class="valInput resSelect" enabled="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}">
                                     <c:Item key="{in4>C1}" text="{in4>C1} {in4>C2}"/>
                                 </Select>
-                                <Input value="{tablaFlujo>in5}" change="formatCurrency" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
+                                <TextArea value="{tablaFlujo>in5}" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
                                 <Text text="${path: 'tablaFlujo>vis3'}"/>
                                 <Text text="${path: 'tablaFlujo>vis4'}"/>
                                 <Text text="${path: 'tablaFlujo>vis5'}"/>

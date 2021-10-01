@@ -186,32 +186,42 @@ sap.ui.define(
       },
       NOM001004: function (flowInfo, arrData, approve) {
         var to_pesal = [];
-        arrData.forEach(element => {
-          to_pesal.push({
-            C1: "REG",
-            C5: element.in5,
-            C6: flowInfo.departamento,
-            C7: flowInfo.actividad,
-            C8: flowInfo.proceso,
-            C9: flowInfo.id,
-            C10: element.vis1, //item
-            C11: element.head1,
-            C12: element.head2,
-            C13: element.head3,
-            C14: element.in1,
-            C15: element.vis2,
-            C16: element.in2Num,
-            C17: element.in4,
-            C18: element.in3,
-            C19: element.vis3,
-            C21: element.vis4,
-            C22: element.vis5
+        if (!approve) {
+          arrData.forEach(element => {
+            to_pesal.push({
+              C1: "REG",
+              C5: element.in5,
+              C6: flowInfo.departamento,
+              C7: flowInfo.actividad,
+              C8: flowInfo.proceso,
+              C9: flowInfo.id,
+              C10: element.vis1, //item
+              C11: element.head1,
+              C12: element.head2,
+              C13: element.head3,
+              C14: element.in1,
+              C15: element.vis2,
+              C16: element.in2Num,
+              // C17: element.in4,
+              // C18: element.in3,              
+              C17: element.in3,
+              C18: element.in4,
+              C19: element.vis3,
+              C21: element.vis4,
+              C22: element.vis5
+            });
           });
-        });
-        var oPayload = {
-          P1: "SEND",
-          to_pesal: to_pesal
-        };
+          var oPayload = {
+            P1: "SEND",
+            to_pesal: to_pesal
+          };
+        } else {
+          to_pesal = arrData;
+          var oPayload = {
+            P1: "APP",
+            to_pesal: to_pesal
+          };
+        }
         this.submitCall(oPayload);
       }
     });
