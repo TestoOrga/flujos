@@ -51,6 +51,7 @@
 		</content>
 		<footer>
 			<OverflowToolbar id="_IDGenOverflowToolbar1">
+                <Text text="{i18n>version.Accion}" class="version"/>
 				<ToolbarSpacer id="_IDGenToolbarSpacer1"/>
 			</OverflowToolbar>
 		</footer>

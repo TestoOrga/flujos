@@ -12,6 +12,7 @@
             <VBox >
                 <Title id="masterPageTitle" text="Aprobacion" level="H1"/>
                 <Text id="titleText"/>
+                <Text text="{i18n>version.Pendientes}" class="version"/>
             </VBox>
         </semantic:titleHeading>
         <semantic:titleExpandedHeading>
@@ -105,7 +106,6 @@
                 </items>
             </List>
             <!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
-
         </semantic:content>
     </semantic:SemanticPage>
 </mvc:View>
