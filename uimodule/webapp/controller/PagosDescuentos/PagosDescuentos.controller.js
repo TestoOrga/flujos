@@ -344,7 +344,8 @@ sap.ui.define(
             type: "array",
           });
           console.log(excelBuffer);
-          this.onSaveAsExcel(excelBuffer, "myFile");
+          this.onSaveAsExcel(excelBuffer, this.getOwnerComponent().flowData.actTxt + " " + this.getOwnerComponent().flowData.id);
+          // this.onSaveAsExcel(excelBuffer, "myFile");
         },
         onSaveAsExcel: function (buffer, filename) {
           const EXCEL_TYPE =
