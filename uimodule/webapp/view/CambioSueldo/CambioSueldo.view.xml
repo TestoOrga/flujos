@@ -83,14 +83,14 @@
                                 <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive"/>
                                 <Text text="{tablaFlujo>vis2}"/>
                                 <Input value="{tablaFlujo>in2}" change="formatCurrency" class="valInput"/>
-                                <DatePicker id="in3" displayFormat="short" />
+                                <DatePicker id="in3" displayFormat="yyyyMMdd" valueFormat="yyyyMMdd"/>
                                 <Select id="in4" items="{path: 'in4>/', templateShareable: false}" selectedKey="{tablaFlujo>in4}" change="onSelect($event, 'in4')" forceSelection="false" class="valInput resSelect">
                                     <c:Item key="{in4>C1}" text="{in4>C1} {in4>C2}"/>
                                 </Select>
                                 <Input value="{tablaFlujo>in5}" change="formatCurrency" class="valInput"/>
-                                <Text text="{path: 'tablaFlujo>vis3'}"/>
-                                <Text text="{path: 'tablaFlujo>vis4'}"/>
-                                <Text text="{path: 'tablaFlujo>vis5'}"/>
+                                <Text text="${path: 'tablaFlujo>vis3'}"/>
+                                <Text text="${path: 'tablaFlujo>vis4'}"/>
+                                <Text text="${path: 'tablaFlujo>vis5'}"/>
                                 <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="onHandleUploadComplete" uploadOnChange="true" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" enabled="{= ${tablaFlujo>vis2} ? true : false}"/>
                             </cells>
                             <dependents>
