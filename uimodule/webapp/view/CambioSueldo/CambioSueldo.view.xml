@@ -65,16 +65,16 @@
                             <Text text="Motivo" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Judtificacion" width="100px"/>
+                            <Text text="Justificacion" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="Sueldo actual" width="100px"/>
+                            <Text text="Sueldo Actual" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="minimo" width="100px"/>
+                            <Text text="Minimo" width="100px"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
-                            <Text text="maximo" width="100px"/>
+                            <Text text="Maximo" width="100px"/>
                         </Column>
 
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
@@ -95,16 +95,15 @@
                                 <Input value="{tablaFlujo>in1}" change="onInputChange($event, 'in1')" class="valInput" liveChange="onInputLive" editable="{afterCreation>/noEditField}"/>
                                 <Text text="{tablaFlujo>vis2}"/>
                                 <Input value="{tablaFlujo>in2}" change="formatCurrency" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
-                                <Input value="{tablaFlujo>in4}" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
-                                <Select id="in3" items="{path: 'in3>/', templateShareable: false}" selectedKey="{tablaFlujo>in3}" change="onSelect($event, 'in3')" forceSelection="false" class="valInput resSelect" enabled="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}">
-                                    <c:Item key="{in3>C1}" text="{in3>C1} {in3>C2}"/>
+                                <DatePicker id="in3" displayFormat="yyyyMMdd" valueFormat="yyyyMMdd" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
+                                <Select id="in4" items="{path: 'in4>/', templateShareable: false}" selectedKey="{tablaFlujo>in4}" change="onSelect($event, 'in4')" forceSelection="false" class="valInput resSelect" enabled="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}">
+                                    <c:Item key="{in4>C1}" text="{in4>C1} {in4>C2}"/>
                                 </Select>
-                                <Input value="{tablaFlujo>in5}" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
-                                
-                                <Text text="{tablaFlujo>vis3}"/>
-                                <Text text="{tablaFlujo>vis4}"/>
-                                <Text text="{tablaFlujo>vis5}"/>
-                                <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="onHandleUploadComplete" uploadOnChange="true" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" enabled="{= ${tablaFlujo>vis2} ? true : false}" visible="{= !${afterCreation>/creation} ?  false : true}" />
+                                <Input value="{tablaFlujo>in5}" change="formatCurrency" class="valInput" editable="{= !${afterCreation>/creation} ?  ${afterCreation>/enabled} : true}"/>
+                                <Text text="${path: 'tablaFlujo>vis3'}"/>
+                                <Text text="${path: 'tablaFlujo>vis4'}"/>
+                                <Text text="${path: 'tablaFlujo>vis5'}"/>
+                                <unified:FileUploader iconOnly="true" buttonOnly="true" icon="sap-icon://attachment" uploadComplete="onHandleUploadComplete" uploadOnChange="true" uploadStart="onHandleUploadStart" change="onHandleUploadStart" class="sapUiTinyMarginEnd" iconHovered="sap-icon://accelerated" busy="{tablaFlujo>atta}" enabled="{= ${tablaFlujo>vis2} ? true : false}" visible="{= !${afterCreation>/creation} ?  false : true}"/>
                             </cells>
                             <dependents>
                                 <ResponsivePopover id="popover" placement="PreferredTopOrFlip" resizable="true">
@@ -112,14 +111,18 @@
                                         <layout:content>
                                             <form:SimpleForm class="sapUiSmallNegativeMarginBeginEnd" editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
                                                 <form:content>
-                                                    <Label required="true" text="Division Personal"/>
+                                                    <Label required="true" text="Departamento"/>
                                                     <Text text="{popLine>/visP1}"/>
-                                                    <Label required="true" text="Subdivision de Personal"/>
+                                                    <Label required="true" text="Funcion"/>
                                                     <Text text="{popLine>/visP2}"/>
-                                                    <Label required="true" text="Fecha Solicitud"/>
-                                                    <Text text="{popLine>/visP3}"/>
+                                                    <Label required="true" text="Fecha Ingreso"/>
+                                                    <Text text="{path: 'popLine>/visP3',formatter: '.formatter.fooErdat1'}"/>
+                                                    <Label required="true" text="Tabulador"/>
                                                     <Text text="{popLine>/visP4}"/>
-                                                    <Text text="{popLine>/visP5}"/>
+                                                    <Label required="true" text="Fecha ultimo aumento"/>
+                                                    <Text text="{path: 'popLine>/visP5',formatter: '.formatter.fooErdat1'}"/>
+                                                    <Label required="true" text="Funcion"/>
+                                                    <Text text="{popLine>/visP6}"/>
                                                 </form:content>
                                             </form:SimpleForm>
                                         </layout:content>

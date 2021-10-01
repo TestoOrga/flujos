@@ -136,7 +136,6 @@ sap.ui.define(
         },
         onRemoveLines: function (oEvent) {
           var itemTab = this._oTab.getItems();
-
           this._oTab.getSelectedItems().forEach(element => {
             this.oEventBus.publish("flowReq", "delItem", {
               itemId: element.getBindingContext(this.viewConfig.tabModelName).getObject().vis1
@@ -207,7 +206,6 @@ sap.ui.define(
               fileData: fileData,
               size: readerEvt.total
             });
-
             this.oEventBus.publish("flowRes", "filesLoaded", {
               itemId: lineItem.getObject().vis1,
               itemOwner: lineItem.getObject().vis2,
@@ -249,7 +247,6 @@ sap.ui.define(
           this.getOwnerComponent().openErrorFrag(fragRes, res.res.to_pesal.results, this.getOwnerComponent().flowData.id + ": " + res.res.PeMsj);
         },
         releaseFiles: function () {
-
           this.oEventBus.publish("flowCreated", "fileReleaseStart");
         },
         finalFiles: function (sChannel, oEvent, res) {
@@ -262,7 +259,6 @@ sap.ui.define(
           this.getOwnerComponent().oOneDrive.UploadFiles(uploadFiles);
         },
         releaseFilesEnded: function () {
-
           this.oEventBus.publish("flowCreated", "EndFlow");
         },
         /* =========================================================== */
@@ -431,7 +427,9 @@ sap.ui.define(
                   visP2: pernrData.C13,
                   visP3: pernrData.C19,
                   visP4: pernrData.C22,
-                  visP5: pernrData.C18                  
+                  visP5: pernrData.C18,
+                  visP6: pernrData.C15
+                  //Cambios (mapeas tus campos)
                 };
               } else {
                 lineData.vis2 = "";
@@ -472,7 +470,6 @@ sap.ui.define(
           return this._tabModel.getData();
         },
         getData: function () {
-
           var result = this.getFlowData();
           result.forEach(element => {
             element.head1 = this.headerData.sociedad;
@@ -486,7 +483,6 @@ sap.ui.define(
         },
 
         getValInputs: function () {
-
           var errorMsg = this.valInputs();
           if (errorMsg !== "") {
             this.oEventBus.publish("flowResults", "flowValid", {
@@ -546,7 +542,7 @@ sap.ui.define(
               break;
             case "areaNomina":
               this.headerData.areaNomina = selKey;
-              return this.getTipo(oEvent);
+              return this.getMotivo(oEvent);
               // break;
             default:
               break;
@@ -607,18 +603,18 @@ sap.ui.define(
         // },
         // //Cambios
         // //Cambios, nueva funcion
-        getTipo: function (oEvent) {
+        getMotivo: function (oEvent) {
           var oPayload = {
             P1: "CAT",
             P2: "MOTSDO",
             to_pesal: []
           };
           this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
-            if (this.getModel("in3")) {
-              this.getModel("in3").setProperty("/", []);
+            if (this.getModel("in4")) {
+              this.getModel("in4").setProperty("/", []);
             }
             if (res.length > 0) {
-              this.setModel(new JSONModel(res), "in3");
+              this.setModel(new JSONModel(res), "in4");
             }
             this.resetCC();
           });
