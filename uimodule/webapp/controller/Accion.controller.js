@@ -69,8 +69,12 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
       if (oEvent.getSource().data("enabled") === "true") {
         switch (param) {
           case "C":
-            this.getOwnerComponent().currentMode = 1;
-            this.navTo("RouteHeaderFlujosView");
+            this.manageActiveFlows(param).then(
+              () => {
+                this.activeAction = param;
+                this.getOwnerComponent().currentMode = 1;
+                this.navTo("RouteHeaderFlujosView");
+              })
             break;
           case "S":
             this.getOwnerComponent().currentMode = 2;
@@ -78,8 +82,12 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
             MessageBox.error(this.get18().getText("sinAutorizacion"));
             break;
           case "A":
-            this.getOwnerComponent().currentMode = 3;
-            this.navTo("RouteApprovalView");
+            this.manageActiveFlows(param).then(
+              () => {
+                this.activeAction = param;
+                this.getOwnerComponent().currentMode = 3;
+                this.navTo("RouteApprovalView");
+              })
             // MessageBox.error(this.get18().getText("sinAutorizacion"));
             break;
           default:
@@ -88,6 +96,27 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
       } else {
         MessageBox.error(this.get18().getText("sinAutorizacion"));
       }
-    }
+    },
+    manageActiveFlows: function (accion) {
+      return new Promise((resolve, reject) => {
+        if (this.activeAction !== accion && this.getOwnerComponent().activeFlow) {
+          var that = this;
+          MessageBox.warning("Cancelar el flujo activo?", {
+            actions: ["Sí (perder datos)", "No"],
+            emphasizedAction: MessageBox.Action.OK,
+            onClose: function (sAction) {
+              if (sAction === "No") {
+                reject();
+              } else {
+                that.getOwnerComponent().activeFlow.viewController.resetFlow();
+                resolve(MessageToast.show("Action selected: " + sAction));
+              }
+            }
+          });
+        } else {
+          resolve();
+        }
+      })
+    },
   });
 });

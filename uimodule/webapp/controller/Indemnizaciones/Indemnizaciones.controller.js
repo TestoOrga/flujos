@@ -699,7 +699,13 @@ sap.ui.define(
         setTempVals: function (oTab) {
           var c = this.xlsxHeaders;
           if (oTab.length > 0) {
-            var tabData = this._tabModel.getProperty("/");
+            var tabDataZero = this._tabModel.getProperty("/");
+            var tabData = tabDataZero.filter(element => {
+              return element.in1 ? element.in1 !== "" : false ;
+            });
+            if (tabData.length === 0) {
+              this.itemId = 0;
+            }
             oTab.forEach(element => {
               tabData.push({
                 template: true,

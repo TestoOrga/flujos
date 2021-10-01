@@ -259,6 +259,10 @@ sap.ui.define(
         addSpecFlow: async function (flowConfig) {
           console.log("Event Handler: onAddFlow");
           this.views = flowConfig;
+          this.getOwnerComponent().activeFlow = {
+            flow: "Creacion",
+            viewController: this 
+          };
           var viewArr = [];
           this.views.forEach((view) => {
             viewArr.push(
@@ -300,6 +304,8 @@ sap.ui.define(
               this.getView().byId(view.viewId).destroy()
             );
             delete this.views;
+            delete this.lastHash;
+            this.getOwnerComponent().activeFlow = null;
           }
           // this.byId("headerFlujosButNuevo").setEnabled(true);
         },

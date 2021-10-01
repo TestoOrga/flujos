@@ -10,7 +10,7 @@ sap.ui.define(
   function (BaseController,
     JSONModel,
     filesaver,
-    // XlsxFullmin,
+    XlsxFullmin,
     Fragment) {
     "use strict";
 
@@ -55,6 +55,15 @@ sap.ui.define(
           this._tabModel.attachPropertyChange(function (oEvent, a, s, d) {
             console.log("")
           }, this);
+
+          this.xlsxHeaders = [
+            "No. Personal",
+            "CC Nom.",
+            "Motivo",
+            "Importe",
+            "Periodo Inicio",
+            "Periodo Fin"
+          ];
           console.log("finInit");
 
           this.oEventBus = this.getOwnerComponent().getEventBus();
@@ -318,16 +327,11 @@ sap.ui.define(
         },
         onDownloadAsExcel: function () {
           // Test Data
-          var data = [{
-            IN1: "dato1",
-            IN2: "dato2",
-            IN3: "dato3",
-            IN4: "dato4",
-            IN5: "dato5",
-            IN6: "dato6"
-            // IN7: "dato7"
-          }];
-
+          var headers = this.xlsxHeaders;
+          var data = [{}];
+          for (let idx = 0; idx < headers.length; idx++) {
+            data[0][headers[idx]] = "dato" + (idx + 1);
+          }
           const worksheet = XLSX.utils.json_to_sheet(data);
           const workbook = {
             Sheets: {
@@ -649,18 +653,25 @@ sap.ui.define(
           };
         },
         setTempVals: function (oTab) {
+          var c = this.xlsxHeaders;
           if (oTab.length > 0) {
-            var tabData = this._tabModel.getProperty("/");
+            var tabDataZero = this._tabModel.getProperty("/");
+            var tabData = tabDataZero.filter(element => {
+              return element.in1 ? element.in1 !== "" : false ;
+            });
+            if (tabData.length === 0) {
+              this.itemId = 0;
+            }
             oTab.forEach(element => {
               tabData.push({
                 template: true,
                 vis1: this.newItemId(),
-                in1: element.IN1,
-                in2: element.IN2,
-                in3: element.IN3,
-                in4: element.IN4,
-                in5: element.IN5.padStart(7, "0"),
-                in6Temp: element.IN6.padStart(7, "0")
+                in1: element[c[0]],
+                in2: element[c[1]],
+                in3: element[c[2]],
+                in4: element[c[3]],
+                in5: element[c[4]].padStart(7, "0"),
+                in6Temp: element[c[5]].padStart(7, "0")
               });
             });
             this._tabModel.setProperty("/", tabData);

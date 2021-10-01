@@ -184,6 +184,10 @@ sap.ui.define(
         });
         console.log("Event Handler: onAddFlow");
         this.views = flowConfig;
+        this.getOwnerComponent().activeFlow = {
+          flow: "Creacion",
+          viewController: this
+        };
         // [{
         //     controlId: "headerFlujosInsertPanel1",
         //     controllerName: "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
@@ -250,6 +254,7 @@ sap.ui.define(
         if (this.views) {
           this.views.forEach((view) => this.getView().byId(view.viewId).destroy());
           delete this.views;
+          this.getOwnerComponent().activeFlow = null;
         }
         this.byId("headerFlujosButNuevo").setEnabled(true);
       },
