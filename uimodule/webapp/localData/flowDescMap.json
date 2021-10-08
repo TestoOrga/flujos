@@ -38,7 +38,26 @@
     },
     {
         "AF": {
-            "txt": "Activo Fijo"
+            "txt": "Activo Fijo",
+            "icon": "sap-icon://collections-insight",
+            "act": [
+                {
+                    "001": {
+                        "txt": "Flujos de Aprobación AF",
+                        "pro": [
+                            {
+                                "001": "Formato múltiple"
+                            },
+                            {
+                                "002": "Entrada Archivo"
+                            },
+                            {
+                                "003": "Petición Archivo"
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     }
 ]

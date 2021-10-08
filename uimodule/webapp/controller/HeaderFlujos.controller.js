@@ -407,6 +407,8 @@ sap.ui.define(
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteAccionView", null);
       },
+      cleanHeaderModels: function (level) {
+      },
 
       onPressDepartamento: function (oEvent) {
         var departamentoKey = oEvent.getSource().getSelectedKey();
@@ -422,6 +424,7 @@ sap.ui.define(
           this.getCatData(oDataEntry).then((res) => {
             var actividadModel = new JSONModel(res);
             this.setModel(actividadModel, "actividad");
+            this.cleanHeaderModels("actividad");
           });
           this.byId("headerFlujosActiv").setEnabled(true);
         } else {
