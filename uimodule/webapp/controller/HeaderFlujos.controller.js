@@ -119,7 +119,7 @@ sap.ui.define(
         console.log("Event handler: onAddFlow");
         var flowConfig = this.getModel("flowConfig").getData();
         // var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
-        var flowKey = "001001001";
+        var flowKey = "AF001001";
         var flowViews = flowConfig.find(x => x[flowKey]);
         if (flowViews) {
           this.addSpecFlow(flowViews[flowKey]);
@@ -407,7 +407,19 @@ sap.ui.define(
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteAccionView", null);
       },
-      cleanHeaderModels: function (level) {
+      cleanHeaderModelAfterSelect: function (level) {
+        switch (level) {
+          case "actividad":
+            this.byId("headerFlujosActiv").setSelectedKey("");
+            this.headerData.actividad = "";
+            this.byId("headerFlujosProceso").setSelectedKey("");
+            this.headerData.proceso = "";
+            break;
+          default:
+            this.byId("headerFlujosProceso").setSelectedKey("");
+            this.headerData.proceso = "";
+            break;
+        }
       },
 
       onPressDepartamento: function (oEvent) {
@@ -423,8 +435,8 @@ sap.ui.define(
           };
           this.getCatData(oDataEntry).then((res) => {
             var actividadModel = new JSONModel(res);
+            this.cleanHeaderModelAfterSelect("actividad");
             this.setModel(actividadModel, "actividad");
-            this.cleanHeaderModels("actividad");
           });
           this.byId("headerFlujosActiv").setEnabled(true);
         } else {
@@ -446,6 +458,7 @@ sap.ui.define(
           };
           this.getCatData(oDataEntry).then((res) => {
             var actividadModel = new JSONModel(res);
+            this.cleanHeaderModelAfterSelect("proceso");
             this.setModel(actividadModel, "proceso");
           });
           this.byId("headerFlujosProceso").setEnabled(true);
@@ -467,7 +480,11 @@ sap.ui.define(
       },
       setHeaderTitle: function (text) {
         this.byId("headerFlujosPageHeader").setObjectTitle(text);
-        this.byId("headerFlujosPageHeader").setObjectSubtitle(this.get18().getText("HeaderFlujosController.Version." + this.headerData.departamento + this.headerData.actividad + this.headerData.proceso));
+        if (this.headerData.departamento !== "") {
+          this.byId("headerFlujosPageHeader").setObjectSubtitle(this.get18().getText("HeaderFlujosController.Version." + this.headerData.departamento + this.headerData.actividad + this.headerData.proceso));
+        } else {
+          this.byId("headerFlujosPageHeader").setObjectSubtitle(this.get18().getText("HeaderSubtitulo"));
+        }
       },
 
       testo: function (oEvent) {

@@ -50,19 +50,29 @@ sap.ui.define(
             division: "",
             areaNomina: ""
           };
-          this.setModel(new JSONModel({
-            release: false
-          }), "viewGeneral");
+          // this.setModel(new JSONModel({
+          //   release: true
+          // }), "viewGeneral");
           this.initTab();
           this._tabModel = this.getModel(this.viewConfig.tabModelName);
           this._oTab = this.byId(this.viewConfig.tabControlId);
           this.xlsxHeaders = [
-            "No. Personal",
-            "Sueldo",
-            "Fecha",
-            "Motivo",
-            "Justificación"
+            "No. Activo",
+            "Sub. No.",
+            "CeCo Destino",
+            "Precio de Venta"
           ];
+          this.setModel(new JSONModel({
+            in2: ""
+          }), "datosGral");
+          this.datosGralModel = this.getModel("datosGral");
+          this.setModel(new JSONModel({
+            socDestVisible: false,
+            factVisible: false,
+            cecoVisible: false,
+            precioVentaVisible: false
+          }), "viewModel");
+          this.viewModel = this.getModel("viewModel");
 
           console.log("finInit");
 
@@ -96,8 +106,8 @@ sap.ui.define(
 
         //destruir ids que causan conflicto duplicatedID
         destroyIds: function () {
-          this.byId("attachPopover").destroy();
-          this.byId("popover").destroy();
+          // this.byId("attachPopover").destroy();
+          // this.byId("popover").destroy();
         },
         getCurrentRouteName: function (router = this.getOwnerComponent().getRouter()) {
           const currentHash = router.getHashChanger().getHash();
@@ -226,7 +236,7 @@ sap.ui.define(
             });
             this.oEventBus.publish("flowRes", "filesLoaded", {
               itemId: lineItem.getObject().vis1,
-              itemOwner: lineItem.getObject().vis2,
+              itemOwner: lineItem.getObject().in1,
               fileId: this.fileId,
               fileName: name,
               fileExt: ext
@@ -363,8 +373,9 @@ sap.ui.define(
         /* Peticiones externas                                         */
         /* =========================================================== */
         valInputs: function () {
+          var classes = this.getActiveFields();
           var valError = "";
-          $(".valInput").each((i, e) => {
+          $(".valInput" + (classes === "" ? "" : ", " + classes)).each((i, e) => {
             var domRef = document.getElementById(e.id);
             var oControl = $(domRef).control()[0];
             try {
@@ -377,14 +388,34 @@ sap.ui.define(
               valError = this.get18().getText("flujoTabla.camposVaceos");
             }
           });
+          valError = this.specificVals(valError);
           return valError;
+        },
+
+        getActiveFields: function () {
+          var valCond = "";
+          var activeProp = this.viewModel.getData();
+          valCond = activeProp.socDestVisible ? ".valInputSocDest" : valCond;
+          valCond = activeProp.factVisible ? valCond + (valCond === "" ? "" : ", ") + ".valInputFac" : valCond;
+          valCond = activeProp.cecoVisible ? valCond + (valCond === "" ? "" : ", ") + ".valInputCeco" : valCond;
+          valCond = activeProp.precioVentaVisible ? valCond + (valCond === "" ? "" : ", ") + ".valInputPrecioVenta" : valCond;
+          return valCond;
         },
 
         /* =========================================================== */
         /* Especifico de Flujo                                         */
         /* =========================================================== */
+        specificVals: function (val) {
+          var newVal = val;
+          if (this.byId("__inputRfc").getValue().length < 12) {
+            newVal = "Complete RFC";
+            this.byId("__inputRfc").setValueState("Error");
+          }
+          return newVal;
+        },
         onBeforeRendering: async function (approvalMode) {
           if (approvalMode || this.getOwnerComponent().currentMode === 1) {
+            // sociedad y sociedad Destino
             var oPayload = {
               P1: "CAT",
               P2: "BUKRS",
@@ -392,14 +423,16 @@ sap.ui.define(
             };
             var bukrs = this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
               this.setModel(new JSONModel(res), "sociedad");
+              this.setModel(new JSONModel(res), "socDest");
             });
+            // tipo de movimiento
             oPayload = {
               P1: "CAT",
-              P2: "ABKRS",
+              P2: "MOVAF",
               to_pesal: []
             };
             var pagos = this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
-              this.setModel(new JSONModel(res), "areaNomina");
+              this.setModel(new JSONModel(res), "tpMov");
             });
             var end = await Promise.all([bukrs, pagos]);
             return end;
@@ -407,56 +440,53 @@ sap.ui.define(
         },
         onInputChange: function (oEvent, param) {
           switch (param) {
-            case "in1":
-              this.getPernr(oEvent);
+            case "in1" || "in2":
+              this.getActivoData(oEvent);
               break;
             default:
               break;
           }
         },
-        getPernr: function (oEvent, oExtControl) {
+        getActivoData: function (oEvent, oExtControl) {
           var oControl = oExtControl ? oExtControl : oEvent.getSource();
           // if (oEvent) //CAMBIOS *solo si no tienes campos de periodos*this.resetPeriodos(oControl.getParent().getAggregation("cells"));
-          var oPayload = {
-            P1: "CAT",
-            P2: "PERNR",
-            P3: oEvent ? oEvent.getParameter("value") : oControl.getBindingContext("tablaFlujo").getObject().in1,
-            // P4: this.headerData.sociedad,
-            // P5: this.headerData.division,
-            to_pesal: [],
-          };
+          var datosGral = this.datosGralModel.getData();
           var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
-          var sPath = lineContext.sPath;
           var lineData = lineContext.getObject();
-          var controlForPopover = (oEvent ? oControl.getParent().getAggregation("cells") : oControl.getAggregation("cells")).find(x => x.sId.includes("attachPopover"));
-          this.getOwnerComponent().getCatDataComp(oPayload, this.getModel())
-            .then((res) => {
-              var pernrData = res[0];
-              if (pernrData) {
-                lineData.vis2 = pernrData.C2;
-                lineData.vis3 = pernrData.C26;
-                lineData.vis4 = pernrData.C27;
-                lineData.vis5 = pernrData.C28;
-                // lineData.vis6 = pernrData.C35;
-                lineData.popUp = {
-                  visP1: pernrData.C15,
-                  visP2: pernrData.C13,
-                  visP3: pernrData.C19,
-                  visP4: pernrData.C22,
-                  visP5: pernrData.C18,
-                  visP6: pernrData.C15
-                  //Cambios (mapeas tus campos)
-                };
-              } else {
-                lineData.vis2 = "";
-                lineData.vis3 = "";
-                lineData.vis4 = "";
-                lineData.popUp = {};
-              }
-              this._tabModel.setProperty(sPath, lineData);
-              console.log("PERNR Loaded");
-              // this.loadPopOver(controlForPopover);
-            })
+          if (lineData.in1 !== "" && lineData.in2 !== "") {
+            var oPayload = {
+              P1: "CAT",
+              P2: "AF",
+              P3: datosGral.in2,
+              P4: lineData.in1,
+              P5: lineData.in2,
+              to_pesal: [],
+            };
+            // var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
+            var sPath = lineContext.sPath;
+            // var lineData = lineContext.getObject();
+            // var controlForPopover = (oEvent ? oControl.getParent().getAggregation("cells") : oControl.getAggregation("cells")).find(x => x.sId.includes("attachPopover"));
+            this.getOwnerComponent().getCatDataComp(oPayload, this.getModel())
+              .then((res) => {
+                var activoData = res[0];
+                if (activoData) {
+                  lineData.vis2 = activoData.C2;
+                  lineData.vis3 = activoData.C26;
+                  lineData.vis4 = activoData.C27;
+                  lineData.vis5 = accounting.formatMoney(activoData.C28);
+                  lineData.vis5Num = activoData.C28;
+                } else {
+                  lineData.vis2 = "";
+                  lineData.vis3 = "";
+                  lineData.vis4 = "";
+                  lineData.vis5 = accounting.formatMoney(0);
+                  lineData.vis5Num = "";
+                }
+                this._tabModel.setProperty(sPath, lineData);
+                console.log("activo data Loaded");
+                // this.loadPopOver(controlForPopover);
+              })
+          }
           // .then(this.getPeriodo(lineContext))
           // .then(() => {
           //   if (oExtControl) {
@@ -487,10 +517,29 @@ sap.ui.define(
         },
         getData: function () {
           var result = this.getFlowData();
+          var gralData = this.datosGralModel.getData();
+          var activeData = this.viewModel.getData();
           result.forEach(element => {
-            element.head1 = this.headerData.sociedad;
-            element.head2 = this.headerData.division;
-            element.head3 = this.headerData.areaNomina;
+            element.gin1 = gralData.in1;
+            element.gin2 = gralData.in2;
+            element.gin3 = (activeData.socDestVisible ? gralData.in3 : "");
+            element.gin4 = gralData.in4;
+            element.gin5 = gralData.in5;
+            if (activeData.factVisible) {
+              element.gin6 = gralData.in6;
+              element.gin7 = gralData.in7;
+              element.gin8 = gralData.in8;
+              element.gin9 = gralData.i9n;
+              element.gin10 = gralData.in10;
+            } else {
+              element.gin6 = "";
+              element.gin7 = "";
+              element.gin8 = "";
+              element.gin9 = "";
+              element.gin10 = "";
+            }
+            element.in3 = (activeData.cecoVisible ? element.in3 : "");
+            element.in4 = (activeData.precioVentaVisible ? element.in4 : "");
           })
           this.oEventBus.publish("flowResults", "flowData", {
             res: result,
@@ -510,61 +559,77 @@ sap.ui.define(
             });
           }
         },
+        onRFCInput: function (oEvent) {
+          oEvent.oSource.setValue(oEvent.oSource.getValue().toUpperCase());
+        },
         onSelect: function (oEvent, param, outKey) {
-          const afterSelect = () => {
-            if (this.headerData.sociedad !== "" &&
-              this.headerData.division !== "" &&
-              this.headerData.areaNomina !== "") {
-              this.getModel("viewGeneral").setProperty("/release", true);
-            } else {
-              this.getModel("viewGeneral").setProperty("/release", false);
-            }
-          };
+          // const afterSelect = () => {
+          //   if (this.headerData.sociedad !== "" &&
+          //     this.headerData.division !== "" &&
+          //     this.headerData.areaNomina !== "") {
+          //     this.getModel("viewGeneral").setProperty("/release", true);
+          //   } else {
+          //     this.getModel("viewGeneral").setProperty("/release", false);
+          //   }
+          // };
           var selKey = outKey || oEvent.oSource.getSelectedKey();
           switch (param) {
-            case "sociedad":
-              this.headerData.sociedad = selKey;
-              var oPayload = {
-                P1: "CAT",
-                P2: "WERKS",
-                P3: selKey,
-                to_pesal: []
-              };
-              return this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
-                if (this.getModel("division")) {
-                  this.getModel("division").setProperty("/", []);
-                }
-                if (res.length > 0) {
-                  this.setModel(new JSONModel(res), "division");
-                  this.byId("titleSelDivision").setEnabled(outKey ? false : true);
-                  this.headerData.division = this.byId("titleSelDivision").getSelectedKey();
-                } else {
-                  this.headerData.division = "";
-                }
-                afterSelect();
+            case "tpMov":
+              var tpMov = oEvent.oSource.getSelectedItem().getBindingContext("tpMov").getObject();
+              console.table({
+                C3: tpMov.C3,
+                C4: tpMov.C4,
+                C5: tpMov.C5,
+                C6: tpMov.C6
               });
-              // break;
-            case "division":
-              this.headerData.division = selKey;
+              this.viewModel.setProperty("/socDestVisible", tpMov.C3 === "X" ? true : false);
+              this.viewModel.setProperty("/factVisible", tpMov.C4 === "X" ? true : false);
+              this.viewModel.setProperty("/cecoVisible", tpMov.C5 === "X" ? true : false);
+              this.viewModel.setProperty("/precioVentaVisible", tpMov.C6 === "X" ? true : false);
               break;
-              // case "in2":
-              //   this.setCC(oEvent);
+
+              // case "sociedad":
+              //   var oPayload = {
+              //     P1: "CAT",
+              //     P2: "WERKS",
+              //     P3: selKey,
+              //     to_pesal: []
+              //   };
+              //   return this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then(res => {
+              //     if (this.getModel("division")) {
+              //       this.getModel("division").setProperty("/", []);
+              //     }
+              //     if (res.length > 0) {
+              //       this.setModel(new JSONModel(res), "division");
+              //       this.byId("titleSelDivision").setEnabled(outKey ? false : true);
+              //       this.headerData.division = this.byId("titleSelDivision").getSelectedKey();
+              //     } else {
+              //       this.headerData.division = "";
+              //     }
+              //     // afterSelect();
+              //   });
+              //   // break;
+              // case "division":
+              //   this.headerData.division = selKey;
               //   break;
-              // case "in5":
-              //   this.setIniDate(oEvent);
-              //   break;
-              // case "in6":
-              //   this.setEndDate(oEvent);
-              //   break;
-            case "areaNomina":
-              this.headerData.areaNomina = selKey;
-              afterSelect();
-              return this.getMotivo(oEvent);
-              // break;
+              //   // case "in2":
+              //   //   this.setCC(oEvent);
+              //   //   break;
+              //   // case "in5":
+              //   //   this.setIniDate(oEvent);
+              //   //   break;
+              //   // case "in6":
+              //   //   this.setEndDate(oEvent);
+              //   //   break;
+              // case "areaNomina":
+              //   this.headerData.areaNomina = selKey;
+              //   // afterSelect();
+              //   return this.getMotivo(oEvent);
+              //   // break;
             default:
               break;
           }
-          afterSelect();
+          // afterSelect();
         },
         // setCC: function (oEvent, oExtControl) {
         //   var oControl = oExtControl || oEvent.oSource;
@@ -620,22 +685,22 @@ sap.ui.define(
         // },
         // //Cambios
         // //Cambios, nueva funcion
-        getMotivo: function (oEvent) {
-          var oPayload = {
-            P1: "CAT",
-            P2: "MOTSDO",
-            to_pesal: []
-          };
-          return this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
-            if (this.getModel("in4")) {
-              this.getModel("in4").setProperty("/", []);
-            }
-            if (res.length > 0) {
-              this.setModel(new JSONModel(res), "in4");
-            }
-            // this.resetCC();
-          });
-        },
+        // getMotivo: function (oEvent) {
+        //   var oPayload = {
+        //     P1: "CAT",
+        //     P2: "MOTSDO",
+        //     to_pesal: []
+        //   };
+        //   return this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
+        //     if (this.getModel("in4")) {
+        //       this.getModel("in4").setProperty("/", []);
+        //     }
+        //     if (res.length > 0) {
+        //       this.setModel(new JSONModel(res), "in4");
+        //     }
+        //     // this.resetCC();
+        //   });
+        // },
         //Cambios, nueva funcion
         // resetCC: function () {
         //   $(".resSelect").each((i, e) => {
@@ -852,7 +917,6 @@ sap.ui.define(
           }), "fragMotive");
           this.displayMotivePopOver(lineCxt.getObject().vis1);
         },
-
         afterRejectClose: function (oEvent) {
           if (this.getModel("fragMotive").getData().rejectText === "") {
             this.getModel("fragMotive").getData().tabLine.getAggregation("cells").find(x => x.sId.includes("switchito")).getAggregation("items").find(x => x.sId.includes("switchito")).setState(true);
