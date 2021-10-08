@@ -118,8 +118,8 @@ sap.ui.define(
       onAddFlow: function (oEvent) {
         console.log("Event handler: onAddFlow");
         var flowConfig = this.getModel("flowConfig").getData();
-        var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
-        // var flowKey = "001001001";
+        // var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
+        var flowKey = "001001001";
         var flowViews = flowConfig.find(x => x[flowKey]);
         if (flowViews) {
           this.addSpecFlow(flowViews[flowKey]);
@@ -242,10 +242,10 @@ sap.ui.define(
         this.onConfirmDialogPress(fn ? fn : this.resetFlow.bind(this), text ? text : this.get18().getText("headerFlujos.ResetConfirmationQuestion"));
       },
       resetFlow: function () {
-        this.getOwnerComponent().flowData.departamento = "";
-        this.getOwnerComponent().flowData.actividad = "";
-        this.getOwnerComponent().flowData.proceso = "";
-        this.getOwnerComponent().flowData.id = "";
+        this.headerData.departamento = this.getOwnerComponent().flowData.departamento = "";
+        this.headerData.actividad = this.getOwnerComponent().flowData.actividad = "";
+        this.headerData.proceso = this.getOwnerComponent().flowData.proceso = "";
+        this.headerData.id = this.getOwnerComponent().flowData.id = "";
         this.getOwnerComponent().flowData.actTxt = "";
         delete this.valFlowStart;
         delete this.getFlowDataStart;
@@ -464,7 +464,7 @@ sap.ui.define(
       },
       setHeaderTitle: function (text) {
         this.byId("headerFlujosPageHeader").setObjectTitle(text);
-        this.byId("headerFlujosPageHeader").setObjectSubtitle(this.get18().getText("HeaderFlujosController.Version."+this.headerData.departamento+this.headerData.actividad+this.headerData.proceso));
+        this.byId("headerFlujosPageHeader").setObjectSubtitle(this.get18().getText("HeaderFlujosController.Version." + this.headerData.departamento + this.headerData.actividad + this.headerData.proceso));
       },
 
       testo: function (oEvent) {

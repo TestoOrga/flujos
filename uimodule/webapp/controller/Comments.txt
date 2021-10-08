@@ -91,3 +91,8 @@ Crear y agregar vistas alternativa
         //   oView.placeAt(oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
         // }.bind(this))
         // oView.placeAt(oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
+
+Cambios en modelo
+          this._tabModel.attachPropertyChange(function (oEvent, a, s, d) {
+            console.log("")
+          }, this);

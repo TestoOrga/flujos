@@ -74,5 +74,21 @@
                 "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosMultiple"
             }
         ]
+    },
+    {
+        "001001001": [
+            {
+                "controlId": "headerFlujosInsertPanel1",
+                "controllerName": "bafar.flujos.flujos.controller.ActivoFijo.ActivoFijo",
+                "viewId": "flujostabla",
+                "viewName": "bafar.flujos.flujos.view.ActivoFijo.ActivoFijo"
+            },
+            {
+                "controlId": "headerFlujosInsertPanel1",
+                "controllerName": "bafar.flujos.flujos.controller.Comunes.ArchivosMultiple",
+                "viewId": "ArchivosMultiple",
+                "viewName": "bafar.flujos.flujos.view.Comunes.ArchivosMultiple"
+            }
+        ]
     }
 ]
