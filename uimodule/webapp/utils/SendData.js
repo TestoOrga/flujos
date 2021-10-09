@@ -233,25 +233,29 @@ sap.ui.define(
           arrData.forEach(element => {
             to_pesal.push({
               C1: "REG",
-              C5: element.in5,
+              C5: element.gin5,
               C6: flowInfo.departamento,
               C7: flowInfo.actividad,
               C8: flowInfo.proceso,
               C9: flowInfo.id,
               C10: element.vis1, //item
-              C11: element.head1,
-              C12: element.head2,
-              C13: element.head3,
-              C14: element.in1,
-              C15: element.vis2,
-              C16: element.in2Num,
-              // C17: element.in4,
-              // C18: element.in3,              
-              C17: element.in3,
-              C18: element.in4,
-              C19: element.vis3,
-              C21: element.vis4,
-              C22: element.vis5
+              C11: element.gin1,
+              C12: element.gin2,
+              C13: element.gin3,
+              C14: element.gin4,
+              C15: element.gin6,
+              C16: element.gin7,
+              C17: element.gin8,
+              C18: element.gin9,
+              C19: element.gin10,
+              C20: element.in1,
+              C21: element.in2,
+              C22: element.vis2,
+              C23: element.vis3,
+              C24: element.vis4,
+              C25: element.vis5Num,
+              C26: "",//element.in3,
+              C27: "0"//(element.in4Num ? element.in4Num : 0 )
             });
           });
           var oPayload = {

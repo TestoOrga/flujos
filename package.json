@@ -42,6 +42,7 @@
     ]
   },
   "dependencies": {
+    "@ui5/cli": "^2.13.0",
     "nwabap-ui5uploader": "^1.2.0"
   }
 }

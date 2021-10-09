@@ -114,9 +114,7 @@ sap.ui.define(
           return this.getOwnerComponent().getMode(currentHash); // since 1.75
         },
         initTab: function () {
-          this.getView().setModel(new JSONModel([{
-            vis1: this.newItemId()
-          }]), this.viewConfig.tabModelName);
+          this.getView().setModel(new JSONModel([this.newLine()]), this.viewConfig.tabModelName);
         },
         newItemId: function () {
           this.itemId++;
@@ -145,13 +143,17 @@ sap.ui.define(
         // _clearPopover: function (popover) {
         //   clearTimeout(this._timeId) || popover.close();
         // },
-
+        newLine: function () {
+          return {
+            vis1: this.newItemId(),
+            in1: "",
+            in2: ""
+          }
+        },
         onAddLine: function (oEvent) {
           console.log("Event Handler: onAddLine");
           var items = this._tabModel.getProperty("/");
-          items.push({
-            vis1: this.newItemId()
-          });
+          items.push(this.newLine());
           this._tabModel.setProperty("/", items);
         },
         onRemoveLines: function (oEvent) {
@@ -386,6 +388,8 @@ sap.ui.define(
             if (value === "") {
               oControl.setValueState("Error");
               valError = this.get18().getText("flujoTabla.camposVaceos");
+            } else {
+              oControl.setValueState("None");
             }
           });
           valError = this.specificVals(valError);
@@ -407,9 +411,11 @@ sap.ui.define(
         /* =========================================================== */
         specificVals: function (val) {
           var newVal = val;
-          if (this.byId("__inputRfc").getValue().length < 12) {
-            newVal = "Complete RFC";
-            this.byId("__inputRfc").setValueState("Error");
+          if (this.viewModel.getData().factVisible) {
+            if (this.byId("__inputRfc").getValue().length < 12) {
+              newVal = "Complete RFC";
+              this.byId("__inputRfc").setValueState("Error");
+            }
           }
           return newVal;
         },
@@ -440,7 +446,10 @@ sap.ui.define(
         },
         onInputChange: function (oEvent, param) {
           switch (param) {
-            case "in1" || "in2":
+            case "in1":
+              this.getActivoData(oEvent);
+              break;
+            case "in2":
               this.getActivoData(oEvent);
               break;
             default:
@@ -470,9 +479,9 @@ sap.ui.define(
               .then((res) => {
                 var activoData = res[0];
                 if (activoData) {
-                  lineData.vis2 = activoData.C2;
-                  lineData.vis3 = activoData.C26;
-                  lineData.vis4 = activoData.C27;
+                  lineData.vis2 = activoData.C6;
+                  lineData.vis3 = activoData.C5;
+                  lineData.vis4 = activoData.C22;
                   lineData.vis5 = accounting.formatMoney(activoData.C28);
                   lineData.vis5Num = activoData.C28;
                 } else {
@@ -538,6 +547,7 @@ sap.ui.define(
               element.gin9 = "";
               element.gin10 = "";
             }
+            element.in2 = element.in2.toString().padStart(4, "0");
             element.in3 = (activeData.cecoVisible ? element.in3 : "");
             element.in4 = (activeData.precioVentaVisible ? element.in4 : "");
           })
@@ -756,10 +766,12 @@ sap.ui.define(
                 template: true,
                 vis1: this.newItemId(),
                 in1: element[c[0]],
-                in2: accounting.formatMoney(element[c[1]]),
+                in2: element[c[1]],
                 in3: element[c[2]],
-                in4: element[c[3]].toString().padStart(3, "0"),
-                in5: element[c[4]]
+                in4: accounting.formatMoney(element[c[3]])
+                // accounting.formatMoney(element[c[1]]),
+                // in4: element[c[3]].toString().padStart(3, "0"),
+                // in5: element[c[4]]
               });
             });
             this._tabModel.setProperty("/", tabData);
