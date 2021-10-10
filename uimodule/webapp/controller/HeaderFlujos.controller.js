@@ -25,6 +25,9 @@ sap.ui.define(
 
     return BaseController.extend("bafar.flujos.flujos.controller.HeaderFlujos", {
       onInit: function () {
+        this.getOwnerComponent().activeHeaderForFlow = {
+          viewController: this
+        };
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.getRoute("RouteHeaderFlujosView").attachPatternMatched((oEvent) => {
           console.log("loaded");
@@ -55,15 +58,34 @@ sap.ui.define(
         this.oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
         this.oEventBus.subscribe("flowCreated", "EndFlow", this.onEndflow, this);
       },
+      unregisterEvents: function () {
+        if (this.eventsUnsubscribed) {
+          this.registerEvents();
+        } else {
+          this.oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
+          this.oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
+          this.oEventBus.unsubscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+          this.oEventBus.unsubscribe("flowCreated", "EndFlow", this.onEndflow, this);
+          //Se activa cuando se cambia de accion en el menu central
+          this.eventsUnsubscribed = true;
+        }
+      },
       /**
        * @override
        */
       onExit: function () {
+        this.unregisterEvents();
+      },
 
-        this.oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
-        this.oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
-        this.oEventBus.unsubscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
-        this.oEventBus.unsubscribe("flowCreated", "EndFlow", this.onEndflow, this);
+      registerEvents: function () {
+        if (this.eventsUnsubscribed) {
+          this.oEventBus = this.getOwnerComponent().getEventBus();
+          this.oEventBus.subscribe("flowResults", "flowValid", this.onFlowValid, this);
+          this.oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
+          this.oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+          this.oEventBus.subscribe("flowCreated", "EndFlow", this.onEndflow, this);
+          this.eventsUnsubscribed = false;
+        }
       },
 
       getDepartamento: function () {

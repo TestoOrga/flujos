@@ -37,6 +37,7 @@ sap.ui.define(
       init: function () {
         // call the base component's init function
         // get the path to the JSON file     
+        this.activeHeaderForFlow = null;
         this.activeFlow = null;
         this.currentMode = 0;
         this.getModel("flowDescMap").attachRequestCompleted(function () {

@@ -99,24 +99,31 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
     },
     manageActiveFlows: function (accion) {
       return new Promise((resolve, reject) => {
-        if (this.activeAction !== accion && this.getOwnerComponent().activeFlow) {
-          var that = this;
-          MessageBox.warning("Cancelar el flujo activo?", {
-            actions: ["Sí (perder datos)", "No"],
-            emphasizedAction: MessageBox.Action.OK,
-            onClose: function (sAction) {
-              if (sAction === "No") {
-                reject();
-              } else {
-                that.getOwnerComponent().activeFlow.viewController.resetFlow();
-                resolve(MessageToast.show("Action selected: " + sAction));
+        if (!this.getOwnerComponent().activeHeaderForFlow) return resolve();
+        if (this.activeAction !== accion) {
+          this.getOwnerComponent().activeHeaderForFlow.viewController.unregisterEvents();
+          if (this.getOwnerComponent().activeFlow) {
+            var that = this;
+            MessageBox.warning("Cancelar el flujo activo?", {
+              actions: ["Sí (perder datos)", "No"],
+              emphasizedAction: MessageBox.Action.OK,
+              onClose: function (sAction) {
+                if (sAction === "No") {
+                  reject();
+                } else {
+                  that.getOwnerComponent().activeFlow.viewController.resetFlow();
+                  resolve(MessageToast.show("Action selected: " + sAction));
+                }
               }
-            }
-          });
+            });
+          } else {
+            resolve();
+          }
         } else {
+          this.getOwnerComponent().activeHeaderForFlow.viewController.registerEvents();
           resolve();
         }
-      })
+      });
     },
   });
 });

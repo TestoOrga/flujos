@@ -27,6 +27,9 @@ sap.ui.define(
          * @override
          */
         onInit: function () {
+          this.getOwnerComponent().activeHeaderForFlow = {
+            viewController: this
+          };
           var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
           oRouter
             .getRoute("RouteApprovalFlowView")
@@ -101,35 +104,29 @@ sap.ui.define(
             this
           );
         },
+        unregisterEvents: function () {
+          this.oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
+          this.oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
+          this.oEventBus.unsubscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+          this.oEventBus.unsubscribe("flowCreated", "EndFlow", this.onEndflow, this);
+          //Se activa cuando se cambia de accion en el menu central
+          this.eventsUnsubscribed = true;
+        },
+        registerEvents: function () {
+          if (this.eventsUnsubscribed) {
+            this.oEventBus = this.getOwnerComponent().getEventBus();
+            this.oEventBus.subscribe("flowResults", "flowValid", this.onFlowValid, this);
+            this.oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
+            this.oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
+            this.oEventBus.subscribe("flowCreated", "EndFlow", this.onEndflow, this);
+          }
+        },
         /**
          * @override
          */
         onExit: function () {
           this.getView().destroy();
-          this.oEventBus.unsubscribe(
-            "flowResults",
-            "flowValid",
-            this.onFlowValid,
-            this
-          );
-          this.oEventBus.unsubscribe(
-            "flowResults",
-            "flowData",
-            this.onFlowData,
-            this
-          );
-          this.oEventBus.unsubscribe(
-            "flowCreation",
-            "flowBackResult",
-            this.onFlowBackResult,
-            this
-          );
-          this.oEventBus.unsubscribe(
-            "flowCreated",
-            "EndFlow",
-            this.onEndflow,
-            this
-          );
+          this.unregisterEvents();
         },
         /**
          * @override
