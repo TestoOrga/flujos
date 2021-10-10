@@ -36,7 +36,8 @@ sap.ui.define(
        */
       init: function () {
         // call the base component's init function
-        // get the path to the JSON file     
+        // get the path to the JSON file
+        this.accionViewPanel = null;
         this.activeHeaderForFlow = null;
         this.activeFlow = null;
         this.currentMode = 0;

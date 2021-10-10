@@ -378,6 +378,8 @@ sap.ui.define(
             if (value === "") {
               oControl.setValueState("Error");
               valError = this.get18().getText("flujoTabla.camposVaceos");
+            } else {
+              oControl.setValueState("None");
             }
           });
           return valError;

@@ -10,6 +10,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
 
   return BaseController.extend("bafar.flujos.flujos.controller.Accion", {
     onInit: function () {
+      this.getOwnerComponent().accionViewPanel = this.byId("_IDGenPage1");
       this.setModel(new JSONModel({
         movil: "/sap/opu/odata/sap/ZOD_FLUJOS_SRV/ImageSet('MOVIL')/$value",
         desktop: "/sap/opu/odata/sap/ZOD_FLUJOS_SRV/ImageSet('DESKTOP')/$value"
@@ -66,6 +67,7 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
     },
     onPress: function (oEvent, param) {
       console.log("onPress: param");
+      this.getOwnerComponent().accionViewPanel.setBusy(true);
       if (oEvent.getSource().data("enabled") === "true") {
         switch (param) {
           case "C":
@@ -74,7 +76,9 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
                 this.activeAction = param;
                 this.getOwnerComponent().currentMode = 1;
                 this.navTo("RouteHeaderFlujosView");
-              })
+              }).catch(() => {
+              this.getOwnerComponent().accionViewPanel.setBusy(false)
+            })
             break;
           case "S":
             this.getOwnerComponent().currentMode = 2;

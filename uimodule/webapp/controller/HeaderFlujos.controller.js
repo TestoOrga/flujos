@@ -25,6 +25,7 @@ sap.ui.define(
 
     return BaseController.extend("bafar.flujos.flujos.controller.HeaderFlujos", {
       onInit: function () {
+        if (this.getOwnerComponent().accionViewPanel) this.getOwnerComponent().accionViewPanel.setBusy(false);
         this.getOwnerComponent().activeHeaderForFlow = {
           viewController: this
         };
