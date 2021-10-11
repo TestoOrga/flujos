@@ -69,7 +69,7 @@
 						descending: false
 					},
 					groupHeaderFactory: '.createGroupHeader'
-				}" busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true" updateFinished=".onUpdateFinished" selectionChange=".onSelectionChange">
+				}" busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true" updateFinished=".onUpdateFinished" itemPress=".onSelectionChange">
                 <headerToolbar>
                     <OverflowToolbar >
                         <SearchField liveChange="onLocalSearch" id="searchField1" showRefreshButton="true" search=".onSearchLocal" width="100%" placeholder="{i18n>AprobacionView.NoDeFlujoDepartamentActividadProceso}">
@@ -83,7 +83,7 @@
                     </OverflowToolbar>
                 </headerToolbar>
                 <items>
-                    <CustomListItem id="listItem" type="Navigation" press=".onSelectionChange" class="claseitem FlexContentList">
+                    <CustomListItem id="listItem" type="Navigation"  class="claseitem FlexContentList">
                         <content>
                             <FlexBox width="100%" alignItems="Center" alignContent="Center" wrap="Wrap" class="sapUiTinyMarginBegin">
                                 <items>

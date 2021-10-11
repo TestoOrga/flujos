@@ -145,6 +145,8 @@ sap.ui.define(
         // var flowKey = "AF001001";
         var flowViews = flowConfig.find(x => x[flowKey]);
         if (flowViews) {
+          this.byId("headerFlujosPageSec1").setBusyIndicatorDelay(0);
+          this.byId("headerFlujosPageSec1").setBusy(true);
           this.addSpecFlow(flowViews[flowKey]);
           this.byId("headerFlujosButNuevo").setEnabled(false);
         } else {
@@ -245,6 +247,7 @@ sap.ui.define(
         values.forEach((element) => {
           element.oView.placeAt(element.oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
         });
+        this.byId("headerFlujosPageSec1").setBusy(false);
         console.log();
       },
 

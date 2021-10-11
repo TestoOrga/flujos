@@ -660,7 +660,7 @@ sap.ui.define(
           if (oTab.length > 0) {
             var tabDataZero = this._tabModel.getProperty("/");
             var tabData = tabDataZero.filter(element => {
-              return element.in1 ? element.in1 !== "" : false ;
+              return element.in1 ? element.in1 !== "" : false;
             });
             if (tabData.length === 0) {
               this.itemId = 0;
@@ -689,7 +689,12 @@ sap.ui.define(
             .then(() => this.mapToView("HEADER", res.res[0]))
             .then(() =>
               this.mapToView("ITEMS", res.res))
-
+            .then(() => {
+              this.oEventBus.publish("flowApproval", "endDataApplied");
+            })
+            .catch(() => {
+              this.oEventBus.subscribe("flowApproval", "endDataApplied");
+            });
         },
 
         mapToView: function (block, oData) {
@@ -821,6 +826,7 @@ sap.ui.define(
           var lineCxt = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
           this.setModel(new JSONModel({
             line: lineCxt,
+            tabLine: oEvent.getSource().getParent().getParent(),
             rejectText: lineCxt.getObject().rejectText
           }), "fragMotive");
           this.displayMotivePopOver(lineCxt.getObject().vis1);

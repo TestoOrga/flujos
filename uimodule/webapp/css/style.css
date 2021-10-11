@@ -24,7 +24,7 @@
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
-.bannerB{
+.bannerB {
   background-color: var(--Bafar);
 }
 /* Panel: main class  */
@@ -202,4 +202,9 @@
 .version {
   color: #6a6d70;
   font-size: x-small;
+}
+
+.switchLabel {
+  color: #6a6d70;
+  margin-top: 0.78rem;
 }

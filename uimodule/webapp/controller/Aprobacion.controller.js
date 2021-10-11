@@ -92,7 +92,8 @@ sap.ui.define(
           .getParameter("listItem")
           .getBindingContext("lazyModel")
           .getObject();
-        oObject.icon = this.byId("list").getSelectedItem().getAggregation('content')[0].getAggregation('items')[0].getAggregation("items").find(x => x.sId.includes("aprovalIcon")).getSrc();
+        // oObject.icon = this.byId("list").getSelectedItem().getAggregation('content')[0].getAggregation('items')[0].getAggregation("items").find(x => x.sId.includes("aprovalIcon")).getSrc();
+        oObject.icon = oEvent.getParameter("listItem").getAggregation('content')[0].getAggregation('items')[0].getAggregation("items").find(x => x.sId.includes("aprovalIcon")).getSrc();
         var approvalModel = this.getOwnerComponent().getAprovalModel();
         approvalModel.setProperty("/", oObject);
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);

@@ -708,6 +708,12 @@ sap.ui.define(
             .then(() => this.mapToView("HEADER", res.res[0]))
             .then(() =>
               this.mapToView("ITEMS", res.res))
+            .then(() => {
+              this.oEventBus.publish("flowApproval", "endDataApplied");
+            })
+            .catch(() => {
+              this.oEventBus.subscribe("flowApproval", "endDataApplied");
+            });
 
         },
 
@@ -845,6 +851,7 @@ sap.ui.define(
           var lineCxt = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
           this.setModel(new JSONModel({
             line: lineCxt,
+            tabLine: oEvent.getSource().getParent().getParent(),
             rejectText: lineCxt.getObject().rejectText
           }), "fragMotive");
           this.displayMotivePopOver(lineCxt.getObject().vis1);

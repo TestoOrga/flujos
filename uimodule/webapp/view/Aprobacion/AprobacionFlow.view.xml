@@ -25,16 +25,18 @@
         <semantic:customFooterContent>
             <OverflowToolbar id="footer" design="Solid" style="Clear" width="100%">
                 <content>                                            
-                    <Text text="{i18n>version.AprobacionHeader}" class="version"/>
+                    <Text text="{i18n>version.AprobacionHeader}" class="version" width="{= ${device>/system/phone}?'3.5rem':''}"/>
                     <ToolbarSpacer id="spacer0"/>
-                    <HBox  visible="{path: 'viewModel>/flowCode',formatter: '.formatter.getSwitchVisible'}" class="sapUiLargeMarginEnd">
+                    <HBox  visible="{path: 'viewModel>/flowCode',formatter: '.formatter.getSwitchVisible'}" class="sapUiMediumMarginEnd">
+                        <Text text="Rechazar" class="switchLabel" visible="{= ${device>/system/phone}?false:true}"/>                        
                         <Switch id="switchito" state="true" type="AcceptReject" change="switchChanged"/>
+                        <Text text="Aprobar" class="switchLabel" visible="{= ${device>/system/phone}?false:true}"/>
                         <c:Icon src="sap-icon://comment" press="_showMotivo" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd" visible="{= ${viewModel>/rejectText} !== '' ? true : false }"/>
                     </HBox>
 
                     <!-- <ToolbarSpacer id="spacer" width="50px"/> -->
                     <Button id="footerFlujosButAprobar" type="Accept" text="{i18n>AprobacionFlowView.Procesar}" press="onAprobar"/>
-                    <Button id="footerFlujosButCancelar" type="Reject" text="{i18n>HeaderFlujosFooterButCancelar}" press="onCancelar"/>
+                    <Button id="footerFlujosButCancelar" type="Reject" text="{= ${device>/system/phone}?'':${i18n>HeaderFlujosFooterButCancelar}}" icon="{= ${device>/system/phone}?'sap-icon://cancel':''}" press="onCancelar"/>
                 </content>
             </OverflowToolbar>
         </semantic:customFooterContent>

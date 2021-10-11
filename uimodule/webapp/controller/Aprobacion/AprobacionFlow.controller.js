@@ -27,6 +27,10 @@ sap.ui.define(
          * @override
          */
         onInit: function () {
+          this.mainPanel = this.byId("panelId");
+          this.mainPanel.setBusyIndicatorDelay(0);
+          this.mainPanel.setBusy(true);
+          if (this.getOwnerComponent().accionViewPanel) this.getOwnerComponent().accionViewPanel.setBusy(false);
           this.getOwnerComponent().activeHeaderForFlow = {
             viewController: this
           };
@@ -53,7 +57,11 @@ sap.ui.define(
                 );
                 this.onPageLoaded(oEvent);
                 this.mainModel = this.getModel();
-                this.displayFlow();
+                this.displayFlow().catch(() => {
+                  this.mainPanel.setBusy(false);
+                });
+              } else {
+                this.mainPanel.setBusy(false);
               }
             }, this);
           this.headerData = {};
@@ -103,12 +111,19 @@ sap.ui.define(
             this.onEndflow,
             this
           );
+          this.oEventBus.subscribe(
+            "flowApproval",
+            "endDataApplied",
+            this.dataApplied,
+            this
+          );
         },
         unregisterEvents: function () {
           this.oEventBus.unsubscribe("flowResults", "flowValid", this.onFlowValid, this);
           this.oEventBus.unsubscribe("flowResults", "flowData", this.onFlowData, this);
           this.oEventBus.unsubscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
           this.oEventBus.unsubscribe("flowCreated", "EndFlow", this.onEndflow, this);
+          this.oEventBus.unsubscribe("flowApproval", "endDataApplied", this.dataApplied, this);
           //Se activa cuando se cambia de accion en el menu central
           this.eventsUnsubscribed = true;
         },
@@ -119,6 +134,7 @@ sap.ui.define(
             this.oEventBus.subscribe("flowResults", "flowData", this.onFlowData, this);
             this.oEventBus.subscribe("flowCreation", "flowBackResult", this.onFlowBackResult, this);
             this.oEventBus.subscribe("flowCreated", "EndFlow", this.onEndflow, this);
+            this.oEventBus.subscribe("flowApproval", "endDataApplied", this.dataApplied, this);
           }
         },
         /**
@@ -152,7 +168,8 @@ sap.ui.define(
           );
         },
         displayFlow: function () {
-          this.getFlowData()
+          return this.getFlowData()
+            // this.getFlowData()
             .then((response) => this.distributeData(response))
             .then(() => this.onAddFlow())
             .then(() => {
@@ -228,7 +245,9 @@ sap.ui.define(
             // this.tabModel = that.getModel("lazyModel");
             // this.setHeaderTitle(res.data.P2);
           } else {
-            throw { message: this.get18().getText("AprobacionFlowController.NoHayInformacionDelFlujo") };
+            throw {
+              message: this.get18().getText("AprobacionFlowController.NoHayInformacionDelFlujo")
+            };
           }
         },
 
@@ -258,7 +277,7 @@ sap.ui.define(
           this.views = flowConfig;
           this.getOwnerComponent().activeFlow = {
             flow: "Creacion",
-            viewController: this 
+            viewController: this
           };
           var viewArr = [];
           this.views.forEach((view) => {
@@ -505,6 +524,10 @@ sap.ui.define(
         },
         onEndflow: function () {
           this.resetFlow();
+        },
+
+        dataApplied: function () {
+          this.mainPanel.setBusy(false);
         },
 
         /* ===========================================================

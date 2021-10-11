@@ -323,6 +323,7 @@ sap.ui.define(
             data: this.mapToView("DEUDAS", res.res[0]),
             view: "DEUDAS"
           });
+          this.oEventBus.publish("flowApproval", "endDataApplied");
         },
 
         mapToView: function (view, oData) {
