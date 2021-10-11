@@ -13,7 +13,7 @@ sap.ui.define(
     JSONModel,
     filesaver,
     XlsxFullmin,
-    min,
+    AccountingMin,
     Fragment) {
     "use strict";
 
@@ -261,7 +261,7 @@ sap.ui.define(
             this._tabModel.setProperty(element.getBindingContext("tablaFlujo").sPath + "/template", false);
             // element.getAggregation("cells").find(x=>x.sId.includes("in2")).setSelectedKey(element.getBindingContext("tablaFlujo").getObject().in2);
             // this.setCC(undefined, element.getAggregation("cells").find(x => x.sId.includes("in2")));
-            this.getPernr(undefined, element);
+            // this.getPernr(undefined, element);
           });
           if (this._oTab.getSelectedItems().length === 0) {
             this.byId("toolbarDel").setEnabled(false);
@@ -550,6 +550,12 @@ sap.ui.define(
             element.in2 = element.in2.toString().padStart(4, "0");
             element.in3 = (activeData.cecoVisible ? element.in3 : "");
             element.in4 = (activeData.precioVentaVisible ? element.in4 : "");
+
+            element.vis2 = element.vis2,
+              element.vis3 = element.vis3,
+              element.vis4 = element.vis4,
+              element.vis5Num = element.vis5Num
+
           })
           this.oEventBus.publish("flowResults", "flowData", {
             res: result,
@@ -796,14 +802,16 @@ sap.ui.define(
             case "HEADER":
               this.byId("titleSelSociedad").setSelectedKey(oData.C27);
               return new Promise((resolve, reject) => {
-                this.onSelect(undefined, "sociedad", oData.C27)
-                  .then(() => {
-                    this.onSelect(undefined, "areaNomina", oData.C29).then((res) => {
-                      this.byId("titleSelDivision").setSelectedKey(oData.C28)
-                      this.byId("titleSelAreaNomina").setSelectedKey(oData.C29)
-                      resolve(oData.C29);
-                    });
-                  });
+                this.onSelect(undefined, "tpMov", oData.C27);
+                this.setGralData(oData);
+                // .then(() => {
+                //   this.onSelect(undefined, "areaNomina", oData.C29).then((res) => {
+                //     this.byId("titleSelDivision").setSelectedKey(oData.C28)
+                //     this.byId("titleSelAreaNomina").setSelectedKey(oData.C29)
+                //     resolve(oData.C29);
+                //   });
+                // });
+
               })
 
               // this.getCC();
@@ -835,6 +843,19 @@ sap.ui.define(
               // break;
           }
           // }
+        },
+        setGralData: function (oData) {
+          var newData = this.datosGralModel.getData();
+          newData.in2 = oData.C1,
+            newData.in3 = oData.C1,
+            newData.in4 = oData.C1,
+            newData.in5 = oData.C1,
+            newData.in6 = oData.C1,
+            newData.in7 = oData.C1,
+            newData.in8 = oData.C1,
+            newData.in9 = oData.C1,
+            newData.in10 = oData.C1,
+            this.datosGralModel.setProperty("/", newData);
         },
         getDataForApproval: function () {
           var result = this.getFlowData();

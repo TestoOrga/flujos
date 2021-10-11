@@ -254,8 +254,8 @@ sap.ui.define(
               C23: element.vis3,
               C24: element.vis4,
               C25: element.vis5Num,
-              C26: "",//element.in3,
-              C27: "0"//(element.in4Num ? element.in4Num : 0 )
+              C26: element.in3,
+              C27: (element.in4Num ? element.in4Num : "0" )
             });
           });
           var oPayload = {

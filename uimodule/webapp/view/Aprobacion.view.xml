@@ -96,7 +96,7 @@
                                         <layout:VerticalLayout>
                                             <ObjectAttribute text="{= ${lazyModel>block} || ${lazyModel>C2} }" class="sapUiTinyMarginBottom"/>
                                             <ObjectAttribute text="{= ${lazyModel>act} || ${lazyModel>C3} }" class="sapUiTinyMarginBottom"/>
-                                            <ObjectAttribute text="{= ${lazyModel>pro} || ${lazyModel>C4} }"/>
+                                            <Label text="{= ${lazyModel>pro} || ${lazyModel>C4} }" design="Bold"/>
                                         </layout:VerticalLayout>
                                     </HBox>
                                 </items>

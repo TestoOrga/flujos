@@ -29,7 +29,7 @@
                             </form:FormElement>
                             <form:FormElement label="Sociedad destino" id="__labelSociedadDestino" visible="{viewModel>/socDestVisible}">
                                 <form:fields>
-                                    <Select selectedKey="{datosGral>/in3}" items="{ path: 'socDest>/', sorter: { path: 'socDest>C2' } }" change="onSelect($event, 'socDest')" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : true}" class="valInputSocDest">
+                                    <Select  selectedKey="{datosGral>/in3}" items="{ path: 'socDest>/', sorter: { path: 'socDest>C2' } }" change="onSelect($event, 'socDest')" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : true}" class="valInputSocDest">
                                         <core:Item key="{socDest>C1}" text="{socDest>C2}"/>
                                     </Select>
                                 </form:fields>
@@ -99,7 +99,7 @@
                         <Label id="cargaXLSX" text="{i18n>cargandoXLSX}" class="blink" visible="false"/>
                         <Button icon="sap-icon://add" class="sapUiTinyMarginEnd" type="Transparent" press="onAddLine" visible="{= !${afterCreation>/creation} ? false : true}"/>
                         <Button id="toolbarDel" icon="sap-icon://delete" class="sapUiTinyMarginEnd" type="Transparent" press="onRemoveLines" enabled="false" visible="{= !${afterCreation>/creation} ? false : true}"/>
-                        <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://upload" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" fileType="xlsx" visible="{= !${afterCreation>/creation} ? false : true}"/>
+                        <unified:FileUploader id="tempUpload" buttonText="{= ${device>/system/phone}?'':${i18n>XLSXload}}" iconOnly="true" buttonOnly="true" icon="sap-icon://upload" uploadComplete="handleTempUploadCompleted" uploadOnChange="true" uploadStart="onHandleTempUploadStart" change="onHandleTempUploadStart" class="sapUiTinyMarginEnd" busy="{tablaFlujo>atta}" sameFilenameAllowed="true" fileType="xlsx" visible="{= !${afterCreation>/creation} ? false : true}" enabled="{= ${datosGral>/in2} !== '' ? true : false}"/>
                         <Button id="toolbarDown" text="{= ${device>/system/phone}?'':${i18n>XLSXdown}}" icon="sap-icon://download" tooltip="{i18n>XLSXdown}" press="onDownTemplate" type="Transparent" visible="{= !${afterCreation>/creation} ? false : true}"/>
                     </layout:content>
                 </layout:HorizontalLayout>
