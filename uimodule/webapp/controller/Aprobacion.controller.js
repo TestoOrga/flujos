@@ -22,8 +22,6 @@ sap.ui.define(
        * @override
        */
       onInit: function () {
-        //   Controller.prototype.onInit.apply(this, arguments);
-        // this.getOwnerComponent().getCatDataComp(oPayload, oModel)
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.getRoute("RouteApprovalView").attachPatternMatched((oEvent) => {
           this.getListData();
@@ -92,12 +90,10 @@ sap.ui.define(
           .getParameter("listItem")
           .getBindingContext("lazyModel")
           .getObject();
-        // oObject.icon = this.byId("list").getSelectedItem().getAggregation('content')[0].getAggregation('items')[0].getAggregation("items").find(x => x.sId.includes("aprovalIcon")).getSrc();
         oObject.icon = oEvent.getParameter("listItem").getAggregation('content')[0].getAggregation('items')[0].getAggregation("items").find(x => x.sId.includes("aprovalIcon")).getSrc();
         var approvalModel = this.getOwnerComponent().getAprovalModel();
         approvalModel.setProperty("/", oObject);
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-        // oRouter.navTo("userDetailRoute",{code: oObject.Code});
         oRouter.navTo("RouteApprovalFlowView", {
           flow: oObject.C7,
         });
@@ -145,9 +141,6 @@ sap.ui.define(
             function (oDialog) {
               // connect dialog to the root view of this component (models, lifecycle)
               this.getView().addDependent(oDialog);
-              // oDialog.addStyleClass(
-              //   this.getOwnerComponent().getContentDensityClass()
-              // );
               oDialog.open(sDialogTab);
             }.bind(this)
           );
@@ -203,23 +196,6 @@ sap.ui.define(
             MessageBox.error(error.responseText);
           }
         });
-        // var oModelData = {
-        //   IniSet: [{
-        //       Name: "asdsad",
-        //       tipo: "NOM",
-        //       color: "Accent1",
-        //       state: "Error",
-        //       Role: "asdfffasdfasfdasddfasfaasdfasdfasdfasdfs"
-        //     },
-        //     {
-        //       Name: "xxxxxx",
-        //       tipo: "FI",
-        //       color: "Accent2",
-        //       state: "Success",
-        //       Role: "asdfffasdfasfdasddfasdfasdfasdfasdfasfas"
-        //     },
-        //   ],
-        // };
       }
     });
   }

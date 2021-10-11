@@ -21,7 +21,6 @@ sap.ui.define(
               oView.byId("resDialog").close();
             },
             afterOpen: function () {
-              // oView.byId("resDialog").setTitle(title ? title : "pedidoData.Vbeln");
               oView.byId("resDialog").setState("Error");
             }
           };

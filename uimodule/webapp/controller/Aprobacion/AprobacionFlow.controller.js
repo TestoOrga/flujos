@@ -169,7 +169,6 @@ sap.ui.define(
         },
         displayFlow: function () {
           return this.getFlowData()
-            // this.getFlowData()
             .then((response) => this.distributeData(response))
             .then(() => this.onAddFlow())
             .then(() => {
@@ -189,13 +188,9 @@ sap.ui.define(
           console.log("Event handler: onAddFlow");
           var flowConfig = this.getModel("flowConfig").getData();
           var flowKey = this.headerData.departamento + this.headerData.actividad + this.headerData.proceso;
-          // var flowKey = this.oUserCode.includes("x") ?
-          //   "NOM001002" :
-          //   "NOM001001";
           var flowViews = flowConfig.find((x) => x[flowKey]);
           if (flowViews) {
             return this.addSpecFlow(flowViews[flowKey])
-            // this.byId("headerFlujosButNuevo").setEnabled(false);
           } else {
             return MessageBox.error(
               this.get18().getText("headerFlujosController.FlujoNoConfigurado")
@@ -207,7 +202,6 @@ sap.ui.define(
           this.createModel = this.getModel("createModel");
           var oPayload = {
             P1: "APPDET",
-            // P2: "SY-UNAME",
             P2: "E",
             to_pesal: [{
               C2: this.lastHash,
@@ -238,12 +232,8 @@ sap.ui.define(
             });
             this.backModel.setProperty("/", flows);
             this.backModelFiles.setProperty("/", files);
-            // this.setModel(new JSONModel(oResults), "viewBackModel");
             this.mapFlowConfig(flows[0]);
             this.mapHeader(flows[0]);
-            // this.setModel(new JSONModel(res.data.to_pesal.results), "lazyModel");
-            // this.tabModel = that.getModel("lazyModel");
-            // this.setHeaderTitle(res.data.P2);
           } else {
             throw {
               message: this.get18().getText("AprobacionFlowController.NoHayInformacionDelFlujo")
@@ -313,8 +303,6 @@ sap.ui.define(
         resetFlow: function () {
           delete this.valFlowStart;
           delete this.getFlowDataStart;
-          // this.clearHeader();
-          // this.setHeaderTitle(this.get18().getText("HeaderTitulo"));
           if (this.views) {
             this.views.forEach((view) =>
               this.getView().byId(view.viewId).destroy()
@@ -323,7 +311,6 @@ sap.ui.define(
             delete this.lastHash;
             this.getOwnerComponent().activeFlow = null;
           }
-          // this.byId("headerFlujosButNuevo").setEnabled(true);
         },
         onConfirmDialogPress: function (fn, text, risk) {
           this.oApproveDialog = new Dialog({
@@ -423,8 +410,6 @@ sap.ui.define(
             this.valFlowRes.forEach((element) => {
               if (!element) okFlow = false;
             });
-            // this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
-
             if (okFlow) {
               this.onConfirmDialogPress(
                 this.submitFlow.bind(this),
@@ -460,15 +445,7 @@ sap.ui.define(
           if (this.getFlowDataStart === 0) {
             console.log("eventEnded");
             this.byId("approvePage").setBusy(true);
-            this.getOwnerComponent().oSendData.mapData(
-              // { flowInfo: {
-              //   departamento: this.headerData.departamento,
-              //   actividad: this.headerData.actividad,
-              //   proceso: this.headerData.proceso,
-              //   id: this.headerData.id,
-              // },
-              // flowData: this.getFlowDataRes }
-              this.addModification(), this.getFlowCode());
+            this.getOwnerComponent().oSendData.mapData(this.addModification(), this.getFlowCode());
           }
         },
         getFlowCode: function () {
@@ -519,7 +496,6 @@ sap.ui.define(
             modelData.stateText = "Aprobado";
             modelData.state = "Success";
             this.getModel("viewModel").setProperty("/", modelData);
-            // this.oEventBus.publish("flowCreated", "releaseFiles");
           }
         },
         onEndflow: function () {
@@ -534,7 +510,6 @@ sap.ui.define(
          Navigation
          ============================================================= */
         navBack: function () {
-          // this.clearHeader();
           var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
           oRouter.navTo("RouteApprovalView", null);
         },
@@ -556,24 +531,12 @@ sap.ui.define(
           );
         },
         switchChanged: function (oEvent) {
-          // var lineCxt = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
           if (!oEvent.oSource.getState()) {
-            // this.setModel(new JSONModel({
-            //   // tabLine: oEvent.getSource().getParent().getParent(),
-            //   // line: lineCxt,
-            //   rejectText: ""
-            // }), "fragMotive");
             this.displayMotivePopOver(this.getModel("viewModel").getProperty("/title"));
           } else {
             this.getModel("viewModel").setProperty("/rejectText", "")
-            // this.getModel("viewModel").refresh(true);
             this.byId("fragMotiveText").setValue("");
-            // this.headerData.rejectText = "";
-            // this._tabModel.setProperty(lineCxt.sPath + "/rejectText", "");
-            // this.getModel("fragMotive").setProperty("/", "");
           }
-          // {vis1: "000001", in1: "211020", vis2: "URQUIDI CHAVEZ JUAN …", vis3: "B2", vis4: "20050316", …}
-
         },
         displayMotivePopOver: function (itemId) {
           var oView = this.getView();
@@ -597,18 +560,11 @@ sap.ui.define(
           }
         },
         acceptRejectComment: function (oEvent) {
-          // var line = this.getModel("fragMotive").getData();
-          // this._tabModel.setProperty(line.line.sPath + "/rejectText", line.rejectText);
           this.getModel("viewModel").setProperty("/rejectText", this.byId("fragMotiveText").getValue());
           this.byId("motiveDialog").close();
         },
 
         _showMotivo: function (oEvent) {
-          // var lineCxt = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
-          // this.setModel(new JSONModel({
-          //   line: lineCxt,
-          //   rejectText: lineCxt.getObject().rejectText
-          // }), "fragMotive");
           this.byId("fragMotiveText").setValue(this.getModel("viewModel").getProperty("/rejectText"));
           this.displayMotivePopOver(this.getModel("viewModel").getProperty("/title"));
         },
@@ -619,68 +575,6 @@ sap.ui.define(
             this.getModel("viewModel").setProperty("/rejectText", "");
           }
         }
-
-        /* ===========================================================
-         BORRAR
-        ============================================================= */
-
-        // onPressDepartamento: function (oEvent) {
-        //   var departamentoKey = oEvent.getSource().getSelectedKey();
-        //   if (departamentoKey !== "") {
-        //     oEvent.getSource().setValueState("None");
-        //     this.headerData.departamento = departamentoKey;
-        //     var oDataEntry = {
-        //       P1: "CAT",
-        //       P2: "CAT2",
-        //       P3: oEvent.getSource().getSelectedKey(),
-        //       to_pesal: [],
-        //     };
-        //     this.getCatData(oDataEntry).then((res) => {
-        //       var actividadModel = new JSONModel(res);
-        //       this.setModel(actividadModel, "actividad");
-        //     });
-        //     this.byId("headerFlujosActiv").setEnabled(true);
-        //   } else {
-        //     oEvent.getSource().setValueState("Error");
-        //   }
-        // },
-
-        // onPressActividad: function (oEvent) {
-        //   var actividadKey = oEvent.getSource().getSelectedKey();
-        //   if (actividadKey !== "") {
-        //     oEvent.getSource().setValueState("None");
-        //     this.headerData.actividad = actividadKey
-        //     var oDataEntry = {
-        //       P1: "CAT",
-        //       P2: "CAT3",
-        //       P3: this.headerData.departamento,
-        //       P4: oEvent.getSource().getSelectedKey(),
-        //       to_pesal: []
-        //     };
-        //     this.getCatData(oDataEntry).then((res) => {
-        //       var actividadModel = new JSONModel(res);
-        //       this.setModel(actividadModel, "proceso");
-        //     });
-        //     this.byId("headerFlujosProceso").setEnabled(true);
-        //   } else {
-        //     oEvent.getSource().setValueState("Error");
-        //   }
-        // },
-
-        // onPressProceso: function (oEvent) {
-        //   var procesoKey = oEvent.getSource().getSelectedKey();
-        //   if (procesoKey !== "") {
-        //     oEvent.getSource().setValueState("None");
-        //     this.headerData.proceso = procesoKey;
-        //     this.headerData.titulo = oEvent.getSource().getSelectedItem().getBindingContext("proceso").getObject().C2;
-        //     this.setHeaderTitle(this.headerData.titulo);
-        //   } else {
-        //     oEvent.getSource().setValueState("Error");
-        //   }
-        // },
-        // setHeaderTitle: function (text) {
-        //   this.byId("headerFlujosPageHeader").setObjectTitle(text);
-        // }
       }
     );
   }

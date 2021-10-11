@@ -7,15 +7,12 @@
     <semantic:SemanticPage id="approvePage" floatingFooter="true" showSubHeader="false" showNavButton="false" title="Aprobacion">
         <semantic:customHeaderContent>
             <ToggleButton pressed="false" icon="sap-icon://user-edit" press="approveEdit"/>
-            <!-- <Button text="edit"/> -->
         </semantic:customHeaderContent>
         <semantic:content>
             <ObjectHeader title="{viewModel>/title}" icon="{path: 'viewModel>/icon',formatter: '.formatter.getIconMaster'}" imageShape="Square" responsive="true" intro="{i18n>AprobacionFlowController.CreadoEl} {path: 'viewModel>/intro',formatter: '.formatter.fooErdat1'}" class="sapUiResponsivePadding--header">
-                <!-- <attributes>                 -->
                 <ObjectAttribute title="{i18n>HeaderDepto}" text="{viewModel>/name}"></ObjectAttribute>
                 <ObjectAttribute title="{i18n>HeaderActiv}" text="{viewModel>/subName}"></ObjectAttribute>
                 <ObjectAttribute title="{i18n>HeaderProceso}" text="{viewModel>/subName1}"></ObjectAttribute>
-                <!-- </attributes> -->
                 <statuses>
                     <ObjectStatus text="{viewModel>/stateText}" state="{viewModel>/state}" ></ObjectStatus>
                 </statuses>
@@ -34,7 +31,6 @@
                         <c:Icon src="sap-icon://comment" press="_showMotivo" class="sapUiTinyMarginTop sapUiTinyMarginBeginEnd" visible="{= ${viewModel>/rejectText} !== '' ? true : false }"/>
                     </HBox>
 
-                    <!-- <ToolbarSpacer id="spacer" width="50px"/> -->
                     <Button id="footerFlujosButAprobar" type="Accept" text="{i18n>AprobacionFlowView.Procesar}" press="onAprobar"/>
                     <Button id="footerFlujosButCancelar" type="Reject" text="{= ${device>/system/phone}?'':${i18n>HeaderFlujosFooterButCancelar}}" icon="{= ${device>/system/phone}?'sap-icon://cancel':''}" press="onCancelar"/>
                 </content>

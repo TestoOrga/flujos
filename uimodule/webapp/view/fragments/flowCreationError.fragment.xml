@@ -1,7 +1,6 @@
 <c:FragmentDefinition xmlns="sap.m"
     xmlns:c="sap.ui.core">
     <Dialog id="resDialog" type="Message" contentWidth="{= ${device>/system/phone}?'100%':'50%'}" afterOpen="afterOpen">
-        <!-- <Text text="{fragRes>/col1} {fragRes>/col6}"></Text> -->
         <Table id="idFragTable" items="{
 					path: 'fragResData>/',
                     templateShareable:false 
@@ -29,7 +28,5 @@
                 </ColumnListItem>
             </items>
         </Table>
-        <!-- <Button press="onCloseDialog"> -->
-        <!-- </Button> -->
     </Dialog>
 </c:FragmentDefinition>

@@ -11,31 +11,30 @@
 							<f:FormElement label="No Personal" id="noPersonal_Label">
 								<f:fields>
 									<Input width="100%" id="noPeronsal_Input" submit="onEnterInputNoPersonal" maxLength="8" type="Number" enabled="true" editable="{afterCreation>/noEditField}"/>
-									<Input width="100%" id="noPeronsal_Input1" enabled="false"/>
-									<!-- <Text text="{afterCreation>/noEditField}"/> -->
+									<Input width="100%" id="noPeronsal_Input1" editable="false"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Sociedad" id="sociedad_Label">
 								<f:fields>
-									<Input width="100%" id="sociedad_Input" enabled="false"/>
-									<Input width="100%" id="sociedad_Input1" enabled="false"/>
+									<Input width="100%" id="sociedad_Input" editable="false"/>
+									<Input width="100%" id="sociedad_Input1" editable="false"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="División" id="division_Label">
 								<f:fields>
-									<Input width="100%" id="division_Input" enabled="false"/>
-									<Input width="100%" id="division_Input1" enabled="false"/>
+									<Input width="100%" id="division_Input" editable="false"/>
+									<Input width="100%" id="division_Input1" editable="false"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Función" id="funcion_Label">
 								<f:fields>
-									<Input width="100%" id="funcion_Input" enabled="false"/>
-									<Input width="100%" id="funcion_Input1" enabled="false"/>
+									<Input width="100%" id="funcion_Input" editable="false"/>
+									<Input width="100%" id="funcion_Input1" editable="false"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Área Nómina" id="areaNomina_Label">
 								<f:fields>
-									<Input width="100%" id="areaNomina_Input" enabled="false"/>
+									<Input width="100%" id="areaNomina_Input" editable="false"/>
 								</f:fields>
 							</f:FormElement>
 							<f:FormElement label="Periodo Retención" id="periodoRet_Label">
@@ -46,7 +45,7 @@
 							</f:FormElement>
 							<f:FormElement label="Fecha Inicio Ret." id="fechaIniRet_Label">
 								<f:fields>
-									<Input width="100%" id="fechaIniRet_Input" enabled="false"/>
+									<Input width="100%" id="fechaIniRet_Input" editable="false"/>
 								</f:fields>
 							</f:FormElement>
 						</f:formElements>

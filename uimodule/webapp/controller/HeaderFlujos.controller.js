@@ -98,39 +98,26 @@ sap.ui.define(
         return oEntityData;
       },
       getCatData: function (oPayload) {
-        var that = this;
-        return new Promise((resolve, reject) => {
-          this.mainModel.create("/BaseSet", oPayload, {
-            async: true,
-            success: function (req, res) {
-              resolve(res.data.to_pesal.results);
-            },
-            error: function (error) {
-              reject(error);
-            }
-          });
-        })
+        return this.getOwnerComponent().getCatDataComp(oPayload, this.mainModel);
+        //VERIFICAR NO AFECTACION desde 11/October/2021
+        // return new Promise((resolve, reject) => {
+        //   this.mainModel.create("/BaseSet", oPayload, {
+        //     async: true,
+        //     success: function (req, res) {
+        //       resolve(res.data.to_pesal.results);
+        //     },
+        //     error: function (error) {
+        //       reject(error);
+        //     }
+        //   });
+        // })
       },
-      /**
-       * @override
-       */
       onAfterRendering: function (oEvent) {
-
         console.log("AfterRendering");
-
       },
-      /**
-       * @override
-       */
       onBeforeRendering: function (oEvent) {
-
         console.log("BeforeRendering");
-
       },
-      /**          
-
-       * @override
-       */
       onExit: function () {
         console.log("Exit");
         this.getView().destroy();
@@ -153,38 +140,6 @@ sap.ui.define(
           MessageBox.error(this.get18().getText("headerFlujosController.FlujoNoConfigurado"));
         }
       },
-      // addSpecFlow1: function () {
-      //   // if (!this.valHeaderInput()) {
-      //   //   MessageBox.error(this.get18().getText("createFlowError"));
-      //   //   return
-      //   // }
-      //   var oPayload = {
-      //     P1: "CAT",
-      //     P2: "ID",
-      //     to_pesal: []
-      //   };
-      //   this.getCatData(oPayload).then((res) => {
-      //     if (res.length > 0) {
-      //       var id = res[0].C1;
-      //       this.headerData.id = id;
-      //       this.byId("headerFLujosIdFlujo").setText(id);
-      //     }
-      //   });
-      //   console.log("Event Handler: onAddFlow");
-      //   this.views = [{
-      //     controlId: "headerFlujosInsertPanel1",
-      //     controllerName: "bafar.flujos.flujos.controller.Tabla.FlujoTabla",
-      //     viewId: "flujostabla",
-      //     viewName: "bafar.flujos.flujos.view.Tabla.FlujoTabla"
-      //   }];
-      //   this.views.forEach((view) => {
-      //     var oView = this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName);
-      //     console.log(view.viewId);
-      //     oView.then((res) => {
-      //       res.oView.placeAt(res.oRef).addStyleClass("headerPanel").addStyleClass("FlexContent");
-      //     })
-      //   });
-      // },
       addSpecFlow: async function (flowConfig) {
         // if (!this.valHeaderInput()) {
         //   MessageBox.error(this.get18().getText("createFlowError"));
@@ -213,31 +168,7 @@ sap.ui.define(
           flow: "Creacion",
           viewController: this
         };
-        // [{
-        //     controlId: "headerFlujosInsertPanel1",
-        //     controllerName: "bafar.flujos.flujos.controller.PensionesC.DatosPersonales",
-        //     viewId: "PensionesDatosPersonales",
-        //     viewName: "bafar.flujos.flujos.view.PensionesV.DatosPersonales"
-        //   },
-        //   {
-        //     controlId: "headerFlujosInsertPanel1",
-        //     controllerName: "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
-        //     viewId: "PensionesDatosJuridica",
-        //     viewName: "bafar.flujos.flujos.view.PensionesV.Juridica"
-        //   },
-        //   {
-        //     controlId: "headerFlujosInsertPanel1",
-        //     controllerName: "bafar.flujos.flujos.controller.PensionesC.JuridicaDeudas",
-        //     viewId: "PensionesDatosDeudas",
-        //     viewName: "bafar.flujos.flujos.view.PensionesV.Deudas"
-        //   },
-        //   {
-        //     controlId: "headerFlujosInsertPanel1",
-        //     controllerName: "bafar.flujos.flujos.controller.Comunes.ArchivosExtra",
-        //     viewId: "ArchivosExtra",
-        //     viewName: "bafar.flujos.flujos.view.Comunes.ArchivosExtra"
-        //   }
-        // ];        
+
         var viewArr = [];
         this.views.forEach((view) => {
           viewArr.push(this.specificFlow(view.controlId, view.controllerName, view.viewId, view.viewName));
@@ -359,7 +290,6 @@ sap.ui.define(
           this.valFlowRes.forEach(element => {
             if (!element) okFlow = false;
           });
-          // this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
 
           if (okFlow) {
             this.onConfirmDialogPress(this.submitFlow.bind(this), this.get18().getText("submitConfirmationQuestion"), true);
@@ -511,26 +441,6 @@ sap.ui.define(
         } else {
           this.byId("headerFlujosPageHeader").setObjectSubtitle(this.get18().getText("HeaderSubtitulo"));
         }
-      },
-
-      testo: function (oEvent) {
-        // var headerTi
-        // var fragRes = {
-        //   "col1": true,
-        //   "col2": true,
-        // };
-        // var resto_pesal = [{
-        //   C1: "A",
-        //   C2: "s",
-        //   C6: "xxx"
-        // }, {
-        //   C1: "B",
-        //   C2: "s",
-        //   C6: "xxx"
-        // }];
-        // this.getOwnerComponent().openErrorFrag(fragtle = "000001";Res, resto_pesal, this.getOwnerComponent().flowData.id);
-        this.getOwnerComponent().oOneDrive.fetchToken();
-        this.getOwnerComponent().oOneDrive.testo();
       }
     });
   }

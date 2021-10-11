@@ -1,19 +1,16 @@
 /* eslint-disable no-console */
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/m/MessageToast", "bafar/flujos/flujos/libs/filesaver", "bafar/flujos/flujos/libs/xlsx.full.min",
+  ["sap/ui/core/mvc/Controller", "bafar/flujos/flujos/libs/filesaver", "bafar/flujos/flujos/libs/xlsx.full.min",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/routing/HashChanger",
     "sap/m/MessageBox"
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
   function (Controller,
-    MessageToast,
     filesaver,
     XlsxFullmin,
     JSONModel,
-    HashChanger,
     MessageBox) {
     "use strict";
 
@@ -95,17 +92,12 @@ sap.ui.define(
 
           oModel.create("/BaseSet", oEntityData, {
             success: function (oData, oResponse) {
-              // Success
-              //sap.m.MessageToast.show(" Created Successfully");
               oODataJSONModel.setData({
                 catalogo: oData.to_pesal.results,
               });
               oDataResults = oData.to_pesal.results;
             },
-
             error: function (oError) {
-              // Error
-              //sap.m.MessageToast.show(" Creation failed");
             },
           });
 
@@ -155,23 +147,18 @@ sap.ui.define(
 
             oModel2.create("/BaseSet", oEntityData2, {
               success: function (oData, oResponse) {
-                // Success
-                //sap.m.MessageToast.show(" Created Successfully");
-
                 oODataJSONModel2.setData({
                   catalogo: oData.to_pesal.results,
                 });
                 oDataResults2 = oData.to_pesal.results;
               },
-
               error: function (oError) {
-                // Error
-                //sap.m.MessageToast.show(" Creation failed");
               },
             });
 
             if (oDataResults2.length === 0) {
               this.byId("fechaIniRet_Input").setValue("");
+              this.byId("periodoRet_Input1").setValue("");
               MessageBox.error("No existen registros");
             }
 
@@ -215,17 +202,9 @@ sap.ui.define(
         onValidateInputs: function () {
           var datosPersonalesFields = [
             "noPeronsal_Input",
-            // "noPeronsal_Input1",
-            // "sociedad_Input",
-            // "sociedad_Input1",
-            // "division_Input",
-            // "division_Input1",
-            // "funcion_Input",
-            // "funcion_Input1",
-            // "areaNomina_Input",
             "periodoRet_Input",
             "periodoRet_Input1",
-            // "fechaIniRet_Input",
+            "fechaIniRet_Input"
           ];
 
           var error = false;
@@ -275,7 +254,6 @@ sap.ui.define(
          * @override
          */
         onButAction: function () {
-          //MessageToast.show("Datos Personales");
         },
         getValInputs: function () {
 
@@ -313,7 +291,6 @@ sap.ui.define(
 
         // APROBACION
         applyData: function (sChannel, oEvent, res) {
-          // console.log(res.res);
           this.mapToView("PERSONALES", res.res[0]);
           this.oEventBus.publish("flowApproval", "loadViewData", {
             data: this.mapToView("JURIDICA", res.res[0]),
@@ -376,19 +353,6 @@ sap.ui.define(
           };
         },
         getDataForApproval: function () {
-          // this.byId("noPeronsal_Input").setValue(oData.C27);
-          // this.byId("noPeronsal_Input1").setValue(oData.C28);
-          // this.byId("sociedad_Input").setValue(oData.C29);
-          // this.byId("sociedad_Input1").setValue(oData.C30);
-          // this.byId("division_Input").setValue(oData.C31);
-          // this.byId("division_Input1").setValue(oData.C32);
-          // this.byId("funcion_Input").setValue(oData.C33);
-          // this.byId("funcion_Input1").setValue(oData.C34);
-          // this.byId("areaNomina_Input").setValue(oData.C35);
-          // this.byId("periodoRet_Input").setValue(oData.C36);
-          // this.byId("periodoRet_Input1").setValue(oData.C37);
-          // datosPersonalesData.C40 = datosPersonalesData.C22;
-
           var result = this.onGetDataFromInput();
           var toMod = {
             C27: result.C11,

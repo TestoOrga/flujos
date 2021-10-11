@@ -1,4 +1,3 @@
-<!-- <mvc:View controllerName="bafar.flujos.flujos.controller.Aprobacion" -->
 <mvc:View xmlns:layout="sap.ui.layout" controllerName="bafar.flujos.flujos.controller.Aprobacion"
     xmlns="sap.m"
     xmlns:semantic="sap.f.semantic"
@@ -17,9 +16,6 @@
         </semantic:titleHeading>
         <semantic:titleExpandedHeading>
         </semantic:titleExpandedHeading>
-        <!-- <semantic:titleSnappedOnMobile>
-            <Title id="masterPageTitlePhone" text="Aprobacion Usuario: 0983459847594832" level="H2"/>
-        </semantic:titleSnappedOnMobile> -->
         <semantic:headerContent>
             <fb:FilterBar id="filterbar" reset="onRefresh" search=".onSearch" useToolbar="false" showRestoreOnFB="true" filterBarExpanded="false" showRestoreButton="true">
                 <fb:filterGroupItems>
@@ -61,7 +57,6 @@
             </fb:FilterBar>
         </semantic:headerContent>
         <semantic:content >
-            <!-- <Text text="testo"></Text> -->
             <List id="list" width="auto" class="sapUiContentPadding" items="{
 					path: 'lazyModel>/',
 					sorter: {
@@ -83,7 +78,7 @@
                     </OverflowToolbar>
                 </headerToolbar>
                 <items>
-                    <CustomListItem id="listItem" type="Navigation"  class="claseitem FlexContentList">
+                    <CustomListItem id="listItem" type="Navigation" class="claseitem FlexContentList">
                         <content>
                             <FlexBox width="100%" alignItems="Center" alignContent="Center" wrap="Wrap" class="sapUiTinyMarginBegin">
                                 <items>

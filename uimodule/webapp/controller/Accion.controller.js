@@ -24,9 +24,10 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
       oRouter.getRoute("RouteAccionView").attachPatternMatched(this.onPageLoaded, this);
     },
     onPageLoaded: function (oEvent) {
-      this.oUserCode = oEvent.getParameter("arguments").code;
       this.mainModel = this.getView().getModel();
       this.mainModel.setUseBatch(false);
+
+      //TODO: Agregar validacion de acciones por usuario 
       // var blockRequest = {
       //   P2: "",
       //   P2: "BLOQUE",
@@ -93,7 +94,6 @@ sap.ui.define(["bafar/flujos/flujos/controller/BaseController",
                 this.getOwnerComponent().currentMode = 3;
                 this.navTo("RouteApprovalView");
               })
-            // MessageBox.error(this.get18().getText("sinAutorizacion"));
             break;
           default:
             break;

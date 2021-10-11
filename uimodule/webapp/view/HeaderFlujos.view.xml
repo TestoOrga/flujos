@@ -5,7 +5,6 @@
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:core="sap.ui.core"
 	xmlns="sap.uxap">
-	<!-- showNavButton="true" navButtonPress="onBack"-->
 	<m:Page id="headerFlujosMasterPage">
 		<ObjectPageLayout id="headerFlujosPageLayout" showFooter="true">
 			<headerTitle>
@@ -13,7 +12,6 @@
 					<actions>
 						<m:Button id="headerFlujosButReset" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonReset}}" press="onReset" icon="sap-icon://reset" type="Transparent"/>
 						<m:Button id="headerFlujosButNuevo" text="{= ${device>/system/phone} ? '':${i18n>HeaderBotonNuevo}}" press="onAddFlow" icon="sap-icon://add" type="Emphasized"/>
-						<!-- <m:Button id="testo" press="testo" icon="sap-icon://add" type="Emphasized"/> -->
 					</actions>
 				</ObjectPageHeader>
 			</headerTitle>
@@ -23,7 +21,6 @@
 				</l:VerticalLayout>
 				<l:VerticalLayout id="headerFlujosVL2" width="{= ${device>/system/phone} ? '100%' : auto}">
 					<m:Label id="headerFlujosLabelDepto" text="{i18n>HeaderDepto}" labelFor="headerFLujosComboboxDepto" required="true" />
-					<!-- items="{path: 'departamento>/', sorter: {path: 'departamento>/C2' } }" -->
 					<m:ComboBox id="headerFlujosDepartamento" items="{departamento>/}" showSecondaryValues="true" selectionChange="onPressDepartamento" class="valHeaderInput">
 						<core:Item key="{departamento>C1}" text="{departamento>C2}"/>
 					</m:ComboBox>
@@ -45,51 +42,21 @@
 			</headerContent>
 			<sections>
 				<ObjectPageSection id="headerFlujosPageSec1" showTitle="false">
-					<!-- <subSections> -->
 					<ObjectPageSubSection id="headerFlujosPageSub1Sec1">
 						<blocks>
-							<!-- <m:List headerText="Products" items="{
-			path: 'departamento>/'
-		}">
-								<m:StandardListItem title="{departamento>C1}" counter="{departamento>C2}"/>
-							</m:List> -->
 							<m:Panel id="headerFlujosInsertPanel1" class="headerPanelBlock">
 							</m:Panel>
-							<!-- <dv:DVStatus text="{Status}" color="{StatusColor}"/> -->
-						</blocks>
-						<!-- </ObjectPageSubSection>
-					</subSections>
-				</ObjectPageSection>
-				<ObjectPageSection id="headerFlujosPageSec2" title="{flujo>/seccion2}">
-					<ObjectPageSubSection id="headerFlujosPageSub1Sec2">
-						<blocks>
-							<m:Panel id="headerFlujosInsertPanel2">
-							</m:Panel>
 						</blocks>
 					</ObjectPageSubSection>
-				</ObjectPageSection>
-				<ObjectPageSection id="headerFlujosPageSec3" title="{flujo>/seccion3}">
-					<ObjectPageSubSection id="headerFlujosPageSub1Sec3">
-						<blocks>
-							<m:Panel id="headerFlujosInsertPanel3">
-							</m:Panel>
-						</blocks> -->
-					</ObjectPageSubSection>
-					<!-- <mvc:XMLView id="insertView" /> -->
-					<!-- <mvc:XMLView viewName="bafar.flujos.flujos.view.PensionesV.JuridicaDeudas" /> -->
 				</ObjectPageSection>
 			</sections>
 			<footer>
 				<m:OverflowToolbar id="footer">
 					<m:content>
-					    <m:Text text="{i18n>HeaderFlujosView.CreacionVersion}" class="version"/>
+						<m:Text text="{i18n>HeaderFlujosView.CreacionVersion}" class="version"/>
 						<m:ToolbarSpacer id="spacer"/>
 						<m:Button id="headerFlujosButGrabar" type="Accept" text="{i18n>HeaderFlujosFooterButGrabar}" press="onGrabar"/>
 						<m:Button id="headerFlujosButCancelar" type="Reject" text="{i18n>HeaderFlujosFooterButCancelar}" press="onCancelar"/>
-						<!-- <m:Button id="headerFlujosButCancelar1" type="Reject" text="addPanel1" press="addPanel($event, '1')"/>
-						<m:Button id="headerFlujosButCancelar2" type="Reject" text="addPanel2" press="addPanel($event, '2')"/>
-						<m:Button id="headerFlujosButCancelar3" type="Reject" text="delPanel1" press="delPanel($event, '1')"/>
-						<m:Button id="headerFlujosButCancelar4" type="Reject" text="delPanel2" press="delPanel($event, '2')"/> -->
 					</m:content>
 				</m:OverflowToolbar>
 			</footer>

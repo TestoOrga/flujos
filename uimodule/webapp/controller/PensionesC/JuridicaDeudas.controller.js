@@ -3,14 +3,13 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/mvc/XMLView",
     "sap/m/MessageBox",
     "bafar/flujos/flujos/model/formatter"
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, MessageToast, JSONModel, XMLView, MessageBox, formatter) {
+  function (Controller, MessageToast, JSONModel, MessageBox, formatter) {
     "use strict";
     var oModel,
       oODataJSONModel,
@@ -23,15 +22,6 @@ sap.ui.define(
       juridicaDeudasModel;
 
     var juridicaDeudasData = [];
-    // var juridicaDeudasData = {
-    //   ClaveBanco: "",
-    //   vViaPago: "",
-    //   Receptor: "",
-    //   CuentaBancaria: "",
-    //   NumeroOrden: "",
-    //   TipoDescuento: "",
-    //   UnidadIntervalo: ""
-    // }
 
     return Controller.extend("namespace.name.project3.controller.View1", {
       formatter: formatter,
@@ -61,11 +51,6 @@ sap.ui.define(
           to_pesal: [],
         };
 
-        /*var oEntity = {
-                    ClaveBanco : { P1 : "CAT", P2 : "BANKL"},
-                    ViaPago : { P1 : "CAT", P2 : "VIA"}
-                };*/
-
         var oEntityViaPago = {
           P1: "CAT",
           P2: "VIA",
@@ -85,35 +70,13 @@ sap.ui.define(
           to_pesal: [],
         };
 
-
-        /*Model.create("/BaseSet", oEntityViaPago, {
-
-                    success: function (oData, oResponse) {
-                        sap.m.MessageToast.show(" Creation success");
-                        oODataJSONModel.setData({
-                            viaPago: oData.to_pesal.results
-                        });
-                        
-                        //window.console.log(oDataResults)
-                    },
-
-                    error: function (oError) {
-                        // Error
-                        sap.m.MessageToast.show(" Creation failed");
-                    }
-                });*/
-
-
         oModel.create("/BaseSet", oEntityClaveBanco, {
           success: function (oData, oResponse) {
-            // Success
-            // sap.m.MessageToast.show(" Created Successfully");
             window.console.log(oData.to_pesal.results);
             var data = oODataJSONModel.getData();
             data.claveBanco = oData.to_pesal.results;
             oODataJSONModel.setData(data);
             oDataResults = oData.to_pesal.results;
-            //window.console.log(oDataResults)
           },
 
           error: function (oError) {
@@ -124,14 +87,10 @@ sap.ui.define(
 
         oModel.create("/BaseSet", oEntityViaPago, {
           success: function (oData, oResponse) {
-            // Success
-            // sap.m.MessageToast.show(" Created Successfully");
-            //window.console.log(oData.to_pesal);
             var data = oODataJSONModel.getData();
             data.viaPago = oData.to_pesal.results;
             oODataJSONModel.setData(data);
             oDataResults = oData.to_pesal.results;
-            //window.console.log(oDataResults)
           },
 
           error: function (oError) {
@@ -142,14 +101,10 @@ sap.ui.define(
 
         oModel.create("/BaseSet", oEntityTipoDescuento, {
           success: function (oData, oResponse) {
-            // Success
-            // sap.m.MessageToast.show(" Created Successfully");
-            //window.console.log(oData.to_pesal);
             var data = oODataJSONModel.getData();
             data.tipoDescuento = oData.to_pesal.results;
             oODataJSONModel.setData(data);
             oDataResults = oData.to_pesal;
-            //window.console.log(oDataResults)
           },
 
           error: function (oError) {
@@ -209,13 +164,9 @@ sap.ui.define(
 
         oModel.create("/BaseSet", oEntityUnidadIntervalo, {
           success: function (oData, oResponse) {
-            // Success
-            // sap.m.MessageToast.show(" Created Successfully");
-            //window.console.log(oData.to_pesal);
             var data = oODataJSONModel.getData();
             data.unidadIntervalo = oData.to_pesal.results;
             oODataJSONModel.setData(data);
-            //window.console.log(oDataResults)
           },
 
           error: function (oError) {
@@ -225,7 +176,6 @@ sap.ui.define(
         })
         oSelectUnidadIntervalo.setModel(oODataJSONModel);
 
-        // var descuentoSplit = descuentoText.split(" ")[1];
         this.getView().byId("descuentoCurrLabel").setVisible(true);
         this.getView().byId("descuentoCurrLabel").setText(descuentoText);
         this.getView().byId("descuentoCurr").setVisible(true);
@@ -374,23 +324,6 @@ sap.ui.define(
           };
           return deudasData;
         }
-
-        //GuardadoJuridicaDeudas
-
-
-        /*juridicaDeudasData = {
-            ClaveBanco: "test",
-            vViaPago: "test",
-            Receptor: "test",
-            CuentaBancaria: "test",
-            NumeroOrden: "test",
-            TipoDescuento: "test",
-            UnidadIntervalo: "test"
-        }*/
-
-
-        /*juridicaDeudasModel = new sap.ui.model.json.JSONModel();
-        juridicaDeudasModel.setData(juridicaDeudasData);*/
       },
 
 
@@ -410,10 +343,6 @@ sap.ui.define(
         this.currencyNum = currency;
         var currencyFormated = formatter.format(percent ? currency / 100 : currency);
         this.getView().byId("descuentoCurr").setValue(currencyFormated);
-
-        /*var currency = this.getView().byId("descuentoCurr").getValue();
-        var currencyFormated = currency + ".00"
-        this.getView().byId("descuentoCurr").setValue(currencyFormated);*/
       },
       //Descuento Currency field Format
 
@@ -450,7 +379,6 @@ sap.ui.define(
       },
 
       cantLiveChange: function (oEvent) {
-        // oEvent.oSource.setValue(oEvent.getParameter("newValue").replace(/\D/g, ""));
       },
       loadData: function (sChannel, oEvent, res) {
         switch (res.view) {
