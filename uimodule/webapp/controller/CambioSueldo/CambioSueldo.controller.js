@@ -242,8 +242,6 @@ sap.ui.define(
             return element.getBindingContext("tablaFlujo").getObject().template
           }).forEach(element => {
             this._tabModel.setProperty(element.getBindingContext("tablaFlujo").sPath + "/template", false);
-            // element.getAggregation("cells").find(x=>x.sId.includes("in2")).setSelectedKey(element.getBindingContext("tablaFlujo").getObject().in2);
-            // this.setCC(undefined, element.getAggregation("cells").find(x => x.sId.includes("in2")));
             this.getPernr(undefined, element);
           });
           if (this._oTab.getSelectedItems().length === 0) {
@@ -277,11 +275,6 @@ sap.ui.define(
         /* =========================================================== */
         /* EXCEL                                                       */
         /* =========================================================== */
-        // onSelectionChange: function (oEvent) {
-        //   var oSelectedItem = oEvent.getParameter("listItem");
-        //   var oModel = oSelectedItem.getBindingContext().getObject();
-        //   alert(JSON.stringify(oModel));
-        // },
         onHandleTempUploadStart: function (oEvent) {
           if (oEvent.getParameter("newValue") !== "") {
             this.templateFile = oEvent.getParameter("files")[0];
@@ -413,13 +406,10 @@ sap.ui.define(
         },
         getPernr: function (oEvent, oExtControl) {
           var oControl = oExtControl ? oExtControl : oEvent.getSource();
-          // if (oEvent) //CAMBIOS *solo si no tienes campos de periodos*this.resetPeriodos(oControl.getParent().getAggregation("cells"));
           var oPayload = {
             P1: "CAT",
             P2: "PERNR",
             P3: oEvent ? oEvent.getParameter("value") : oControl.getBindingContext("tablaFlujo").getObject().in1,
-            // P4: this.headerData.sociedad,
-            // P5: this.headerData.division,
             to_pesal: [],
           };
           var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
@@ -434,7 +424,6 @@ sap.ui.define(
                 lineData.vis3 = pernrData.C26;
                 lineData.vis4 = pernrData.C27;
                 lineData.vis5 = pernrData.C28;
-                // lineData.vis6 = pernrData.C35;
                 lineData.popUp = {
                   visP1: pernrData.C15,
                   visP2: pernrData.C13,
@@ -442,7 +431,6 @@ sap.ui.define(
                   visP4: pernrData.C22,
                   visP5: pernrData.C18,
                   visP6: pernrData.C15
-                  //Cambios (mapeas tus campos)
                 };
               } else {
                 lineData.vis2 = "";
@@ -454,31 +442,7 @@ sap.ui.define(
               console.log("PERNR Loaded");
               this.loadPopOver(controlForPopover);
             })
-          // .then(this.getPeriodo(lineContext))
-          // .then(() => {
-          //   if (oExtControl) {
-          //     oExtControl.getAggregation("cells").find(x => x.sId.includes("in5")).setSelectedKey(lineContext.getObject().in5);
-          //     this.setIniDate(undefined, oExtControl.getAggregation("cells").find(x => x.sId.includes("in5")));
-          //     oExtControl.getAggregation("cells").find(x => x.sId.includes("in6")).setSelectedKey(lineContext.getObject().in6Temp);
-          //     this.setEndDate(undefined, oExtControl.getAggregation("cells").find(x => x.sId.includes("in6")));
-          //   };
-          // });
         },
-        // getPeriodo: function (oContext) {
-        //   var lineContext = oContext;
-        //   var oPayload = {
-        //     P1: "CAT",
-        //     P2: "PERIODO",
-        //     P3: lineContext.getObject().vis3,
-        //     to_pesal: [],
-        //   };
-        //   return this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
-        //     var line = lineContext.getObject();
-        //     line.din5 = res;
-        //     line.din6 = res;
-        //     this._tabModel.setProperty(lineContext.sPath, line);
-        //   });
-        // },
         getFlowData: function () {
           return this._tabModel.getData();
         },
@@ -544,15 +508,6 @@ sap.ui.define(
             case "division":
               this.headerData.division = selKey;
               break;
-              // case "in2":
-              //   this.setCC(oEvent);
-              //   break;
-              // case "in5":
-              //   this.setIniDate(oEvent);
-              //   break;
-              // case "in6":
-              //   this.setEndDate(oEvent);
-              //   break;
             case "areaNomina":
               this.headerData.areaNomina = selKey;
               afterSelect();
@@ -563,60 +518,6 @@ sap.ui.define(
           }
           afterSelect();
         },
-        // setCC: function (oEvent, oExtControl) {
-        //   var oControl = oExtControl || oEvent.oSource;
-        //   var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
-        //   var sPath = lineContext.sPath;
-        //   var lineData = lineContext.getObject();
-        //   var selDate = oControl.getSelectedItem().getBindingContext("in2").getObject();
-        //   lineData.vis5 = selDate.C2;
-        //   this._tabModel.setProperty(sPath, lineData);
-        // },
-        // setEndDate: function (oEvent, oExtControl) {
-        //   var oControl = oExtControl || oEvent.oSource;
-        //   var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
-        //   var sPath = lineContext.sPath;
-        //   var lineData = lineContext.getObject();
-        //   var selDate = oControl.getSelectedItem().getBindingContext("tablaFlujo").getObject();
-        //   lineData.vis7 = selDate.C3;
-        //   this._tabModel.setProperty(sPath, lineData);
-        // },
-        // setIniDate: function (oEvent, oExtControl) {
-        //   var oControl = oExtControl || oEvent.oSource;
-        //   var lineContext = oControl.getBindingContext(this.viewConfig.tabModelName);
-        //   var sPath = lineContext.sPath;
-        //   var lineData = lineContext.getObject();
-        //   var selDate = oControl.getSelectedItem().getBindingContext("tablaFlujo").getObject();
-        //   lineData.vis6 = selDate.C2;
-        //   lineData.vis7 = selDate.C3;
-        //   oControl.getParent().getAggregation("cells").find(x => x.sId.includes("in6")).setSelectedKey(oControl.getSelectedKey());
-        //   this._tabModel.setProperty(sPath, lineData);
-        //   this.restricEndDate(oControl.getSelectedKey(), oControl.getParent().getAggregation("cells").find(x => x.sId.includes("in6")));
-        // },
-        // restricEndDate: function (keyDate, oEndDateCell) {
-        //   var tfilter = new sap.ui.model.Filter("C1", sap.ui.model.FilterOperator.GE, keyDate);
-        //   oEndDateCell.getBinding("items").filter(tfilter);
-        // },
-        // //Cambios
-        // getCC: function (oEvent) {
-        //   var oPayload = {
-        //     P1: "CAT",
-        //     P2: "CCNOM",
-        //     P3: this.headerData.tipo,
-        //     to_pesal: [],
-        //   };
-        //   this.getOwnerComponent().getCatDataComp(oPayload, this.getModel()).then((res) => {
-        //     if (this.getModel("in2")) {
-        //       this.getModel("in2").setProperty("/", []);
-        //     }
-        //     if (res.length > 0) {
-        //       this.setModel(new JSONModel(res), "in2");
-        //     }
-        //     this.resetCC();
-        //   });
-        // },
-        // //Cambios
-        // //Cambios, nueva funcion
         getMotivo: function (oEvent) {
           var oPayload = {
             P1: "CAT",
@@ -633,30 +534,9 @@ sap.ui.define(
             // this.resetCC();
           });
         },
-        //Cambios, nueva funcion
-        // resetCC: function () {
-        //   $(".resSelect").each((i, e) => {
-        //     var domRef = document.getElementById(e.id);
-        //     var oControl = $(domRef).control()[0];
-        //     if (oControl.sId.includes("in2")) {
-        //       oControl.setSelectedKey("");
-        //     }
-        //   });
-        // },
-        //?????????????????
-        // resetPeriodos: function (oCells) {
-        //   oCells.find(x => x.sId.includes("in5")).setSelectedKey("");
-        //   oCells.find(x => x.sId.includes("in6")).setSelectedKey("");
-        // },
         formatCurrency: function (oEvent, param) {
-          // var options = {
-          //   style: "currency",
-          //   currency: "USD"
-          // };
-          // var formatter = new Intl.NumberFormat("en-us", options);
           var currencyT = oEvent.oSource.getValue();
           var currency = isNaN(Number(currencyT)) ? 0 : currencyT;
-          // var currencyFormated = formatter.format(currency);
           var currencyFormated = accounting.formatMoney(currency);
           var lineContext = oEvent.getSource().getBindingContext(this.viewConfig.tabModelName);
           var lineData = lineContext.getObject();
@@ -666,13 +546,6 @@ sap.ui.define(
             this._tabModel.setProperty(sPath, lineData);
           }
         },
-
-        // formatFromCurrency: function (oExtVal) {
-        //   return {
-        //     txt: oExtVal,
-        //     num: oExtVal.replace("$", "").replaceAll(",", "")
-        //   };
-        // },
         setTempVals: function (oTab) {
           var c = this.xlsxHeaders;
           if (oTab.length > 0) {
@@ -703,7 +576,6 @@ sap.ui.define(
 
         // APROBACION
         applyData: function (sChannel, oEvent, res) {
-          // console.log(res.res);
           this.onBeforeRendering(true)
             .then(() => this.mapToView("HEADER", res.res[0]))
             .then(() =>
@@ -732,13 +604,10 @@ sap.ui.define(
                   });
               })
 
-              // this.getCC();
               // break;
             default:
-              // var tabData = this._tabModel.getProperty("/");
               var mappedData = [];
               oData.forEach(element => {
-                // var formattedCurr = this.formatFromCurrency(element.C37);
                 mappedData.push({
                   template: true,
                   vis1: element.C6,
@@ -767,19 +636,6 @@ sap.ui.define(
           var mappedData = [];
           result.forEach(element => {
             mappedData.push({
-
-              // vis1: element.C6,
-              // in1: element.C30,
-              // vis2: element.C31,
-              // in2: accounting.formatMoney(element.C32),
-              // in2Num: element.C32,
-              // in3: element.C33,
-              // in4: element.C34,
-              // in5: element.C11,
-              // vis3: element.C36,
-              // vis4: element.C37,
-              // vis5: element.C38,
-
               C6: element.vis1,
               C30: element.in1,
               C31: element.vis2,
@@ -817,8 +673,6 @@ sap.ui.define(
             this._tabModel.setProperty(lineCxt.sPath + "/rejectText", "");
             this.getModel("fragMotive").setProperty("/", "");
           }
-          // {vis1: "000001", in1: "211020", vis2: "URQUIDI CHAVEZ JUAN …", vis3: "B2", vis4: "20050316", …}
-
         },
         displayMotivePopOver: function (itemId) {
           var oView = this.getView();

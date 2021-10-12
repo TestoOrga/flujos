@@ -37,7 +37,7 @@
         }
     },
     {
-        "AF": {
+        "ACF": {
             "txt": "Activo Fijo",
             "icon": "sap-icon://collections-insight",
             "act": [

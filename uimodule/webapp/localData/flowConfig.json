@@ -76,7 +76,7 @@
         ]
     },
     {
-        "AF001001": [
+        "ACF001001": [
             {
                 "controlId": "headerFlujosInsertPanel1",
                 "controllerName": "bafar.flujos.flujos.controller.ActivoFijo.ActivoFijo",

@@ -15,7 +15,7 @@
                         <form:formElements>
                             <form:FormElement label="Tipo de movimiento" id="__labeTipoMovimiento">
                                 <form:fields>
-                                    <Select selectedKey="{datosGral>/in1}" items="{ path: 'tpMov>/', sorter: { path: 'tpMov>C2' } }" change="onSelect($event, 'tpMov')" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : true}" class="valInput">
+                                    <Select id="selectTpMov" selectedKey="{datosGral>/in1}" items="{ path: 'tpMov>/', sorter: { path: 'tpMov>C2' } }" change="onSelect($event, 'tpMov')" forceSelection="false" enabled="{= !${afterCreation>/creation} ? ${afterCreation>/noEditField} : true}" class="valInput">
                                         <core:Item key="{tpMov>C1}" text="{tpMov>C2}"/>
                                     </Select>
                                 </form:fields>

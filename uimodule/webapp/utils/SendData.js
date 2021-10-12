@@ -26,8 +26,8 @@ sap.ui.define(
           case "NOM001004":
             this.NOM001004(flowInfo, arrData || inData, approveCode ? true : false);
             break;
-          case "AF001001":
-            this.AF001001(flowInfo, arrData || inData, approveCode ? true : false);
+          case "ACF001001":
+            this.ACF001001(flowInfo, arrData || inData, approveCode ? true : false);
             break;
           default:
             break;
@@ -227,7 +227,7 @@ sap.ui.define(
         }
         this.submitCall(oPayload);
       },
-      AF001001: function (flowInfo, arrData, approve) {
+      ACF001001: function (flowInfo, arrData, approve) {
         var to_pesal = [];
         if (!approve) {
           arrData.forEach(element => {

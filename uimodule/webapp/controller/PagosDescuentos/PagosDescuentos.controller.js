@@ -95,7 +95,7 @@ sap.ui.define(
           this.destroyIds();
         },
 
-        //destruir ids que causan conflicto duplicatedID
+        //destruir ids que causan conflicto "duplicatedID"
         destroyIds: function () {
           this.byId("attachPopover").destroy();
           this.byId("popover").destroy();
@@ -115,10 +115,6 @@ sap.ui.define(
         },
         loadPopOver: function (oControl) {
           this.addpopover(oControl);
-          // oEvent.getSource().getParent().removeStyleClass("lineItemSucc");
-          // oEvent.getSource().getParent().setHighlight("Error");
-          // oEvent.getSource().getParent().addStyleClass("lineItemError");
-          // console.log();			
         },
         addpopover: function (oControl) {
           this._popoverDelegate = {
@@ -246,7 +242,6 @@ sap.ui.define(
             return element.getBindingContext("tablaFlujo").getObject().template
           }).forEach(element => {
             this._tabModel.setProperty(element.getBindingContext("tablaFlujo").sPath + "/template", false);
-            // element.getAggregation("cells").find(x=>x.sId.includes("in2")).setSelectedKey(element.getBindingContext("tablaFlujo").getObject().in2);
             this.getPernr(undefined, element);
             this.setCC(undefined, element.getAggregation("cells").find(x => x.sId.includes("in2")));
           });
@@ -283,11 +278,6 @@ sap.ui.define(
         /* =========================================================== */
         /* EXCEL                                                       */
         /* =========================================================== */
-        // onSelectionChange: function (oEvent) {
-        //   var oSelectedItem = oEvent.getParameter("listItem");
-        //   var oModel = oSelectedItem.getBindingContext().getObject();
-        //   alert(JSON.stringify(oModel));
-        // },
         onHandleTempUploadStart: function (oEvent) {
           if (oEvent.getParameter("newValue") !== "") {
             this.templateFile = oEvent.getParameter("files")[0];
@@ -326,7 +316,6 @@ sap.ui.define(
           reader.readAsArrayBuffer(this.templateFile);
         },
         onDownloadAsExcel: function () {
-          // Test Data
           var headers = this.xlsxHeaders;
           var data = [{}];
           for (let idx = 0; idx < headers.length; idx++) {
@@ -345,7 +334,6 @@ sap.ui.define(
           });
           console.log(excelBuffer);
           this.onSaveAsExcel(excelBuffer, this.getOwnerComponent().flowData.actTxt + " " + this.getOwnerComponent().flowData.id);
-          // this.onSaveAsExcel(excelBuffer, "myFile");
         },
         onSaveAsExcel: function (buffer, filename) {
           const EXCEL_TYPE =
@@ -684,7 +672,6 @@ sap.ui.define(
         },
         // APROBACION
         applyData: function (sChannel, oEvent, res) {
-          // console.log(res.res);
           this.onBeforeRendering(true)
             .then(() => this.mapToView("HEADER", res.res[0]))
             .then(() =>
@@ -711,11 +698,8 @@ sap.ui.define(
                     });
                   });
               })
-
-              // this.getCC();
               // break;
             default:
-              // var tabData = this._tabModel.getProperty("/");
               var mappedData = [];
               oData.forEach(element => {
                 var formattedCurr = this.formatFromCurrency(element.C37);
@@ -744,7 +728,6 @@ sap.ui.define(
               this._tabModel.refresh(true);
               // break;
           }
-          // }
 
         },
         getDataForApproval: function () {
@@ -792,7 +775,6 @@ sap.ui.define(
             this._tabModel.setProperty(lineCxt.sPath + "/rejectText", "");
             this.getModel("fragMotive").setProperty("/", "");
           }
-          // {vis1: "000001", in1: "211020", vis2: "URQUIDI CHAVEZ JUAN …", vis3: "B2", vis4: "20050316", …}
 
         },
         displayMotivePopOver: function (itemId) {
