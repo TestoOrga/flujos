@@ -6,7 +6,7 @@
     "conn_user": "AGUZMAN",
     "conn_password": "Sapgw_2021",
     "abap_package": "ZHR",
-    "abap_transport": "GWDK900420",
+    "abap_transport": "GWDK900637",
     "abap_bsp": "Z_FLUJOS",
     "abap_bsp_text": "Flujos BAFAR - Intelit",
     "calcappindex": "true"    

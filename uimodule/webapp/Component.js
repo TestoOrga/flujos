@@ -5,6 +5,8 @@ sap.ui.define(
     "bafar/flujos/flujos/model/models",
     "./utils/SendData",
     "./utils/ErrorFrag",
+    "./utils/MotivoFrag",
+    "./utils/XlsxUtils",
     "./libs/OneDrive",
     "sap/ui/model/json/JSONModel"
   ],
@@ -13,6 +15,8 @@ sap.ui.define(
     models,
     SendData,
     ErrorFrag,
+    MotivoFrag,
+    XlsxUtils,
     OneDrive,
     JSONModel) {
     "use strict";
@@ -93,6 +97,12 @@ sap.ui.define(
         //Fragmento de errores de creacion de flujo 
         this.oErrorFrag = new ErrorFrag(this.getRootControl());
 
+        //Fragmento para mostrar Motivo de rechazo
+        this.oMotivoFrag = new MotivoFrag();
+
+        //Objeto para descargar y cargar XLSX template
+        this.oXlsxUtils = new XlsxUtils(this);
+
         /* ===========================================================
          Objeto para carga, descarga y borrado de archivos,
          Obtiene rutas de back y graba resultados en back
@@ -106,8 +116,15 @@ sap.ui.define(
         delete this.oErrorFrag;
         delete this.flowData;
       },
+
+      /* ===========================================================
+       Acceso a fragmentos
+      ============================================================= */
       openErrorFrag: function (config, data, title) {
         this.oErrorFrag.open(config, data, title);
+      },
+      openMotivoFrag: function (title, oCallController) {
+        this.oMotivoFrag.open(title, oCallController);
       },
 
       /* ===========================================================

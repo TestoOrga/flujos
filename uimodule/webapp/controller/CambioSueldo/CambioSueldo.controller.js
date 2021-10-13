@@ -283,69 +283,80 @@ sap.ui.define(
           }
         },
         handleTempUploadCompleted: function (oEvent) {
-          console.log("Event Handler: onHandleUploadComplete");
-          var reader = new FileReader();
-          reader.onload = function (e) {
-            // pre-process data
-            var binary = "";
-            var bytes = new Uint8Array(e.target.result);
-            var length = bytes.byteLength;
-            for (var i = 0; i < length; i++) {
-              binary += String.fromCharCode(bytes[i]);
-            }
-            var workbook = XLSX.read(binary, {
-              type: "binary",
-              cellDates: true,
-              cellNF: false,
-              cellText: false,
-            });
-            var worksheet = workbook.Sheets[workbook.SheetNames[0]];
-            var jsonObj = XLSX.utils.sheet_to_json(worksheet, {
-              raw: false,
-              dateNF: "yyyymmdd",
-            });
-            this.setTempVals(jsonObj);
+          this.getOwnerComponent().oXlsxUtils.readTemplate(this.templateFile).then(
+            (jsonObj) => {
+              this.setTempVals(jsonObj);
+              this._oTab.setBusy(false);
+            }).
+          catch((error) => {
             this._oTab.setBusy(false);
-          }.bind(this);
-          reader.onerror = function (err) {
-            this._oTab.setBusy(false);
-          }.bind(this);
-          reader.readAsArrayBuffer(this.templateFile);
-        },
-        onDownloadAsExcel: function () {
-          var headers = this.xlsxHeaders;
-          var data = [{}];
-          for (let idx = 0; idx < headers.length; idx++) {
-            data[0][headers[idx]] = "dato" + (idx + 1);
-          }
-          const worksheet = XLSX.utils.json_to_sheet(data);
-          const workbook = {
-            Sheets: {
-              data: worksheet,
-            },
-            SheetNames: ["data"],
-          };
-          const excelBuffer = XLSX.write(workbook, {
-            bookType: "xlsx",
-            type: "array",
+            MessageBox.error(error.responseText || error.message);
           });
-          console.log(excelBuffer);
-          this.onSaveAsExcel(excelBuffer, this.getOwnerComponent().flowData.actTxt + " " + this.getOwnerComponent().flowData.id);
+          //VERIFICAR NO AFECTACION desde 12/October/2021
+          // console.log("Event Handler: onHandleUploadComplete");
+          // var reader = new FileReader();
+          // reader.onload = function (e) {
+          //   // pre-process data
+          //   var binary = "";
+          //   var bytes = new Uint8Array(e.target.result);
+          //   var length = bytes.byteLength;
+          //   for (var i = 0; i < length; i++) {
+          //     binary += String.fromCharCode(bytes[i]);
+          //   }
+          //   var workbook = XLSX.read(binary, {
+          //     type: "binary",
+          //     cellDates: true,
+          //     cellNF: false,
+          //     cellText: false,
+          //   });
+          //   var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+          //   var jsonObj = XLSX.utils.sheet_to_json(worksheet, {
+          //     raw: false,
+          //     dateNF: "yyyymmdd",
+          //   });
+          //   this.setTempVals(jsonObj);
+          //   this._oTab.setBusy(false);
+          // }.bind(this);
+          // reader.onerror = function (err) {
+          //   this._oTab.setBusy(false);
+          // }.bind(this);
+          // reader.readAsArrayBuffer(this.templateFile);
         },
-        onSaveAsExcel: function (buffer, filename) {
-          const EXCEL_TYPE =
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-          const EXCEL_EXTENSION = ".xlsx";
-          const data = new Blob([buffer], {
-            type: EXCEL_TYPE
-          });
-          saveAs(
-            data,
-            filename + "_export_" + new Date().getTime() + EXCEL_EXTENSION
-          );
-        },
+        // onDownloadAsExcel: function () {
+        //   var headers = this.xlsxHeaders;
+        //   var data = [{}];
+        //   for (let idx = 0; idx < headers.length; idx++) {
+        //     data[0][headers[idx]] = "dato" + (idx + 1);
+        //   }
+        //   const worksheet = XLSX.utils.json_to_sheet(data);
+        //   const workbook = {
+        //     Sheets: {
+        //       data: worksheet,
+        //     },
+        //     SheetNames: ["data"],
+        //   };
+        //   const excelBuffer = XLSX.write(workbook, {
+        //     bookType: "xlsx",
+        //     type: "array",
+        //   });
+        //   console.log(excelBuffer);
+        //   this.onSaveAsExcel(excelBuffer, this.getOwnerComponent().flowData.actTxt + " " + this.getOwnerComponent().flowData.id);
+        // },
+        // onSaveAsExcel: function (buffer, filename) {
+        //   const EXCEL_TYPE =
+        //     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        //   const EXCEL_EXTENSION = ".xlsx";
+        //   const data = new Blob([buffer], {
+        //     type: EXCEL_TYPE
+        //   });
+        //   saveAs(
+        //     data,
+        //     filename + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+        //   );
+        // },
         onDownTemplate: function (oEvent) {
-          this.onDownloadAsExcel();
+          //VERIFICAR NO AFECTACION desde 12/October/2021 this.onDownloadAsExcel();
+          this.getOwnerComponent().oXlsxUtils.getTemplate(this.xlsxHeaders);
         },
         /* =========================================================== */
         /* Peticiones externas                                         */
@@ -668,38 +679,41 @@ sap.ui.define(
               line: lineCxt,
               rejectText: ""
             }), "fragMotive");
-            this.displayMotivePopOver(lineCxt.getObject().vis1);
+            //VERIFICAR NO AFECTACION desde 12/October/2021
+            // this.displayMotivePopOver(lineCxt.getObject().vis1);
+            this.getOwnerComponent().openMotivoFrag(lineCxt.getObject().vis1, this);
           } else {
             this._tabModel.setProperty(lineCxt.sPath + "/rejectText", "");
             this.getModel("fragMotive").setProperty("/", "");
           }
         },
-        displayMotivePopOver: function (itemId) {
-          var oView = this.getView();
-          if (!this.byId("motiveDialog")) {
-            Fragment.load({
-              id: oView.getId(),
-              name: "bafar.flujos.flujos.view.fragments.viewMotivePopUp",
-              controller: this,
-            }).then(
-              function (oDialog) {
-                // connect dialog to the root view of this component (models, lifecycle)
-                oView.addDependent(oDialog);
-                oView.byId("motiveDialog").setTitle("Item No: " + itemId);
-                console.log("Frag Loaded");
-                oDialog.open();
-              }.bind(this)
-            );
-          } else {
-            oView.byId("motiveDialog").setTitle("Item No: " + itemId);
-            oView.byId("motiveDialog").open();
-          }
-        },
-        acceptRejectComment: function (oEvent) {
-          var line = this.getModel("fragMotive").getData();
-          this._tabModel.setProperty(line.line.sPath + "/rejectText", line.rejectText);
-          this.byId("motiveDialog").close();
-        },
+        //VERIFICAR NO AFECTACION desde 12/October/2021
+        // displayMotivePopOver: function (itemId) {
+        //   var oView = this.getView();
+        //   if (!this.byId("motiveDialog")) {
+        //     Fragment.load({
+        //       id: oView.getId(),
+        //       name: "bafar.flujos.flujos.view.fragments.viewMotivePopUp",
+        //       controller: this,
+        //     }).then(
+        //       function (oDialog) {
+        //         // connect dialog to the root view of this component (models, lifecycle)
+        //         oView.addDependent(oDialog);
+        //         oView.byId("motiveDialog").setTitle("Item No: " + itemId);
+        //         console.log("Frag Loaded");
+        //         oDialog.open();
+        //       }.bind(this)
+        //     );
+        //   } else {
+        //     oView.byId("motiveDialog").setTitle("Item No: " + itemId);
+        //     oView.byId("motiveDialog").open();
+        //   }
+        // },
+        // acceptRejectComment: function (oEvent) {
+        //   var line = this.getModel("fragMotive").getData();
+        //   this._tabModel.setProperty(line.line.sPath + "/rejectText", line.rejectText);
+        //   this.byId("motiveDialog").close();
+        // },
 
         _showMotivo: function (oEvent) {
           var lineCxt = oEvent.oSource.getBindingContext(this.viewConfig.tabModelName);
@@ -708,14 +722,17 @@ sap.ui.define(
             tabLine: oEvent.getSource().getParent().getParent(),
             rejectText: lineCxt.getObject().rejectText
           }), "fragMotive");
-          this.displayMotivePopOver(lineCxt.getObject().vis1);
+          //VERIFICAR NO AFECTACION desde 12/October/2021
+          // this.displayMotivePopOver(lineCxt.getObject().vis1);
+          this.getOwnerComponent().openMotivoFrag(lineCxt.getObject().vis1, this);
         },
 
-        afterRejectClose: function (oEvent) {
-          if (this.getModel("fragMotive").getData().rejectText === "") {
-            this.getModel("fragMotive").getData().tabLine.getAggregation("cells").find(x => x.sId.includes("switchito")).getAggregation("items").find(x => x.sId.includes("switchito")).setState(true);
-          }
-        }
+        //VERIFICAR NO AFECTACION desde 12/October/2021
+        // afterRejectClose: function (oEvent) {
+        //   if (this.getModel("fragMotive").getData().rejectText === "") {
+        //     this.getModel("fragMotive").getData().tabLine.getAggregation("cells").find(x => x.sId.includes("switchito")).getAggregation("items").find(x => x.sId.includes("switchito")).setState(true);
+        //   }
+        // }
       }
     );
   }
